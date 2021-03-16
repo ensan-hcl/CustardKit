@@ -119,7 +119,7 @@ hieroglyphs_keys = [
         specifier = Specifier(type = "grid_scroll", value = {"index": 1}),
         key = CustomKey(
             design = KeyDesign(
-                label = TextLabel(text = "→"),
+                label = TextLabel(text = "←"),
                 color = "special"
             ),
             press_actions = [
@@ -128,7 +128,7 @@ hieroglyphs_keys = [
             longpress_actions = LongpressAction(
                 repeat = [
                     action_move_cursor(-1)
-						    ]
+			    ]
             ),
             variations = []
         )
@@ -137,7 +137,7 @@ hieroglyphs_keys = [
         specifier = Specifier(type = "grid_scroll", value = {"index": 2}),
         key = CustomKey(
             design = KeyDesign(
-                label = TextLabel(text = "←"),
+                label = TextLabel(text = "→"),
                 color = "special"
             ),
             press_actions = [
@@ -146,7 +146,7 @@ hieroglyphs_keys = [
             longpress_actions = LongpressAction(
                 repeat = [
                     action_move_cursor(1)
-						    ]
+                ]
             ),
             variations = []
         )
