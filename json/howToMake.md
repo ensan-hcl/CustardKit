@@ -340,12 +340,12 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 
 ```json
 {
-	"custard_version": "1.0",
+  "custard_version": "1.0",
   "identifier": "my_flick",
-	"display_name": "私のフリック",
+  "display_name": "私のフリック",
   "language": "ja_JP",
-	"input_style": "direct",
-	"interface": {インターフェースの記述}
+  "input_style": "direct",
+  "interface": {インターフェースの記述}
 }
 ```
 

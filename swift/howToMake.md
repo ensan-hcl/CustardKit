@@ -29,7 +29,7 @@ let key = CustardInterfaceCustomKey(
 
 最初の引数は`design`です。これは`CustardKeyDesign`型の値で、キーのデザインを指定します。簡潔さのため型名を省略して記述しています。
 
-```json
+```swift
 design: .init(label: .text("@#/&_"), color: .normal)
 ```
 

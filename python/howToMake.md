@@ -34,7 +34,7 @@ CustomKey(
 
 最初の引数は`design`です。これは`KeyDesign`というオブジェクトで、キーのデザインを指定します。
 
-```json
+```python
 design = KeyDesign(
     label = TextLabel(text = "@#/&_"),
     color = "normal"
@@ -64,7 +64,7 @@ design = KeyDesign(
 
 アクションは例えば以下のように記述されています。
 
-```json
+```python
 press_actions = [
     action_input("@")
 ],
@@ -126,7 +126,7 @@ class LongpressAction(object):
 
 上のキーではバリエーションは指定していませんが、実際にバリエーションを作る際は次のように書きます。
 
-```json
+```pyhon
 variations = [
     FlickVariationData(
         direction = "left",
@@ -177,7 +177,7 @@ variations = [
 
 インターフェースとはキーを含む画面全体のことです。例えば以下のような形をしています。
 
-```json
+```python
 Interface(
     key_layout = GridFitLayout(row_count = 2, column_count = 2),
     key_style = "tenkey_style",
@@ -233,7 +233,7 @@ Interface(
 
 以下は例です。
 
-```json
+```python
 //specifier_typeがgrid_fitの場合
 Specifier(type = "grid_fit", value = {"x": 0, "y": 1})
 
@@ -317,7 +317,7 @@ Custard(
 
 例としてUnicodeに登録されているヒエログリフを入力できるスクロール可能なタブを作りましょう。
 
-```Python
+```python
 from custard import *
 
 #ヒエログリフの文字のリストを取得
