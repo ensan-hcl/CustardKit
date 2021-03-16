@@ -234,10 +234,10 @@ Interface(
 以下は例です。
 
 ```python
-//specifier_typeがgrid_fitの場合
+#specifier_typeがgrid_fitの場合
 Specifier(type = "grid_fit", value = {"x": 0, "y": 1})
 
-//specifier_typeがgrid_scrollの場合
+#specifier_typeがgrid_scrollの場合
 Specifier(type = "grid_scroll", value = {"index": 42})
 ```
 
