@@ -678,7 +678,7 @@ public struct CustardInterfaceVariationKey: Codable {
 }
 
 /// - Tab specifier
-public enum CodableTabData: Codable, Hashable {
+public enum CodableTabData: Codable, Equatable {
     /// - tabs prepared by default
     case system(SystemTab)
     /// - tabs made as custom tabs.
@@ -765,20 +765,9 @@ public extension CodableTabData {
             return false
         }
     }
-
-    func hash(into hasher: inout Hasher) {
-        switch self{
-        case let .system(tab):
-            hasher.combine(tab)
-            hasher.combine(ValueType.system)
-        case let .custom(tab):
-            hasher.combine(tab)
-            hasher.combine(ValueType.custom)
-        }
-    }
 }
 
-public struct ScanItem: Codable, Hashable {
+public struct ScanItem: Codable, Equatable {
     public init(targets: [String], direction: ScanItem.Direction) {
         self.targets = targets
         self.direction = direction
@@ -794,7 +783,7 @@ public struct ScanItem: Codable, Hashable {
 }
 /// - アクション
 /// - actions done in key pressing
-public enum CodableActionData: Codable, Hashable {
+public enum CodableActionData: Codable, Equatable {
     /// - input action specified character
     case input(String)
 
@@ -1050,48 +1039,6 @@ public extension CodableActionData {
         default:
             return false
         }
-    }
-
-    func hash(into hasher: inout Hasher) {
-        let key: ValueType
-        switch self {
-        case let .input(value):
-            hasher.combine(value)
-            key = .input
-        case .replaceDefault:
-            key = .replace_default
-        case let .replaceLastCharacters(value):
-            hasher.combine(value)
-            key = .replace_last_characters
-        case let .delete(value):
-            hasher.combine(value)
-            key = .delete
-        case let .smartDelete(value):
-            hasher.combine(value)
-            key = .smart_delete
-        case .smartDeleteDefault:
-            key = .smart_delete_default
-        case .complete:
-            key = .complete
-        case let .moveCursor(value):
-            hasher.combine(value)
-            key = .move_cursor
-        case let .smartMoveCursor(value):
-            hasher.combine(value)
-            key = .smart_move_cursor
-        case let .moveTab(destination):
-            hasher.combine(destination)
-            key = .move_tab
-        case .toggleCursorBar:
-            key = .toggle_cursor_bar
-        case .toggleTabBar:
-            key = .toggle_tab_bar
-        case .toggleCapslockState:
-            key = .toggle_caps_lock_state
-        case .dismissKeyboard:
-            key = .dismiss_keyboard
-        }
-        hasher.combine(key)
     }
 }
 
