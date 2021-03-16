@@ -1,6 +1,7 @@
 from source.custard import *
 
 custard = Custard(
+    custard_version = "1.0",
     identifier = "my_custard", 
     display_name = "私のカスタード",
     language = "ja_JP", 
@@ -205,6 +206,7 @@ for glyph in hieroglyphs:
       
 #カスタードオブジェクトを作成
 hieroglyphs_custard = Custard(
+    custard_version = "1.0",
     identifier = "Hieroglyphs",
     display_name = "ヒエログリフ",
     language = "none",

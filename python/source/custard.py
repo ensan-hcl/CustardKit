@@ -27,14 +27,15 @@ class Interface(object):
         }
 
 class Custard(object):  
-    custard_version = "1.0"  
+    custard_version: str
     identifier: str
     display_name: str
     language: str
     input_style: str
     interface: Interface
 
-    def __init__(self, identifier: str, display_name: str, language: str, input_style: str, interface: Interface):
+    def __init__(self, custard_version: str, identifier: str, display_name: str, language: str, input_style: str, interface: Interface):
+        self.custard_version = custard_version
         self.identifier = identifier
         self.display_name = display_name
         self.language = language
