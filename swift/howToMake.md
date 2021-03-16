@@ -293,7 +293,7 @@ let md_custard = Custard(
     display_name: "私のフリック",
     language: .ja_JP,
     input_style: .direct,
-  	inteface: {インターフェースの記述}
+    inteface: {インターフェースの記述}
 )
 ```
 

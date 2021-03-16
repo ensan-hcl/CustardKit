@@ -13,7 +13,7 @@ CustomKey(
         color = "normal"
     ),
     press_actions = [
-     		action_input("@")
+        action_input("@")
     ],
     longpress_actions = LongpressAction(),
   	variations = []
@@ -126,7 +126,7 @@ class LongpressAction(object):
 
 上のキーではバリエーションは指定していませんが、実際にバリエーションを作る際は次のように書きます。
 
-```pyhon
+```python
 variations = [
     FlickVariationData(
         direction = "left",
@@ -263,12 +263,12 @@ Specifier(type = "grid_scroll", value = {"index": 42})
 
 ```python
 Custard(
-	custard_version = "1.0",
+  custard_version = "1.0",
   identifier = "my_flick",
-	display_name = "私のフリック",
+  display_name = "私のフリック",
   language = "ja_JP",
-	input_style = "direct",
-	interface = {インターフェースの記述}
+  input_style = "direct",
+  interface = {インターフェースの記述}
 )
 ```
 
@@ -342,7 +342,7 @@ hieroglyphs_keys = [
             longpress_actions = LongpressAction(
                 repeat = [
                     action_move_cursor(-1)
-						    ]
+                ]
             ),
             variations = []
         )
@@ -360,7 +360,7 @@ hieroglyphs_keys = [
             longpress_actions = LongpressAction(
                 repeat = [
                     action_move_cursor(1)
-						    ]
+                ]
             ),
             variations = []
         )
@@ -400,7 +400,7 @@ hieroglyphs_keys = [
 ]
 
 for glyph in hieroglyphs:
-		key = CustomKey(
+    key = CustomKey(
         design = KeyDesign(
             label = TextLabel(text = glyph),
             color = "normal"
