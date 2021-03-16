@@ -16,7 +16,7 @@ CustomKey(
         action_input("@")
     ],
     longpress_actions = LongpressAction(),
-  	variations = []
+    variations = []
 )
 ```
 
@@ -392,9 +392,9 @@ hieroglyphs_keys = [
             longpress_actions = LongpressAction(
                 repeat = [
                     action_move_cursor(1)
-						    ]
+                ]
             ),
-          	variations = []
+            variations = []
         )
     ),
 ]
