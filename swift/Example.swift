@@ -137,7 +137,7 @@ let md_custard = Custard(
     input_style: .direct,
     interface: .init(
         key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(width: 6, height: 4)),
+        key_layout: .gridFit(.init(rowCount: 6, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(
@@ -386,7 +386,7 @@ let tex_tab = Custard(
     input_style: .direct,
     interface: .init(
         key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(width: 5, height: 4)),
+        key_layout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(
@@ -929,7 +929,7 @@ let flick_greek = Custard(
     input_style: .direct,
     interface: .init(
         key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(width: 5, height: 4)),
+        key_layout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(
@@ -1406,7 +1406,7 @@ let interesting_layout = Custard(
     input_style: .direct,
     interface: .init(
         key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(width: 5, height: 4)),
+        key_layout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(

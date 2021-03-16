@@ -134,8 +134,8 @@ public extension CustardInterfaceLayout{
         switch self {
         case let .gridFit(value):
             try container.encode(ValueType.grid_fit, forKey: .type)
-            try container.encode(value.width, forKey: .row_count)
-            try container.encode(value.height, forKey: .column_count)
+            try container.encode(value.rowCount, forKey: .row_count)
+            try container.encode(value.columnCount, forKey: .column_count)
         case let .gridScroll(value):
             try container.encode(ValueType.grid_scroll, forKey: .type)
             try container.encode(value.direction, forKey: .direction)
@@ -151,7 +151,7 @@ public extension CustardInterfaceLayout{
         let columnCount = try container.decode(Double.self, forKey: .column_count)
         switch type {
         case .grid_fit:
-            self = .gridFit(.init(width: Int(rowCount), height: Int(columnCount)))
+            self = .gridFit(.init(rowCount: Int(rowCount), columnCount: Int(columnCount)))
         case .grid_scroll:
             let direction = try container.decode(CustardInterfaceLayoutScrollValue.ScrollDirection.self, forKey: .direction)
             self = .gridScroll(.init(direction: direction, rowCount: rowCount, columnCount: columnCount))
@@ -159,18 +159,18 @@ public extension CustardInterfaceLayout{
     }
 }
 
-public struct CustardInterfaceLayoutGridValue: Codable {
-    public init(width: Int, height: Int) {
-        self.width = width
-        self.height = height
+public struct CustardInterfaceLayoutGridValue {
+    public init(rowCount: Int, columnCount: Int) {
+        self.rowCount = rowCount
+        self.columnCount = columnCount
     }
 
     /// - 横方向に配置するキーの数
     /// - number of keys placed horizontally
-    let width: Int
+    let rowCount: Int
     /// - 縦方向に配置するキーの数
     /// - number of keys placed vertically
-    let height: Int
+    let columnCount: Int
 }
 
 public struct CustardInterfaceLayoutScrollValue: Codable {
