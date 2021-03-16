@@ -41,7 +41,7 @@ let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
 
 var hieroglyphs_keys = keys
 hieroglyphs.indices.forEach{
-    hieroglyphs_keys[.gridScroll(GridScrollPositionSpecifier(5+$0))] = .custom(
+    hieroglyphs_keys[.gridScroll(GridScrollPositionSpecifier(hieroglyphs_keys.count))] = .custom(
         .init(
             design: .init(label: .text(hieroglyphs[$0]), color: .normal),
             press_actions: [.input(hieroglyphs[$0])],
