@@ -10,7 +10,7 @@
 CustomKey(
     design = KeyDesign(
         label = TextLabel(text = "@#/&_"),
-        color = "normal"
+        color = KeyColor.normal
     ),
     press_actions = [
         action_input("@")
@@ -37,11 +37,11 @@ CustomKey(
 ```python
 design = KeyDesign(
     label = TextLabel(text = "@#/&_"),
-    color = "normal"
+    color = KeyColor.normal
 ),
 ```
 
-`"label"`はキーに表示されるラベルです。ラベルに指定できる値は次の通りです。
+`label`はキーに表示されるラベルです。ラベルに指定できる値は次の通りです。
 
 | オブジェクト     | 初期化の引数    | 説明                                                         |
 | ---------------- | --------------- | ------------------------------------------------------------ |
@@ -50,7 +50,7 @@ design = KeyDesign(
 
 <img src="../resource/symbols.png" style="zoom:15%;" />
 
-`color`はキーの色です。azooKeyは着せ替えに対応しているため、キーの色は環境によって変わります。以下の値を指定できます。
+`color`はキーの色です。azooKeyは着せ替えに対応しているため、キーの色は環境によって変わります。これは`KeyColor`という列挙型の値で、以下の値を指定できます。
 
 | 識別子   | 説明                                     |
 | -------- | ---------------------------------------- |
@@ -74,22 +74,22 @@ press_actions = [
 
 azooKeyでは`action_input`の他にいくつかの動作を行うことができます。
 
-| 関数                           | 引数                                   | 挙動                                                         |
-| :----------------------------- | :------------------------------------- | :----------------------------------------------------------- |
-| action_input                   | text: str                              | 引数textを入力します                                         |
-| action_delete                  | count: int                             | (countの絶対値)文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
-| action_move_cursor             | count: int                             | (countの絶対値)文字分カーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
-| action_move_tab                | tab_type: str<br />identifier: str     | identifierで指定したタブに移動します。tab_typeが`"system"`の場合はazooKeyが標準で搭載しているタブに移動し、`"custom"`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
-| action_replace_last_characters | table: {str: str}                      | カーソル文頭方向の文字列を引数のtableに基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
-| action_replace_default         | なし                                   | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
-| action_smart_delete            | direction: str<br />targets: list[str] | directionに`"forward"`または`"backward"`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`"direction": "backward", "targets": [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
-| action_smart_delete_default    | なし                                   | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
-| action_smart_move_cursor       | direction: str<br />target: list[str]  | directionに`"forward"`または`"backward"`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`"direction": "backward", "target": [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
-| action_enable_resizing_mode    | なし                                   | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
-| action_toggle_cursor_bar       | なし                                   | カーソルバーの表示をtoggleします。                           |
-| action_toggle_tab_bar          | なし                                   | タブバーの表示をtoggleします。                               |
-| action_toggle_caps_lock_state  | なし                                   | caps lockをtoggleします。                                    |
-| action_dismiss_keyboard        | なし                                   | キーボードを閉じます。                                       |
+| 関数                           | 引数                                             | 挙動                                                         |
+| :----------------------------- | :----------------------------------------------- | :----------------------------------------------------------- |
+| action_input                   | text: str                                        | 引数textを入力します                                         |
+| action_delete                  | count: int                                       | (countの絶対値)文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
+| action_move_cursor             | count: int                                       | (countの絶対値)文字分カーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
+| action_move_tab                | tab_type: TabType<br />identifier: str           | identifierで指定したタブに移動します。tab_typeが`system`の場合はazooKeyが標準で搭載しているタブに移動し、`custom`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
+| action_replace_last_characters | table: {str: str}                                | カーソル文頭方向の文字列を引数のtableに基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
+| action_replace_default         | なし                                             | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
+| action_smart_delete            | direction: ScanDirection<br />targets: list[str] | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
+| action_smart_delete_default    | なし                                             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
+| action_smart_move_cursor       | direction: ScanDirection<br />target: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
+| action_enable_resizing_mode    | なし                                             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
+| action_toggle_cursor_bar       | なし                                             | カーソルバーの表示をtoggleします。                           |
+| action_toggle_tab_bar          | なし                                             | タブバーの表示をtoggleします。                               |
+| action_toggle_caps_lock_state  | なし                                             | caps lockをtoggleします。                                    |
+| action_dismiss_keyboard        | なし                                             | キーボードを閉じます。                                       |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
 
@@ -106,6 +106,8 @@ class LongpressAction(object):
 ここで`start`は長押しの開始時に一度だけ実行される動作、`repeat`は長押しの間繰り返し実行される動作です。それぞれ上で書いたものと同様にアクションの配列を指定します。
 
 #### システムタブ
+
+以下を文字列で指定してください。
 
 | 識別子              | 説明                                                         |
 | ------------------- | ------------------------------------------------------------ |
@@ -129,7 +131,7 @@ class LongpressAction(object):
 ```python
 variations = [
     FlickVariationData(
-        direction = "left",
+        direction = FlickDirection.left,
         key = Variation(
             design = VariationDesign(
                 label = TextLabel(text = "#"),
@@ -141,7 +143,7 @@ variations = [
         )
     ),
     FlickVariationData(
-        direction = "top",
+        direction = FlickDirection.top,
         key = Variation(
             design = VariationDesign(
                 label = TextLabel(text = "/"),
@@ -159,17 +161,17 @@ variations = [
 
 * 型が`FlickVariationData`であり
 * デザインの指定がラベルのみであり
-* `"variations"`の指定がなく
-* `"direction"`の指定がある
+* `variations`の指定がなく
+* `direction`の指定がある
 
 ことです。
 
 バリエーションはその出現する条件によって異なる型で表現されます。
 
-| オブジェクト               | 必要な引数                         | 説明                                                         |
-| -------------------------- | ---------------------------------- | ------------------------------------------------------------ |
-| FlickVariationData         | direction: str<br />key: Variation | directionとして指定する`"left","top","right","bottom"`の方向のフリックで表示されるバリエーションです。 |
-| LongpressVariationData[^3] | key: Variation                     | qwertyキーボードなどで見られる長押しして表示される候補のバリエーションです。配列に指定した順に表示されます。<br />これが指定されている場合、キーの`longpress_actions`に指定した値は無視されます。またバリエーションの`longpress_actions`は現状無効です。 |
+| オブジェクト               | 必要な引数                                    | 説明                                                         |
+| -------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
+| FlickVariationData         | direction: FlickDirection<br />key: Variation | `direction`として指定する`left,top,right,bottom`の方向のフリックで表示されるバリエーションです。 |
+| LongpressVariationData[^3] | key: Variation                                | qwertyキーボードなどで見られる長押しして表示される候補のバリエーションです。配列に指定した順に表示されます。<br />これが指定されている場合、キーの`longpress_actions`に指定した値は無視されます。またバリエーションの`longpress_actions`は現状無効です。 |
 
 以上でキーの記述の説明は終わりです。
 
@@ -180,10 +182,10 @@ variations = [
 ```python
 Interface(
     key_layout = GridFitLayout(row_count = 2, column_count = 2),
-    key_style = "tenkey_style",
+    key_style = KeyStyle.tenkey_style,
     keys = [
         KeyData(
-            specifier = Specifier(type = "grid_fit", value = {"x": 0, "y": 0}),
+            specifier = Specifier(type = SpecifierType.grid_fit, value = {"x": 0, "y": 0}),
             key = {キーのデータ}
         ),
         (省略)
@@ -198,13 +200,13 @@ Interface(
 | オブジェクト     | 引数                                                         | 説明                                                         |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | GridFitLayout    | row_count: int<br />column_count: int                        | 画面全体に収まるように格子状にキーを配置するレイアウトです。横にrow_count個、縦にcolumn_count個のキーを並べます。 |
-| GridScrollLayout | direction: str<br />row_count: float<br />column_count: float | 画面をスクロールできる状態にして格子状にキーを配置するレイアウトです。<br />スクロールの方向を示すdirectionには`"vertical"`または`"horizontal"`を指定し、row_countとcolumn_countを指定します。<br />スクロール方向に垂直な向きのキー数は切り捨てて整数として利用されますが、平行な向きのキー数は小数のまま用います。<br />このレイアウトが指定されている場合、キーの`"variations"`は一切無効になります。 |
+| GridScrollLayout | direction: ScrollDirection<br />row_count: float<br />column_count: float | 画面をスクロールできる状態にして格子状にキーを配置するレイアウトです。<br />スクロールの方向を示すdirectionには`ScrollDirection.vertical`または`ScrollDirection.horizontal`を指定し、row_countとcolumn_countを指定します。<br />スクロール方向に垂直な向きのキー数は切り捨てて整数として利用されますが、平行な向きのキー数は小数のまま用います。<br />このレイアウトが指定されている場合、キーの`"variations"`は一切無効になります。 |
 
 ### スタイル
 
-引数`key_style`は処理系にどのようにキーを扱えばいいかを知らせるための値です。`"tenkey_style"`または`"pc_style"`を指定してください。
+引数`key_style`は`KeyStyle`型で、処理系にどのようにキーを扱えばいいかを知らせるための値です。`tenkey_style`または`pc_style`を指定してください。
 
-片手モードの状態は端末の向きとスタイルによって決まります。レイアウトが`"grid_scroll"`である場合はフリック操作とサジェストは無効化されます。
+片手モードの状態は端末の向きとスタイルによって決まります。レイアウトが`grid_scroll`である場合はフリック操作とサジェストは無効化されます。
 
 | スタイル     | 説明                                                         |
 | ------------ | ------------------------------------------------------------ |
@@ -217,7 +219,7 @@ Interface(
 
 ```python
  KeyData(
-      specifier = Specifier(type = "grid_fit", value = {"x": 0, "y": 1}),
+      specifier = Specifier(type = SpecifierType.grid_fit, value = {"x": 0, "y": 1}),
       key = CustomKey(...)
 )
 ```
@@ -235,15 +237,15 @@ Interface(
 
 ```python
 #specifier_typeがgrid_fitの場合
-Specifier(type = "grid_fit", value = {"x": 0, "y": 1})
+Specifier(type = SpecifierType.grid_fit, value = {"x": 0, "y": 1})
 
 #specifier_typeがgrid_scrollの場合
-Specifier(type = "grid_scroll", value = {"index": 42})
+Specifier(type = SpecifierType.grid_scroll, value = {"index": 42})
 ```
 
-`"key"`はキーの実体を指定する値で、`"SystemKey"`または`"CustomKey"`を指定します。`Customkey`は上で確認したキーのデータです。
+`key`はキーの実体を指定する値で、`SystemKey`または`CustomKey`を指定します。`Customkey`は上で確認したキーのデータです。
 
-`SystemKey`は特殊なキーを指定するための値です。引数の`identifier`としてキーの種類を以下から指定してください。
+`SystemKey`は特殊なキーを指定するための値です。引数の`identifier`は`SystemKeyType`という列挙型で指定します。以下から指定してください。
 
 | 識別子            | 必要な値 | 説明                                                         |
 | ----------------- | -------- | ------------------------------------------------------------ |
@@ -266,8 +268,8 @@ Custard(
   custard_version = "1.0",
   identifier = "my_flick",
   display_name = "私のフリック",
-  language = "ja_JP",
-  input_style = "direct",
+  language = Language.ja_JP,
+  input_style = InputStyle.direct,
   interface = {インターフェースの記述}
 )
 ```
@@ -278,7 +280,7 @@ Custard(
 
 `display_name`はタブバーなどでデフォルトで用いられる名称です。
 
-`language`は変換対象の言語です。以下の値が指定できます。
+`language`は`Language`という列挙型で、変換対象の言語です。以下の値が指定できます。
 
 | 識別子    | 説明                                                 |
 | --------- | ---------------------------------------------------- |
@@ -288,7 +290,7 @@ Custard(
 | undefined | 指定なし。変換候補は出るので記号などの入力で用いる。 |
 | none      | 変換なし。                                           |
 
-`input_style`は入力方式です。以下の値が指定できます。
+`input_style`は`InputStyle`という列挙型で、入力方式です。以下の値が指定できます。
 
 | 識別子     | 説明                         |
 | ---------- | ---------------------------- |
@@ -326,15 +328,15 @@ hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 #キーの辞書を作成
 hieroglyphs_keys = [
     KeyData(
-        specifier = Specifier(type = "grid_scroll", value = {"index": 0}),
-        key = SystemKey(identifier = "change_keyboard")
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 0}),
+        key = SystemKey(SystemKeyType.change_keyboard)
     ),
     KeyData(
-        specifier = Specifier(type = "grid_scroll", value = {"index": 1}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 1}),
         key = CustomKey(
             design = KeyDesign(
                 label = TextLabel(text = "→"),
-                color = "special"
+                color = KeyColor.special
             ),
             press_actions = [
                 action_move_cursor(-1)
@@ -348,11 +350,11 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = "grid_scroll", value = {"index": 2}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 2}),
         key = CustomKey(
             design = KeyDesign(
                 label = TextLabel(text = "←"),
-                color = "special"
+                color = KeyColor.special
             ),
             press_actions = [
                 action_move_cursor(1)
@@ -366,11 +368,11 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = "grid_scroll", value = {"index": 3}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 3}),
         key = CustomKey(
             design = KeyDesign(
                 label = SystemImageLabel(identifier = "list.bullet"),
-                color = "special"
+                color = KeyColor.special
             ),
             press_actions = [
                 action_toggle_tab_bar()
@@ -380,11 +382,11 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = "grid_scroll", value = {"index": 3}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 3}),
         key = CustomKey(
             design = KeyDesign(
                 label = SystemImageLabel(identifier = "delete.left"),
-                color = "special"
+                color = KeyColor.special
             ),
             press_actions = [
                 action_delete(1)
@@ -403,7 +405,7 @@ for glyph in hieroglyphs:
     key = CustomKey(
         design = KeyDesign(
             label = TextLabel(text = glyph),
-            color = "normal"
+            color = KeyColor.normal
         ),
         press_actions = [
             action_input(glyph)
@@ -412,7 +414,7 @@ for glyph in hieroglyphs:
         variations = []
     )
     keydata = KeyData(
-        specifier = Specifier(type = "grid_scroll", value = {"index": len(hieroglyphs_keys)}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": len(hieroglyphs_keys)}),
         key = key
     )
     hieroglyphs_keys.append(keydata)
@@ -421,11 +423,11 @@ for glyph in hieroglyphs:
 hieroglyphs_custard = Custard(
     identifier = "Hieroglyphs",
     display_name = "ヒエログリフ",
-    language = "none",
-    input_style = "direct",
+    language = Language.none,
+    input_style = InputStyle.direct,
     interface = Interface(
-        key_style = "tenkey_style",
-        key_layout = GridScrollLayout(direction = "vertical", row_count = 8, column_count = 4.2),
+        key_style = KeyStyle.tenkey_style,
+        key_layout = GridScrollLayout(direction = ScrollDirection.vertical, row_count = 8, column_count = 4.2),
         keys = hieroglyphs_keys
     )
 )

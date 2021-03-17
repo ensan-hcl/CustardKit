@@ -46,12 +46,20 @@ def action_replace_default():
         "type": "replace_default"
     }
 
+@unique 
+class TabType(Enum):
+    system = "system"
+    custom = "custom"
+
+    def json(self) -> dict :
+        return self.value
+
 def action_move_tab(tab_type: str, text: str):
     """
     タブを移動するアクション
     Parameters
     ----------
-    tab_type: str
+    tab_type: TabType
         タブのタイプ。"custom"または"system"を指定。
     text: str
         タブの識別子
@@ -59,7 +67,7 @@ def action_move_tab(tab_type: str, text: str):
 
     return {
         "type": "move_tab",
-        "tab_type": tab_type,
+        "tab_type": tab_type.json(),
         "identifier": text
     }
 
@@ -82,7 +90,7 @@ def action_smart_move_cursor(direction: ScanDirection, targets: list[str]):
     指定した文字の隣までカーソルを移動するアクション
     Parameters
     ----------
-    direction: str
+    direction: ScanDirection
         移動の向きを"forward"または"backward"で指定。
     targets: list[str]
         停止条件となる文字のリスト。
@@ -113,7 +121,7 @@ def action_smart_delete(direction: ScanDirection, targets: list[str]):
     指定した文字の隣まで文字を削除するアクション
     Parameters
     ----------
-    direction: str
+    direction: ScanDirection
         削除する向きを"forward"または"backward"で指定。
     targets: list[str]
         停止条件となる文字のリスト。
