@@ -23,7 +23,7 @@ let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
     ),
     .gridScroll(3): .custom(
         .init(
-            design: .init(label: .system_image("list.bullet"), color: .special),
+            design: .init(label: .systemImage("list.bullet"), color: .special),
             press_actions: [.toggleTabBar],
             longpress_actions: .none,
             variations: []
@@ -31,7 +31,7 @@ let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
     ),
     .gridScroll(4): .custom(
         .init(
-            design: .init(label: .system_image("delete.left"), color: .special),
+            design: .init(label: .systemImage("delete.left"), color: .special),
             press_actions: [.delete(1)],
             longpress_actions: .init(repeat: [.delete(1)]),
             variations: []
@@ -58,8 +58,8 @@ let cuneiforms_custard = Custard(
     language: .none,
     input_style: .direct,
     interface: .init(
-        key_style: .tenkeyStyle,
-        key_layout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
+        keyStyle: .tenkeyStyle,
+        keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
         keys: cuneiforms_keys
     )
 )

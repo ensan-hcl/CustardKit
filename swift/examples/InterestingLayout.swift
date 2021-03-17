@@ -8,8 +8,8 @@ let interesting_layout = Custard(
     language: .none,
     input_style: .direct,
     interface: .init(
-        key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(rowCount: 5, columnCount: 4)),
+        keyStyle: .tenkeyStyle,
+        keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(

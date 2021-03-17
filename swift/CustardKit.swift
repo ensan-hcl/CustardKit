@@ -7,14 +7,18 @@
 
 import Foundation
 
+extension Encodable{
+    func containerEncode<CodingKeys: CodingKey>(container: inout KeyedEncodingContainer<CodingKeys>, key: CodingKeys) throws {
+        try container.encode(self, forKey: key)
+    }
+}
+
 public enum FlickDirection: String, Codable {
     case left
     case top
     case right
     case bottom
 }
-
-import Foundation
 
 /// - 変換対象の言語を指定します。
 /// - specify language to convert
@@ -299,20 +303,20 @@ public extension GridScrollPositionSpecifier {
 /// - インターフェース
 /// - interface
 public struct CustardInterface: Codable {
-    public init(key_style: CustardInterfaceStyle, key_layout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier : CustardInterfaceKey]) {
-        self.key_style = key_style
-        self.key_layout = key_layout
+    public init(keyStyle: CustardInterfaceStyle, keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier : CustardInterfaceKey]) {
+        self.keyStyle = keyStyle
+        self.keyLayout = keyLayout
         self.keys = keys
     }
 
     /// - キーのスタイル
     /// - style of keys
     /// - warning: Currently when you use gird scroll. layout, key style would be ignored.
-    let key_style: CustardInterfaceStyle
+    let keyStyle: CustardInterfaceStyle
 
     /// - キーのレイアウト
     /// - layout of keys
-    let key_layout: CustardInterfaceLayout
+    let keyLayout: CustardInterfaceLayout
 
     /// - キーの辞書
     /// - dictionary of keys
@@ -321,10 +325,18 @@ public struct CustardInterface: Codable {
 }
 
 public extension CustardInterface {
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case key_style
         case key_layout
         case keys
+    }
+
+    private enum KeyType: String, Codable {
+        case custom, system
+    }
+
+    private enum SpecifierType: String, Codable {
+        case grid_fit, grid_scroll
     }
 
     private struct Element: Codable{
@@ -336,15 +348,21 @@ public extension CustardInterface {
         let specifier: CustardKeyPositionSpecifier
         let key: CustardInterfaceKey
 
-        enum KeyType: String, Codable {
-            case custom, system
+        private var specifierType: SpecifierType {
+            switch self.specifier{
+            case .gridFit: return .grid_fit
+            case .gridScroll: return .grid_scroll
+            }
         }
 
-        enum SpecifierType: String, Codable {
-            case grid_fit, grid_scroll
+        private var keyType: KeyType {
+            switch self.key{
+            case .system: return .system
+            case .custom: return .custom
+            }
         }
 
-        enum CodingKeys: CodingKey {
+        private enum CodingKeys: CodingKey {
             case specifier_type
             case specifier
             case key_type
@@ -353,27 +371,22 @@ public extension CustardInterface {
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(specifierType, forKey: .specifier_type)
             switch self.specifier{
-            case let .gridFit(value):
-                try container.encode(SpecifierType.grid_fit, forKey: .specifier_type)
-                try container.encode(value, forKey: .specifier)
-            case let .gridScroll(value):
-                try container.encode(SpecifierType.grid_scroll, forKey: .specifier_type)
-                try container.encode(value, forKey: .specifier)
+            case let .gridFit(value as Encodable),
+                 let .gridScroll(value as Encodable):
+                try value.containerEncode(container: &container, key: CodingKeys.specifier)
             }
+            try container.encode(keyType, forKey: .key_type)
             switch self.key{
-            case let .system(value):
-                try container.encode(KeyType.system, forKey: .key_type)
-                try container.encode(value, forKey: .key)
-            case let .custom(value):
-                try container.encode(KeyType.custom, forKey: .key_type)
-                try container.encode(value, forKey: .key)
+            case let .system(value as Encodable),
+                 let .custom(value as Encodable):
+                try value.containerEncode(container: &container, key: CodingKeys.key)
             }
         }
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-
             let specifierType = try container.decode(SpecifierType.self, forKey: .specifier_type)
             switch specifierType{
             case .grid_fit:
@@ -398,16 +411,16 @@ public extension CustardInterface {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(key_style, forKey: .key_style)
-        try container.encode(key_layout, forKey: .key_layout)
+        try container.encode(keyStyle, forKey: .key_style)
+        try container.encode(keyLayout, forKey: .key_layout)
         let elements = self.keys.map{Element(specifier: $0.key, key: $0.value)}
         try container.encode(elements, forKey: .keys)
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.key_style = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
-        self.key_layout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
+        self.keyStyle = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
+        self.keyLayout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
         let elements = try container.decode([Element].self, forKey: .keys)
         self.keys = elements.reduce(into: [:]){dictionary, element in
             dictionary[element.specifier] = element.key
@@ -447,22 +460,28 @@ public struct CustardVariationKeyDesign: Codable {
 /// - labels on the key
 public enum CustardKeyLabelStyle: Codable {
     case text(String)
-    case system_image(String)
+    case systemImage(String)
 }
 
 public extension CustardKeyLabelStyle{
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case text
         case system_image
+    }
+
+    private var key: CodingKeys {
+        switch self{
+        case .text: return .text
+        case .systemImage: return .system_image
+        }
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .text(value):
-            try container.encode(value, forKey: .text)
-        case let .system_image(value):
-            try container.encode(value, forKey: .system_image)
+        case let .text(value),
+             let .systemImage(value):
+            try container.encode(value, forKey: key)
         }
     }
 
@@ -488,7 +507,7 @@ public extension CustardKeyLabelStyle{
                 String.self,
                 forKey: .system_image
             )
-            self = .system_image(value)
+            self = .systemImage(value)
         }
     }
 }
@@ -498,11 +517,11 @@ public extension CustardKeyLabelStyle{
 public enum CustardKeyVariationType {
     /// - variation of flick
     /// - warning: when you use pc style, this type of variation would be ignored.
-    case flick_variation(FlickDirection)
+    case flickVariation(FlickDirection)
 
     /// - variation selectable when keys were longoressed, especially used in pc style keyboard.
     /// - warning: when you use flick key style, this type of variation would be ignored.
-    case longpress_variation
+    case longpressVariation
 }
 
 /// - key's data in interface
@@ -533,9 +552,10 @@ public enum CustardInterfaceSystemKey: Codable {
 }
 
 public extension CustardInterfaceSystemKey{
-    enum CodingKeys: CodingKey {
-        case type, size
+    private enum CodingKeys: CodingKey {
+        case type
     }
+
     private enum ValueType: String, Codable {
         case change_keyboard
         case enter
@@ -622,26 +642,33 @@ public struct CustardInterfaceVariation: Codable {
 }
 
 public extension CustardInterfaceVariation {
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case type
         case direction
         case key
     }
 
-    enum ValueType: String, Codable {
+    private enum ValueType: String, Codable {
         case flick_variation
         case longpress_variation
+    }
+
+    private var valueType: ValueType {
+        switch self.type{
+        case .flickVariation: return .flick_variation
+        case .longpressVariation: return .longpress_variation
+        }
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.key, forKey: .key)
+        try container.encode(self.valueType, forKey: .type)
         switch self.type{
-        case let .flick_variation(value):
-            try container.encode(ValueType.flick_variation, forKey: .type)
+        case let .flickVariation(value):
             try container.encode(value, forKey: .direction)
-        case .longpress_variation:
-            try container.encode(ValueType.longpress_variation, forKey: .type)
+        case .longpressVariation:
+            break
         }
     }
 
@@ -652,9 +679,9 @@ public extension CustardInterfaceVariation {
         switch valueType{
         case .flick_variation:
             let direction = try container.decode(FlickDirection.self, forKey: .direction)
-            self.type = .flick_variation(direction)
+            self.type = .flickVariation(direction)
         case .longpress_variation:
-            self.type = .longpress_variation
+            self.type = .longpressVariation
         }
     }
 }
@@ -719,7 +746,7 @@ public enum CodableTabData: Codable, Equatable {
 }
 
 public extension CodableTabData{
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case type
         case destination
     }
@@ -728,15 +755,20 @@ public extension CodableTabData{
         case custom, system
     }
 
+    private var valueType: ValueType {
+        switch self{
+        case .system: return .system
+        case .custom: return .custom
+        }
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(valueType, forKey: .type)
         switch self {
-        case let .system(value):
-            try container.encode(ValueType.system, forKey: .type)
-            try container.encode(value, forKey: .destination)
-        case let .custom(value):
-            try container.encode(ValueType.custom, forKey: .type)
-            try container.encode(value, forKey: .destination)
+        case let .system(value as Encodable),
+             let .custom(value as Encodable):
+            try value.containerEncode(container: &container, key: CodingKeys.destination)
         }
     }
 
@@ -891,7 +923,7 @@ public extension CodableActionData{
         var type: ValueType
         var tab: CodableTabData
 
-        enum CodingKeys: CodingKey{
+        private enum CodingKeys: CodingKey{
             case type, tab_type, identifier
         }
 
@@ -899,16 +931,21 @@ public extension CodableActionData{
             case custom, system
         }
 
+        private var tabType: TabType {
+            switch tab{
+            case .system: return .system
+            case .custom: return .custom
+            }
+        }
+
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(type, forKey: .type)
+            try container.encode(tabType, forKey: .tab_type)
             switch tab {
-            case let .system(value):
-                try container.encode(TabType.system, forKey: .tab_type)
-                try container.encode(value, forKey: .identifier)
-            case let .custom(value):
-                try container.encode(TabType.custom, forKey: .tab_type)
-                try container.encode(value, forKey: .identifier)
+            case let .system(value as Encodable),
+                 let .custom(value as Encodable):
+                try value.containerEncode(container: &container, key: CodingKeys.identifier)
             }
         }
 

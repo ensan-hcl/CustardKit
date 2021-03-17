@@ -9,10 +9,10 @@ func makeKey(main: String, sub: [String]?) -> CustardInterfaceKey {
                 press_actions: [.input(main)],
                 longpress_actions: .none,
                 variations: [
-                    .init(type: .flick_variation(.left), key: .init(design: .init(label: .text(sub[0])), press_actions: [.input(sub[0])], longpress_actions: .none)),
-                    .init(type: .flick_variation(.top), key: .init(design: .init(label: .text(sub[1])), press_actions: [.input(sub[1])], longpress_actions: .none)),
-                    .init(type: .flick_variation(.right), key: .init(design: .init(label: .text(sub[2])), press_actions: [.input(sub[2])], longpress_actions: .none)),
-                    .init(type: .flick_variation(.bottom), key: .init(design: .init(label: .text(sub[3])), press_actions: [.input(sub[3])], longpress_actions: .none))
+                    .init(type: .flickVariation(.left), key: .init(design: .init(label: .text(sub[0])), press_actions: [.input(sub[0])], longpress_actions: .none)),
+                    .init(type: .flickVariation(.top), key: .init(design: .init(label: .text(sub[1])), press_actions: [.input(sub[1])], longpress_actions: .none)),
+                    .init(type: .flickVariation(.right), key: .init(design: .init(label: .text(sub[2])), press_actions: [.input(sub[2])], longpress_actions: .none)),
+                    .init(type: .flickVariation(.bottom), key: .init(design: .init(label: .text(sub[3])), press_actions: [.input(sub[3])], longpress_actions: .none))
                 ])
         )}
     else{
@@ -33,8 +33,8 @@ let md_custard = Custard(
     language: .ja_JP,
     input_style: .direct,
     interface: .init(
-        key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(rowCount: 6, columnCount: 4)),
+        keyStyle: .tenkeyStyle,
+        keyLayout: .gridFit(.init(rowCount: 6, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(
@@ -51,7 +51,7 @@ let md_custard = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("→")),
                                 press_actions: [.moveCursor(1)],
@@ -84,28 +84,28 @@ let md_custard = Custard(
             .gridFit(.init(x: 3, y: 3)): makeKey(main: "、", sub: ["。", "！", "？", ""]),
             .gridFit(.init(x: 4, y: 0)): .custom(
                 .init(
-                    design: .init(label: .system_image("bold"), color: .special),
+                    design: .init(label: .systemImage("bold"), color: .special),
                     press_actions: [.input("****"), .moveCursor(-2)],
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
-                                design: .init(label: .system_image("italic")),
+                                design: .init(label: .systemImage("italic")),
                                 press_actions: [.input("**"), .moveCursor(-1)],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .system_image("strikethrough")),
+                                design: .init(label: .systemImage("strikethrough")),
                                 press_actions: [.input("~~~~"), .moveCursor(-2)],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("√π")),
                                 press_actions: [.input("$$"), .moveCursor(-1)],
@@ -113,7 +113,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.bottom),
+                            type: .flickVariation(.bottom),
                             key: .init(
                                 design: .init(label: .text("𝚖𝚘𝚗𝚘")),
                                 press_actions: [.input("``"), .moveCursor(-1)],
@@ -125,12 +125,12 @@ let md_custard = Custard(
             ),
             .gridFit(.init(x: 4, y: 1)): .custom(
                 .init(
-                    design: .init(label: .system_image("link"), color: .special),
+                    design: .init(label: .systemImage("link"), color: .special),
                     press_actions: [.input("[]()"), .moveCursor(-3)],
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("*")),
                                 press_actions: [.input("*")],
@@ -138,7 +138,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text(".")),
                                 press_actions: [.input(".")],
@@ -146,7 +146,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("-")),
                                 press_actions: [.input("-")],
@@ -163,7 +163,7 @@ let md_custard = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("見出し2")),
                                 press_actions: [.input("## ")],
@@ -171,7 +171,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("見出し3")),
                                 press_actions: [.input("### ")],
@@ -179,7 +179,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("見出し4")),
                                 press_actions: [.input("#### ")],
@@ -187,7 +187,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.bottom),
+                            type: .flickVariation(.bottom),
                             key: .init(
                                 design: .init(label: .text("見出し5")),
                                 press_actions: [.input("##### ")],
@@ -208,22 +208,22 @@ let md_custard = Custard(
             ),
             .gridFit(.init(x: 5, y: 0)): .custom(
                 .init(
-                    design: .init(label: .system_image("delete.left"), color: .special),
+                    design: .init(label: .systemImage("delete.left"), color: .special),
                     press_actions: [.delete(1)],
                     longpress_actions: .init(repeat: [.delete(1)]),
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
-                                design: .init(label: .system_image("xmark")),
+                                design: .init(label: .systemImage("xmark")),
                                 press_actions: [.smartDeleteDefault],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
-                            type: .flick_variation(.bottom),
+                            type: .flickVariation(.bottom),
                             key: .init(
-                                design: .init(label: .system_image("delete.right")),
+                                design: .init(label: .systemImage("delete.right")),
                                 press_actions: [.delete(-1)],
                                 longpress_actions: .init(repeat: [.moveCursor(-1)])
                             )
@@ -238,7 +238,7 @@ let md_custard = Custard(
                     longpress_actions: .init(start: [.toggleCursorBar]),
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("←")),
                                 press_actions: [.moveCursor(-1)],
@@ -246,7 +246,7 @@ let md_custard = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("\t")),
                                 press_actions: [.moveCursor(-1)],
@@ -258,7 +258,7 @@ let md_custard = Custard(
             ),
             .gridFit(.init(x: 5, y: 2)): .custom(
                 .init(
-                    design: .init(label: .system_image("list.bullet"), color: .special),
+                    design: .init(label: .systemImage("list.bullet"), color: .special),
                     press_actions: [.toggleTabBar],
                     longpress_actions: .none,
                     variations: []

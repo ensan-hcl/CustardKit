@@ -8,8 +8,8 @@ let flick_greek = Custard(
     language: .el_GR,
     input_style: .direct,
     interface: .init(
-        key_style: .tenkeyStyle,
-        key_layout: .gridFit(.init(rowCount: 5, columnCount: 4)),
+        keyStyle: .tenkeyStyle,
+        keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(
@@ -26,7 +26,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("→")),
                                 press_actions: [.moveCursor(1)],
@@ -34,7 +34,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("abc")),
                                 press_actions: [.moveTab(.system(.user_english))],
@@ -59,7 +59,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("#")),
                                 press_actions: [.input("#")],
@@ -67,7 +67,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("/")),
                                 press_actions: [.input("/")],
@@ -75,7 +75,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("&")),
                                 press_actions: [.input("&")],
@@ -83,7 +83,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.bottom),
+                            type: .flickVariation(.bottom),
                             key: .init(
                                 design: .init(label: .text("_")),
                                 press_actions: [.input("_")],
@@ -101,7 +101,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("β")),
                                 press_actions: [.input("β")],
@@ -109,7 +109,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("γ")),
                                 press_actions: [.input("γ")],
@@ -126,7 +126,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("ε")),
                                 press_actions: [.input("ε")],
@@ -134,7 +134,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("ζ")),
                                 press_actions: [.input("ζ")],
@@ -151,7 +151,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("θ")),
                                 press_actions: [.input("θ")],
@@ -159,7 +159,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("ι")),
                                 press_actions: [.input("ι")],
@@ -176,7 +176,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("λ")),
                                 press_actions: [.input("λ")],
@@ -184,7 +184,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("μ")),
                                 press_actions: [.input("μ")],
@@ -202,7 +202,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("ξ")),
                                 press_actions: [.input("ξ")],
@@ -210,7 +210,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("ο")),
                                 press_actions: [.input("ο")],
@@ -227,7 +227,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("ρ")),
                                 press_actions: [.input("ρ")],
@@ -235,7 +235,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("σ")),
                                 press_actions: [.input("σ")],
@@ -243,7 +243,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init( label: .text("ς")),
                                 press_actions: [.input("ς")],
@@ -260,7 +260,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("υ")),
                                 press_actions: [.input("υ")],
@@ -268,7 +268,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("φ")),
                                 press_actions: [.input("φ")],
@@ -285,7 +285,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("ψ")),
                                 press_actions: [.input("ψ")],
@@ -293,7 +293,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("ω")),
                                 press_actions: [.input("ω")],
@@ -310,7 +310,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("´")),
                                 press_actions: [.input("´"), .replaceLastCharacters([
@@ -333,9 +333,9 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .system_image("shift.fill")),
+                                design: .init(label: .systemImage("shift.fill")),
                                 press_actions: [.toggleCapslockState],
                                 longpress_actions: .none
                             )
@@ -350,7 +350,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("\"")),
                                 press_actions: [.input("\"")],
@@ -358,7 +358,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("(")),
                                 press_actions: [.input("(")],
@@ -366,7 +366,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text(")")),
                                 press_actions: [.input(")")],
@@ -383,7 +383,7 @@ let flick_greek = Custard(
                     longpress_actions: .none,
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text(",")),
                                 press_actions: [.input(",")],
@@ -391,7 +391,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text(";")),
                                 press_actions: [.input(";")],
@@ -399,7 +399,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.right),
+                            type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("!")),
                                 press_actions: [.input("!")],
@@ -411,30 +411,30 @@ let flick_greek = Custard(
             ),
             .gridFit(.init(x: 4, y: 0)): .custom(
                 .init(
-                    design: .init(label: .system_image("delete.left"), color: .special),
+                    design: .init(label: .systemImage("delete.left"), color: .special),
                     press_actions: [.delete(1)],
                     longpress_actions: .init(repeat: [.delete(1)]),
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
-                                design: .init(label: .system_image("xmark")),
+                                design: .init(label: .systemImage("xmark")),
                                 press_actions: [.smartDeleteDefault],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
-                            type: .flick_variation(.bottom),
+                            type: .flickVariation(.bottom),
                             key: .init(
-                                design: .init(label: .system_image("xmark")),
+                                design: .init(label: .systemImage("xmark")),
                                 press_actions: [.smartMoveCursor(.init(targets: ["、","。","！","？",".",",","．","，", "\n"], direction: .backward))],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .system_image("xmark")),
+                                design: .init(label: .systemImage("xmark")),
                                 press_actions: [.smartMoveCursor(.init(targets: ["、","。","！","？",".",",","．","，", "\n"], direction: .forward))],
                                 longpress_actions: .none
                             )
@@ -449,7 +449,7 @@ let flick_greek = Custard(
                     longpress_actions: .init(start: [.toggleCursorBar]),
                     variations: [
                         .init(
-                            type: .flick_variation(.left),
+                            type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("←")),
                                 press_actions: [.moveCursor(-1)],
@@ -457,7 +457,7 @@ let flick_greek = Custard(
                             )
                         ),
                         .init(
-                            type: .flick_variation(.top),
+                            type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("\t")),
                                 press_actions: [.moveCursor(-1)],
