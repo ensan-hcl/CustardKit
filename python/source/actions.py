@@ -1,4 +1,13 @@
 import json
+from enum import Enum, unique
+
+@unique 
+class ScanDirection(Enum):
+    forward = "forward"
+    backward = "backward"
+
+    def json(self) -> dict :
+        return self.value
 
 def action_input(text: str):
     """
@@ -68,7 +77,7 @@ def action_move_cursor(count: int):
         "count": count
     }
 
-def action_smart_move_cursor(direction: str, targets: list[str]):
+def action_smart_move_cursor(direction: ScanDirection, targets: list[str]):
     """
     指定した文字の隣までカーソルを移動するアクション
     Parameters
@@ -81,7 +90,7 @@ def action_smart_move_cursor(direction: str, targets: list[str]):
 
     return {
         "type": "smart_move_cursor",
-        "direction": direction,
+        "direction": direction.json(),
         "targets": targets
     }
 
@@ -99,7 +108,7 @@ def action_delete(count: int):
         "count": count
     }
 
-def action_smart_delete(direction: str, targets: list[str]):
+def action_smart_delete(direction: ScanDirection, targets: list[str]):
     """
     指定した文字の隣まで文字を削除するアクション
     Parameters
@@ -112,7 +121,7 @@ def action_smart_delete(direction: str, targets: list[str]):
 
     return {
         "type": "smart_delete",
-        "direction": direction,
+        "direction": direction.json(),
         "targets": targets
     }
 

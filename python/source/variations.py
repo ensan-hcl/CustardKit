@@ -1,6 +1,7 @@
 import json
 from .design import *
 from .actions import *
+from enum import Enum, unique
 
 class Variation(object):
     design: VariationDesign
@@ -21,19 +22,29 @@ class Variation(object):
 
 class VariationData(object): pass
 
+@unique 
+class FlickDirection(Enum):
+    left = "left"
+    top = "top"
+    right = "right"
+    bottom = "bottom"
+
+    def json(self) -> dict :
+        return self.value
+
 class FlickVariationData(VariationData):
     type = "flick_variation"
-    direction: str
+    direction: FlickDirection
     key: Variation
 
-    def __init__(self, direction: str, key: Variation):
+    def __init__(self, direction: FlickDirection, key: Variation):
         self.direction = direction
         self.key = key
 
     def json(self) -> dict :
         return {
             "type": self.type,
-            "direction": self.direction,
+            "direction": self.direction.json(),
             "key": self.key.json()
         }
 

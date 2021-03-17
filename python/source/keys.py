@@ -2,6 +2,15 @@ import json
 from .variations import *
 from .design import *
 from .actions import *
+from enum import Enum, unique
+
+@unique 
+class SpecifierType(Enum):
+    grid_fit = "grid_fit"
+    grid_scroll = "grid_scroll"
+
+    def json(self) -> dict :
+        return self.value
 
 class Specifier(object):
     type: str
@@ -33,16 +42,29 @@ class CustomKey(Key):
             "variations": list(map(lambda variation: variation.json(), self.variations)),
         }
 
+@unique 
+class SystemKeyType(Enum):
+    change_keyboard = "change_keyboard"
+    enter = "enter"
+    flick_kogaki = "flick_kogaki"
+    flick_kutoten = "flick_kutoten"
+    flick_hira_tab = "flick_hira_tab"
+    flick_abc_tab = "flick_abc_tab"
+    flick_star123_tab = "flick_star123_tab"
+
+    def json(self) -> dict :
+        return self.value
+
 class SystemKey(Key): 
     type: str = "system"
-    identifier: str
+    identifier: SystemKeyType
 
-    def __init__(self, identifier: str):
+    def __init__(self, identifier: SystemKeyType):
         self.identifier = identifier
 
     def json(self) -> dict :
         return {
-            "type": self.identifier
+            "type": self.identifier.json()
         }
 
 class KeyData(object): 
@@ -55,7 +77,7 @@ class KeyData(object):
 
     def json(self) -> dict :
         return {
-            "specifier_type": self.specifier.type,
+            "specifier_type": self.specifier.type.json(),
             "specifier": self.specifier.value,
             "key_type": self.key.type,
             "key": self.key.json()
