@@ -54,7 +54,7 @@ class TabType(Enum):
     def json(self) -> dict :
         return self.value
 
-def action_move_tab(tab_type: str, text: str):
+def action_move_tab(tab_type: TabType, text: str):
     """
     タブを移動するアクション
     Parameters
