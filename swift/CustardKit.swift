@@ -123,12 +123,12 @@ public enum CustardInterfaceLayout: Codable {
 }
 
 public extension CustardInterfaceLayout{
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
         case row_count, column_count
         case direction
     }
-    enum ValueType: String, Codable{
+    private enum ValueType: String, Codable{
         case grid_fit
         case grid_scroll
     }
@@ -811,7 +811,7 @@ public enum CodableActionData: Codable, Hashable {
 }
 
 public extension CodableActionData{
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
         case text
         case count
