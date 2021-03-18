@@ -2,13 +2,10 @@ import json
 from enum import Enum, unique
 
 @unique 
-class KeyColor(Enum):
+class KeyColor(str, Enum):
     normal = "normal"
     special = "special"
     selected = "selected"
-
-    def json(self) -> dict :
-        return self.value
 
 class KeyLabel(object): pass
 
@@ -45,7 +42,7 @@ class KeyDesign:
     def json(self) -> dict :
         return {
             "label": self.label.json(),
-            "color": self.color.json()
+            "color": self.color
         }
 
 class VariationDesign:

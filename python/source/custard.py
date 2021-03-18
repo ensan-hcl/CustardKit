@@ -4,31 +4,22 @@ import json
 from enum import Enum, unique
 
 @unique 
-class Language(Enum):
+class Language(str, Enum):
     ja_JP = "ja_JP"
     en_US = "en_US"
     el_GR = "el_GR"
     none = "none"
     undefined = "undefined"
-    
-    def json(self) -> dict :
-        return self.value
 
 @unique 
-class InputStyle(Enum):
+class InputStyle(str, Enum):
     direct = "direct"
     roman2kana = "roman2kana"
 
-    def json(self) -> dict :
-        return self.value
-
 @unique 
-class KeyStyle(Enum):
+class KeyStyle(str, Enum):
     tenkey_style = "tenkey_style"
     pc_style = "pc_style"
-
-    def json(self) -> dict :
-        return self.value
 
 class CustardJSONEncoder(json.JSONEncoder):
     def default(self, o):
@@ -50,7 +41,7 @@ class Interface(object):
     def json(self) -> dict :
         return {
             "key_layout": self.key_layout.json(),
-            "key_style": self.key_style.json(),
+            "key_style": self.key_style,
             "keys": list(map(lambda key: key.json(), self.keys)),
         }
 
@@ -75,8 +66,8 @@ class Custard(object):
             "custard_version": self.custard_version,
             "identifier": self.identifier,
             "display_name": self.display_name,
-            "language": self.language.json(),
-            "input_style": self.input_style.json(),
+            "language": self.language,
+            "input_style": self.input_style,
             "interface": self.interface.json()
         }
 

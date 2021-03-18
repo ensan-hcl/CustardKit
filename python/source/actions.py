@@ -2,12 +2,9 @@ import json
 from enum import Enum, unique
 
 @unique 
-class ScanDirection(Enum):
+class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
-
-    def json(self) -> dict :
-        return self.value
 
 def action_input(text: str):
     """
@@ -47,12 +44,9 @@ def action_replace_default():
     }
 
 @unique 
-class TabType(Enum):
+class TabType(str, Enum):
     system = "system"
     custom = "custom"
-
-    def json(self) -> dict :
-        return self.value
 
 def action_move_tab(tab_type: TabType, text: str):
     """

@@ -23,14 +23,11 @@ class Variation(object):
 class VariationData(object): pass
 
 @unique 
-class FlickDirection(Enum):
+class FlickDirection(str, Enum):
     left = "left"
     top = "top"
     right = "right"
     bottom = "bottom"
-
-    def json(self) -> dict :
-        return self.value
 
 class FlickVariationData(VariationData):
     type = "flick_variation"
@@ -44,7 +41,7 @@ class FlickVariationData(VariationData):
     def json(self) -> dict :
         return {
             "type": self.type,
-            "direction": self.direction.json(),
+            "direction": self.direction,
             "key": self.key.json()
         }
 

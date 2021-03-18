@@ -19,12 +19,9 @@ class GridFitLayout(Layout):
         }
 
 @unique 
-class ScrollDirection(Enum):
+class ScrollDirection(str, Enum):
     vertical = "vertical"
     horizontal = "horizontal"
-    
-    def json(self) -> dict :
-        return self.value
 
 class GridScrollLayout(Layout):
     direction: ScrollDirection
@@ -39,7 +36,7 @@ class GridScrollLayout(Layout):
     def json(self) -> dict :
         return {
             "type":  "grid_scroll",
-            "direction": self.direction.json(),
+            "direction": self.direction,
             "row_count": self.row_count,
             "column_count": self.column_count
         }

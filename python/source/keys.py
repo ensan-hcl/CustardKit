@@ -5,12 +5,9 @@ from .actions import *
 from enum import Enum, unique
 
 @unique 
-class SpecifierType(Enum):
+class SpecifierType(str, Enum):
     grid_fit = "grid_fit"
     grid_scroll = "grid_scroll"
-
-    def json(self) -> dict :
-        return self.value
 
 class Specifier(object):
     type: str
@@ -43,7 +40,7 @@ class CustomKey(Key):
         }
 
 @unique 
-class SystemKeyType(Enum):
+class SystemKeyType(str, Enum):
     change_keyboard = "change_keyboard"
     enter = "enter"
     flick_kogaki = "flick_kogaki"
@@ -51,9 +48,6 @@ class SystemKeyType(Enum):
     flick_hira_tab = "flick_hira_tab"
     flick_abc_tab = "flick_abc_tab"
     flick_star123_tab = "flick_star123_tab"
-
-    def json(self) -> dict :
-        return self.value
 
 class SystemKey(Key): 
     type: str = "system"
@@ -64,7 +58,7 @@ class SystemKey(Key):
 
     def json(self) -> dict :
         return {
-            "type": self.identifier.json()
+            "type": self.identifier
         }
 
 class KeyData(object): 
@@ -77,7 +71,7 @@ class KeyData(object):
 
     def json(self) -> dict :
         return {
-            "specifier_type": self.specifier.type.json(),
+            "specifier_type": self.specifier.type,
             "specifier": self.specifier.value,
             "key_type": self.key.type,
             "key": self.key.json()
