@@ -336,7 +336,7 @@ let flick_greek = Custard(
                             type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .systemImage("shift.fill")),
-                                press_actions: [.toggleCapslockState],
+                                press_actions: [.toggleCapsLockState],
                                 longpress_actions: .none
                             )
                         ),
