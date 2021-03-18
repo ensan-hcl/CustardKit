@@ -705,14 +705,14 @@ public struct CustardInterfaceVariationKey: Codable {
 }
 
 /// - Tab specifier
-public enum CodableTabData: Equatable {
+public enum CodableTabData: Hashable{
     /// - tabs prepared by default
     case system(SystemTab)
     /// - tabs made as custom tabs.
     case custom(String)
 
     /// - system tabs
-    public enum SystemTab: String, Codable {
+    public enum SystemTab: String, Codable, Hashable{
         ///japanese input tab. the layout and input style depends on user's setting
         case user_japanese
 
@@ -745,20 +745,7 @@ public enum CodableTabData: Equatable {
     }
 }
 
-public extension CodableTabData {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs){
-        case let(.system(ltab), .system(rtab)):
-            return ltab == rtab
-        case let (.custom(ltab), .custom(rtab)):
-            return ltab == rtab
-        default:
-            return false
-        }
-    }
-}
-
-public struct ScanItem: Codable, Equatable {
+public struct ScanItem: Codable, Hashable {
     public init(targets: [String], direction: ScanItem.Direction) {
         self.targets = targets
         self.direction = direction
@@ -774,7 +761,7 @@ public struct ScanItem: Codable, Equatable {
 }
 /// - アクション
 /// - actions done in key pressing
-public enum CodableActionData: Codable, Equatable {
+public enum CodableActionData: Codable, Hashable {
     /// - input action specified character
     case input(String)
 
@@ -973,52 +960,6 @@ public extension CodableActionData{
     }
 }
 
-public extension CodableActionData {
-    static func == (lhs: CodableActionData, rhs: CodableActionData) -> Bool {
-        switch (lhs, rhs){
-        case let (.input(l), .input(r)):
-            return l == r
-
-        case (.replaceDefault, .replaceDefault):
-            return true
-        case let (.replaceLastCharacters(l), .replaceLastCharacters(r)):
-            return l == r
-
-        case let (.delete(l), .delete(r)):
-            return l == r
-        case (.smartDeleteDefault, .smartDeleteDefault):
-            return true
-        case let (.smartDelete(l), .smartDelete(r)):
-            return l == r
-
-        case (.complete, .complete):
-            return true
-
-        case let (.moveCursor(l),.moveCursor(r)):
-            return l == r
-        case let (.smartMoveCursor(l), .smartMoveCursor(r)):
-            return l == r
-
-        case let (.moveTab(l), .moveTab(r)):
-            return l == r
-
-        case (.enableResizingMode, .enableResizingMode):
-            return true
-        case (.toggleTabBar, .toggleTabBar):
-            return true
-        case (.toggleCursorBar,.toggleCursorBar):
-            return true
-        case (.toggleCapsLockState,.toggleCapsLockState):
-            return true
-
-        case (.dismissKeyboard, .dismissKeyboard):
-            return true
-
-        default:
-            return false
-        }
-    }
-}
 
 public struct CodableLongpressActionData: Codable, Equatable {
     public static let none = CodableLongpressActionData()
