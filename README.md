@@ -13,7 +13,7 @@ azookeyのカスタムタブのデータファイルを作成するための補�
 
 ## Examples
 
-CustardKitを用いて様々なキーボードを作成することが可能です。このリポジトリに含まれるサンプルのスクリーンショットは以下の通りです。
+CustardKitを用いてazooKeyで利用可能な様々なキーボードを作成することができます。このリポジトリに含まれるサンプルのスクリーンショットは以下の通りです。
 
 | hieroglyphs<br /><img src="./resource/custard_hieroglyphs.jpg" alt="structure" style="zoom:50%;" /> | cuneiforms<br /><img src="./resource/custard_cuneiforms.jpg" alt="structure" style="zoom:50%;" /> | flick_greek<br /><img src="./resource/custard_flick_greek.jpg" alt="structure" style="zoom:50%;" /> |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
