@@ -219,7 +219,7 @@ Interface(
 
 ```python
  KeyData(
-      specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSepcifierValue(x = 0, y = 1)),
+      specifier = GridFitSepcifier(x = 0, y = 1),
       key = CustomKey(...)
 )
 ```
@@ -235,10 +235,10 @@ Interface(
 
 ```python
 #grid_fitの場合
-Specifier(type = GridFitSpecifier(x = 0, y = 1)
+specifier = GridFitSpecifier(x = 0, y = 1)
 
 #grid_scrollの場合
-Specifier(type = GridScrollSepcifierValue(index = 42)
+specifier = GridScrollSepcifier(index = 42)
 ```
 
 `key`はキーの実体を指定する値で、`SystemKey`または`CustomKey`を指定します。`Customkey`は上で確認したキーのデータです。
