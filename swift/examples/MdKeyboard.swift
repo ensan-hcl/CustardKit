@@ -27,11 +27,10 @@ func makeKey(main: String, sub: [String]?) -> CustardInterfaceKey {
 }
 
 let md_custard = Custard(
-    custard_version: .v1_0,
     identifier: "md_keyboard_jp",
-    display_name: "日本語markdownキーボード",
     language: .ja_JP,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "日本語markdownキーボード"),
     interface: .init(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 6, columnCount: 4)),

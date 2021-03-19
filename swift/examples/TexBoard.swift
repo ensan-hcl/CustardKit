@@ -2,11 +2,10 @@ import Foundation
 import CustardKit
 
 let tex_tab = Custard(
-    custard_version: .v1_0,
     identifier: "tex_board",
-    display_name: "tex",
     language: .none,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "tex"),
     interface: .init(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),

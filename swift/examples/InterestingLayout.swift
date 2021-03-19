@@ -2,11 +2,10 @@ import Foundation
 import CustardKit
 
 let interesting_layout = Custard(
-    custard_version: .v1_0,
     identifier: "direction",
-    display_name: "方向",
     language: .none,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "方向"),
     interface: .init(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),

@@ -62,32 +62,41 @@ public enum CustardVersion: String, Codable {
     case v1_0 = "1.0"
 }
 
-public struct Custard: Codable {
-    public init(custard_version: CustardVersion, identifier: String, display_name: String, language: CustardLanguage, input_style: CustardInputStyle, interface: CustardInterface) {
+public struct CustardMetaData: Codable {
+    public init(custard_version: CustardVersion, display_name: String) {
         self.custard_version = custard_version
-        self.identifier = identifier
         self.display_name = display_name
-        self.language = language
-        self.input_style = input_style
-        self.interface = interface
     }
 
     ///version
-    let custard_version: CustardVersion
-
-    ///identifier
-    /// - must be unique
-    let identifier: String
+    var custard_version: CustardVersion
 
     ///display name
     /// - used in tab bar
     let display_name: String
+}
+
+public struct Custard: Codable {
+    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetaData, interface: CustardInterface) {
+        self.identifier = identifier
+        self.language = language
+        self.input_style = input_style
+        self.metadata = metadata
+        self.interface = interface
+    }
+
+    ///identifier
+    /// - must be unique
+    let identifier: String
 
     ///language to convert
     let language: CustardLanguage
 
     ///input style
     let input_style: CustardInputStyle
+
+    ///metadata
+    let metadata: CustardMetaData
 
     ///interface
     let interface: CustardInterface

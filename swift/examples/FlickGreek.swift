@@ -2,11 +2,10 @@ import Foundation
 import CustardKit
 
 let flick_greek = Custard(
-    custard_version: .v1_0,
     identifier: "flick_greek",
-    display_name: "ギリシャ語フリック",
     language: .el_GR,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "ギリシャ語フリック"),
     interface: .init(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),

@@ -9,10 +9,44 @@ class SpecifierType(str, Enum):
     grid_fit = "grid_fit"
     grid_scroll = "grid_scroll"
 
+class SpecifierValue(object): pass
+
+class GridFitSpecifierValue(SpecifierValue):
+    x: int
+    y: int
+    width: int
+    height: int
+
+    def __init__(self, x: int, y: int, width: int = 1, height: int = 1):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def json(self) -> dict :
+        return {
+            "x": self.x,
+            "y": self.y,
+            "width": self.width,
+            "height": self.height
+        }
+
+class GridScrollSpecifierValue(SpecifierValue):
+    index: int
+
+    def __init__(self, index: int):
+        self.index = index
+
+    def json(self) -> dict :
+        return {
+            "index": self.index,
+        }
+
 class Specifier(object):
     type: str
-    value: dict
-    def __init__(self, type: str, value: dict):
+    value: SpecifierValue
+
+    def __init__(self, type: str, value: SpecifierValue):
         self.type = type
         self.value = value
 
@@ -72,7 +106,7 @@ class KeyData(object):
     def json(self) -> dict :
         return {
             "specifier_type": self.specifier.type,
-            "specifier": self.specifier.value,
+            "specifier": self.specifier.value.json(),
             "key_type": self.key.type,
             "key": self.key.json()
         }

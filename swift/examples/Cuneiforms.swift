@@ -52,11 +52,10 @@ cuneiforms.indices.forEach{
 }
 
 let cuneiforms_custard = Custard(
-    custard_version: .v1_0,
     identifier: "Cuneiforms",
-    display_name: "楔形文字",
     language: .none,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "楔形文字"),
     interface: .init(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),

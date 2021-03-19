@@ -3,6 +3,13 @@ from .keys import *
 import json
 from enum import Enum, unique
 
+class CustardJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Custard):
+            return o.json()
+
+        return super(CustardJSONEncoder, self).default(o) # 他の型はdefaultのエンコード方式を使用
+
 @unique 
 class Language(str, Enum):
     ja_JP = "ja_JP"
@@ -21,13 +28,6 @@ class KeyStyle(str, Enum):
     tenkey_style = "tenkey_style"
     pc_style = "pc_style"
 
-class CustardJSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, Custard):
-            return o.json()
-            
-        return super(CustardJSONEncoder, self).default(o) # 他の型はdefaultのエンコード方式を使用
-
 class Interface(object):
     key_layout: Layout
     key_style: KeyStyle
@@ -45,29 +45,40 @@ class Interface(object):
             "keys": list(map(lambda key: key.json(), self.keys)),
         }
 
-class Custard(object):  
+class Metadata(object):
     custard_version: str
-    identifier: str
     display_name: str
-    language: Language
-    input_style: InputStyle
-    interface: Interface
 
-    def __init__(self, custard_version: str, identifier: str, display_name: str, language: Language, input_style: InputStyle, interface: Interface):
+    def __init__(self, custard_version: str, display_name: str):
         self.custard_version = custard_version
-        self.identifier = identifier
         self.display_name = display_name
-        self.language = language
-        self.input_style = input_style
-        self.interface = interface
 
     def json(self) -> dict :
         return {
             "custard_version": self.custard_version,
-            "identifier": self.identifier,
             "display_name": self.display_name,
+        }
+
+class Custard(object):  
+    identifier: str
+    language: Language
+    input_style: InputStyle
+    metadata: Metadata
+    interface: Interface
+
+    def __init__(self, identifier: str, language: Language, input_style: InputStyle, metadata: Metadata, interface: Interface):
+        self.identifier = identifier
+        self.language = language
+        self.input_style = input_style
+        self.metadata = metadata
+        self.interface = interface
+
+    def json(self) -> dict :
+        return {
+            "identifier": self.identifier,
             "language": self.language,
             "input_style": self.input_style,
+            "metadata": self.metadata.json(),
             "interface": self.interface.json()
         }
 
