@@ -4,14 +4,10 @@ from .design import *
 from .actions import *
 from enum import Enum, unique
 
-@unique 
-class SpecifierType(str, Enum):
-    grid_fit = "grid_fit"
-    grid_scroll = "grid_scroll"
+class Specifier(object): pass
 
-class SpecifierValue(object): pass
-
-class GridFitSpecifierValue(SpecifierValue):
+class GridFitSpecifier(Specifier):
+    type = "grid_fit"
     x: int
     y: int
     width: int
@@ -23,7 +19,7 @@ class GridFitSpecifierValue(SpecifierValue):
         self.width = width
         self.height = height
 
-    def json(self) -> dict :
+    def value(self) -> dict :
         return {
             "x": self.x,
             "y": self.y,
@@ -31,24 +27,17 @@ class GridFitSpecifierValue(SpecifierValue):
             "height": self.height
         }
 
-class GridScrollSpecifierValue(SpecifierValue):
+class GridScrollSpecifier(Specifier):
+    type = "grid_scroll"
     index: int
 
     def __init__(self, index: int):
         self.index = index
 
-    def json(self) -> dict :
+    def value(self) -> dict :
         return {
             "index": self.index,
         }
-
-class Specifier(object):
-    type: str
-    value: SpecifierValue
-
-    def __init__(self, type: str, value: SpecifierValue):
-        self.type = type
-        self.value = value
 
 class Key(object): pass
 
@@ -106,7 +95,7 @@ class KeyData(object):
     def json(self) -> dict :
         return {
             "specifier_type": self.specifier.type,
-            "specifier": self.specifier.value.json(),
+            "specifier": self.specifier.value(),
             "key_type": self.key.type,
             "key": self.key.json()
         }

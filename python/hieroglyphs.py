@@ -5,11 +5,11 @@ hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 #キーのリストを作成
 hieroglyphs_keys = [
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 0)),
+        specifier = GridScrollSpecifier(index = 0),
         key = SystemKey(SystemKeyType.change_keyboard)
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 1)),
+        specifier = GridScrollSpecifier(index = 1),
         key = CustomKey(
             design = KeyDesign(
                 label = TextLabel(text = "←"),
@@ -27,7 +27,7 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 2)),
+        specifier = GridScrollSpecifier(index = 2),
         key = CustomKey(
             design = KeyDesign(
                 label = TextLabel(text = "→"),
@@ -45,7 +45,7 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 3)),
+        specifier = GridScrollSpecifier(index = 3),
         key = CustomKey(
             design = KeyDesign(
                 label = SystemImageLabel(identifier = "list.bullet"),
@@ -59,7 +59,7 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 4)),
+        specifier = GridScrollSpecifier(index = 4),
         key = CustomKey(
             design = KeyDesign(
                 label = SystemImageLabel(identifier = "delete.left"),
@@ -91,7 +91,7 @@ for glyph in hieroglyphs:
         variations = []
     )
     keydata = KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = len(hieroglyphs_keys))),
+        specifier = GridScrollSpecifier(index = len(hieroglyphs_keys)),
         key = key
     )
     hieroglyphs_keys.append(keydata)

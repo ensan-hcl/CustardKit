@@ -26,13 +26,13 @@ for i in range(len(numbers)):
     for j in range(len(numbers[i])):
         x, y = (j, i)
         keyData = KeyData(
-            specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSpecifierValue(x = x, y = y)),
+            specifier = GridFitSpecifier(x = x, y = y),
             key = pc_style_input_key(numbers[i][j])
         )
         keys.append(keyData)
 
 keys.append(KeyData(
-    specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSpecifierValue(x = 0, y = 4)),
+    specifier = GridFitSpecifier(x = 0, y = 4),
     key = CustomKey(
         design = KeyDesign(
             label = SystemImageLabel("list.bullet"),
@@ -47,12 +47,12 @@ keys.append(KeyData(
 ))
 
 keys.append(KeyData(
-    specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSpecifierValue(x = 1, y = 4)),
+    specifier = GridFitSpecifier(x = 1, y = 4),
     key = SystemKey(SystemKeyType.change_keyboard)
 ))
 
 keys.append(KeyData(
-    specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSpecifierValue(x = 2, y = 4)),
+    specifier = GridFitSpecifier(x = 2, y = 4),
     key = CustomKey(
         design = KeyDesign(
             label = SystemImageLabel("delete.left"),
@@ -71,7 +71,7 @@ keys.append(KeyData(
 ))
 
 keys.append(KeyData(
-    specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSpecifierValue(x = 3, y = 4, width = 4, height = 1)),
+    specifier = GridFitSpecifier(x = 3, y = 4, width = 4, height = 1),
     key = CustomKey(
         design = KeyDesign(
             label = TextLabel("空白"),
@@ -90,7 +90,7 @@ keys.append(KeyData(
 ))
 
 keys.append(KeyData(
-    specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSpecifierValue(x = 7, y = 4, width = 3, height = 1)),
+    specifier = GridFitSpecifier(x = 7, y = 4, width = 3, height = 1),
     key = SystemKey(SystemKeyType.enter)
 ))
 

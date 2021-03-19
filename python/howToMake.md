@@ -185,7 +185,7 @@ Interface(
     key_style = KeyStyle.tenkey_style,
     keys = [
         KeyData(
-            specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSepcifierValue(x = 0, y = 1)),
+            specifier = GridFitSepcifier(x = 0, y = 1),
             key = {キーのデータ}
         ),
         (省略)
@@ -224,23 +224,21 @@ Interface(
 )
 ```
 
-引数`specifier`はキーの位置を調整するために必要な値です。
+引数`specifier`はキーの位置を調整するために必要な値です。指定できる値は次の2種類です。
 
-引数の`type`はレイアウトで設定した値に基づきその種類を指定しています。`value`に設定する値はtypeによって決まります。
-
-| type        | value                                               | 説明                                                         |
-| ----------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| grid_fit    | x: int<br />y: int<br />width: int<br />height: int | grid_fitレイアウト上でキーをどの位置に配置するかを指定します。<br />キーの左上が(x, y)となり、widthとheightの分だけ縦横に広がります。<br />widthとheightは省略可能です。 |
-| grid_scroll | index: int                                          | grid_scrollレイアウト上で最初から数えた順番を指定します。<br />0から順に指定し、間を開けてはいけません。 |
+| オブジェクト        | 引数                                                        | 説明                                                         |
+| ------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
+| GridFitSpecifier    | x: int<br />y: int<br />width: int = 1<br />height: int = 1 | grid_fitレイアウト上でキーをどの位置に配置するかを指定します。<br />キーの左上が(x, y)となり、widthとheightの分だけ縦横に広がります。<br />widthとheightは省略可能です。 |
+| GridScrollSpecifier | index: int                                                  | grid_scrollレイアウト上で最初から数えた順番を指定します。<br />0から順に指定し、間を開けてはいけません。 |
 
 以下は例です。
 
 ```python
-#typeがgrid_fitの場合
-Specifier(type = SpecifierType.grid_fit, value = GridFitSepcifierValue(x = 0, y = 1))
+#grid_fitの場合
+Specifier(type = GridFitSpecifier(x = 0, y = 1)
 
-#typeがgrid_scrollの場合
-Specifier(type = SpecifierType.grid_scroll, value = GridScrollSepcifierValue(index = 42))
+#grid_scrollの場合
+Specifier(type = GridScrollSepcifierValue(index = 42)
 ```
 
 `key`はキーの実体を指定する値で、`SystemKey`または`CustomKey`を指定します。`Customkey`は上で確認したキーのデータです。
