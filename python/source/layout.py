@@ -4,6 +4,7 @@ from enum import Enum, unique
 class Layout(object): pass
 
 class GridFitLayout(Layout):
+    type: str = "grid_fit"
     row_count: int
     column_count: int
 
@@ -13,7 +14,7 @@ class GridFitLayout(Layout):
 
     def json(self) -> dict :
         return {
-            "type": "grid_fit",
+            "type": self.type,
             "row_count": self.row_count,
             "column_count": self.column_count
         }
@@ -24,6 +25,7 @@ class ScrollDirection(str, Enum):
     horizontal = "horizontal"
 
 class GridScrollLayout(Layout):
+    type: str = "grid_scroll"
     direction: ScrollDirection
     row_count: float
     column_count: float
@@ -35,7 +37,7 @@ class GridScrollLayout(Layout):
 
     def json(self) -> dict :
         return {
-            "type":  "grid_scroll",
+            "type":  self.type,
             "direction": self.direction,
             "row_count": self.row_count,
             "column_count": self.column_count
