@@ -63,7 +63,7 @@ public enum CustardVersion: String, Codable {
 }
 
 public struct Custard: Codable {
-    public init(custard_version: CustardVersion = .v1_0, identifier: String, display_name: String, language: CustardLanguage, input_style: CustardInputStyle, interface: CustardInterface) {
+    public init(custard_version: CustardVersion, identifier: String, display_name: String, language: CustardLanguage, input_style: CustardInputStyle, interface: CustardInterface) {
         self.custard_version = custard_version
         self.identifier = identifier
         self.display_name = display_name
@@ -73,7 +73,7 @@ public struct Custard: Codable {
     }
 
     ///version
-    var custard_version: CustardVersion = .v1_0
+    let custard_version: CustardVersion
 
     ///identifier
     /// - must be unique
