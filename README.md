@@ -11,6 +11,14 @@ azookeyのカスタムタブのデータファイルを作成するための補�
   * [Swift用ドキュメント](./swift/howToMake.md)
   * [Python用ドキュメント](./python/howToMake.md)
 
+## Examples
+
+CustardKitを用いて様々なキーボードを作成することが可能です。このリポジトリに含まれるサンプルのスクリーンショットは以下の通りです。
+
+| <img src="./resource/custard_hieroglyphs.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_cuneiforms.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_flick_greek.jpg" alt="structure" style="zoom:50%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="./resource/custard_tex_board.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_number_font.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_markdown.jpg" alt="structure" style="zoom:50%;" /> |
+
 ## Structure of a keyboard
 
 azooKeyではキーボードの構造を以下の図のように捉えています。
