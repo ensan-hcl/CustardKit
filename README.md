@@ -15,9 +15,9 @@ azookeyのカスタムタブのデータファイルを作成するための補�
 
 CustardKitを用いて様々なキーボードを作成することが可能です。このリポジトリに含まれるサンプルのスクリーンショットは以下の通りです。
 
-| <img src="./resource/custard_hieroglyphs.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_cuneiforms.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_flick_greek.jpg" alt="structure" style="zoom:50%;" /> |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="./resource/custard_tex_board.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_number_font.jpg" alt="structure" style="zoom:50%;" /> | <img src="./resource/custard_markdown.jpg" alt="structure" style="zoom:50%;" /> |
+| hieroglyphs<br /><img src="./resource/custard_hieroglyphs.jpg" alt="structure" style="zoom:50%;" /> | cuneiforms<br /><img src="./resource/custard_cuneiforms.jpg" alt="structure" style="zoom:50%;" /> | flick_greek<br /><img src="./resource/custard_flick_greek.jpg" alt="structure" style="zoom:50%;" /> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| **tex_board**<br /><img src="./resource/custard_tex_board.jpg" alt="structure" style="zoom:50%;" /> | **number_font**<br /><img src="./resource/custard_number_font.jpg" alt="structure" style="zoom:50%;" /> | **md_keyboard_jp**<br /><img src="./resource/custard_markdown.jpg" alt="structure" style="zoom:50%;" /> |
 
 ## Structure of a keyboard
 
