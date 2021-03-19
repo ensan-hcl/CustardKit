@@ -2,7 +2,7 @@ from source.custard import *
 #ヒエログリフの文字のリストを取得
 hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 
-#キーの辞書を作成
+#キーのリストを作成
 hieroglyphs_keys = [
     KeyData(
         specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 0)),

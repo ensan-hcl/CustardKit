@@ -80,7 +80,7 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .enableResizingMode    | なし             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、.disableResizingModeは用意されていません。 |
 | .toggleCursorBar       | なし             | カーソルバーの表示をtoggleします。                           |
 | .toggleTabBar          | なし             | タブバーの表示をtoggleします。                               |
-| .toggleCapslockState   | なし             | caps lockをtoggleします。                                    |
+| .toggleCapsLockState   | なし             | caps lockをtoggleします。                                    |
 | .dismissKeyboard       | なし             | キーボードを閉じます。                                       |
 
 続く引数の`longpress_actions`は`CodableLongpressActionData`型の値です。定義は以下の通りで、`start`と`repeat`にそれぞれ行うべき動作を指定します。
@@ -160,7 +160,7 @@ struct ScanItem{
 ```Swift
 variations: [
     .init(
-        type: .flick_variation(.left),
+        type: .flickVariation(.left),
         key: .init(
             design: .init(label: .text("#")),
             press_actions: [.input("#")],
@@ -168,7 +168,7 @@ variations: [
         )
     ),
     .init(
-        type: .flick_variation(.top),
+        type: .flickVariation(.top),
         key: .init(
             design: .init(label: .text("/")),
             press_actions: [.input("/")],
@@ -188,10 +188,10 @@ variations: [
 
 `type`はそのバリエーションの種類です。
 
-| Value                    | Associated Value | 説明                                                         |
-| ------------------------ | ---------------- | ------------------------------------------------------------ |
-| .flick_variation         | FlickDirection   | directionとして指定する`.left, .top, .right, .bottom`の方向のフリックで表示されるバリエーションです。 |
-| .longpress_variation[^3] | なし             | qwertyキーボードなどで見られる長押しして表示される候補のバリエーションです。配列に指定した順に表示されます。<br />これが指定されている場合、キーの`longpress_actions`に指定した値は無視されます。またバリエーションの`longpress_actions`は現状無効です。 |
+| Value                   | Associated Value | 説明                                                         |
+| ----------------------- | ---------------- | ------------------------------------------------------------ |
+| .flickVariation         | FlickDirection   | directionとして指定する`.left, .top, .right, .bottom`の方向のフリックで表示されるバリエーションです。 |
+| .longpressVariation[^3] | なし             | qwertyキーボードなどで見られる長押しして表示される候補のバリエーションです。配列に指定した順に表示されます。<br />これが指定されている場合、キーの`longpress_actions`に指定した値は無視されます。またバリエーションの`longpress_actions`は現状無効です。 |
 
 以上でキーの記述の説明は終わりです。
 
@@ -201,8 +201,8 @@ variations: [
 
 ```Swift
 interface: .init(
-    key_style: .tenkeyStyle,
-    key_layout: .gridFit(.init(rowCount: 5, columnCount: 4)),
+    keyStyle: .tenkeyStyle,
+    keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
     keys: [
          .gridFit(.init(x: 0, y: 1)): .custom(キーのデータ)
     ]
@@ -211,7 +211,7 @@ interface: .init(
 
 ### レイアウト
 
-`key_layout`とはキーを配置する方法です。`.grid_fit`または`.grid_scroll`を選ぶことができます。
+`keyLayout`とはキーを配置する方法です。`.gridFit`または`.gridScroll`を選ぶことができます。
 
 | Value       | Associated Value                                             | 説明                                                         |
 | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -220,14 +220,14 @@ interface: .init(
 
 ### スタイル
 
-処理系にどのようにキーを扱えばいいかを知らせるための値です。`tenkeyStyle`または`pcStyle`を指定してください。
+`keyStyle`は処理系にどのようにキーを扱えばいいかを知らせるための値です。`tenkeyStyle`または`pcStyle`を指定してください。
 
 片手モードの状態は端末の向きとスタイルによって決まります。レイアウトが`gridScroll`である場合はフリック操作とサジェストは無効化されます。
 
 | スタイル     | 説明                                                         |
 | ------------ | ------------------------------------------------------------ |
-| .tenkeyStyle | 携帯打ちやフリック式のかな入力、九宮格輸入法などで用いられる、10キーを模した形状のキーボードに対して指定してください。<br />variationはflick_variationのみが有効になります。<br />縦方向のスペーシングは狭めになります。<br />サジェストはキーを長押しすると表示され、キーとflick_variationが表示されます。 |
-| .pcStyle     | Qwerty配列やJisかな配列など、パソコンのキーボードを模した形状のキーボードに対して指定してください。<br />variationはlongpress_variationのみが有効になります。<br />縦方向のスペーシングは広めになります。<br />サジェストはキーを押すと表示され、押し続けるとlongpress_variationが表示されます。 |
+| .tenkeyStyle | 携帯打ちやフリック式のかな入力、九宮格輸入法などで用いられる、10キーを模した形状のキーボードに対して指定してください。<br />variationはflickVariationのみが有効になります。<br />縦方向のスペーシングは狭めになります。<br />サジェストはキーを長押しすると表示され、キーとflickVariationが表示されます。 |
+| .pcStyle     | Qwerty配列やJisかな配列など、パソコンのキーボードを模した形状のキーボードに対して指定してください。<br />variationはlongpressVariationのみが有効になります。<br />縦方向のスペーシングは広めになります。<br />サジェストはキーを押すと表示され、押し続けるとlongpressVariationが表示されます。 |
 
 ### キー
 
@@ -288,20 +288,15 @@ enum CustardInterfaceSystemKey{
 
 ```Swift
 let md_custard = Custard(
-    custard_version: .v1_0,
     identifier: "my_flick",
-    display_name: "私のフリック",
     language: .ja_JP,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "私のフリック"),
     inteface: {インターフェースの記述}
 )
 ```
 
-`custard_version`はバージョン情報です。この資料に基づいて作成する場合`.v1_0`を指定してください。
-
 `identifier`はカスタードを識別するための文字列です。他のものと被らない値を指定してください。
-
-`display_name`はタブバーなどでデフォルトで用いられる名称です。
 
 `language`は変換対象の言語です。以下の値が指定できます。
 
@@ -319,6 +314,11 @@ let md_custard = Custard(
 | ----------- | ---------------------------- |
 | .direct     | 入力をそのまま用います。     |
 | .roman2kana | ローマ字かな入力を行います。 |
+
+`metadata`は`CustardMetadata`型の値で、キーボードの動作とは無関係な情報を格納します。現在は以下の2つの値を指定してください。
+
+* `custard_version`は規格のバージョン情報です。この資料に基づいて作成する場合`.v1_0`を指定してください。
+* `display_name`はタブバーなどでデフォルトで用いられる名称です。
 
 `interface`には上で記述したとおりのインターフェースの記述を行います。
 
@@ -344,14 +344,14 @@ let md_custard = Custard(
 
 ```Swift
 import CustardKit
-//ヒエログリフの文字のリストを取得
-let hieroglyphs = String.UnicodeScalarView((UInt32(0x13000)...UInt32(0x133FF))
-                      .compactMap(UnicodeScalar.init))
-                      .map(String.init)
+
+//ヒエログリフのリストを取得
+let hieroglyphs = String.UnicodeScalarView((UInt32(0x13000)...UInt32(0x133FF)).compactMap(UnicodeScalar.init)).map(String.init)
+
 //キーの辞書を作成
 var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
-    .grid_scroll(0): .system(.change_keyboard),
-    .grid_scroll(1): .custom(
+    .gridScroll(0): .system(.change_keyboard),
+    .gridScroll(1): .custom(
         .init(
             design: .init(label: .text("←"), color: .special),
             press_actions: [.moveCursor(-1)],
@@ -359,7 +359,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             variations: []
         )
     ),
-    .grid_scroll(2): .custom(
+    .gridScroll(2): .custom(
         .init(
             design: .init(label: .text("→"), color: .special),
             press_actions: [.moveCursor(1)],
@@ -367,7 +367,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             variations: []
         )
     ),
-    .grid_scroll(3): .custom(
+    .gridScroll(3): .custom(
         .init(
             design: .init(label: .systemImage("list.bullet"), color: .special),
             press_actions: [.toggleTabBar],
@@ -375,7 +375,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             variations: []
         )
     ),
-    .grid_scroll(4): .custom(
+    .gridScroll(4): .custom(
         .init(
             design: .init(label: .systemImage("delete.left"), color: .special),
             press_actions: [.delete(1)],
@@ -385,9 +385,9 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
     ),
 ]
 
-//キーの辞書にヒエログリフを1文字入力するデータを追加
+//ヒエログリフの入力キーを順次追加
 hieroglyphs.indices.forEach{
-    hieroglyphs_keys[.grid_scroll(GridScrollPositionSpecifier(5+$0))] = .custom(
+    hieroglyphs_keys[.gridScroll(GridScrollPositionSpecifier(hieroglyphs_keys.count))] = .custom(
         .init(
             design: .init(label: .text(hieroglyphs[$0]), color: .normal),
             press_actions: [.input(hieroglyphs[$0])],
@@ -397,16 +397,15 @@ hieroglyphs.indices.forEach{
     )
 }
 
-//カスタードオブジェクトを作成
+//Custardを作成
 let hieroglyphs_custard = Custard(
-    custard_version: .v1_0,
-    identifier: "Hieroglyphs",
-    display_name: "ヒエログリフ",
+    identifier: "hieroglyphs",
     language: .none,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "ヒエログリフ"),
     interface: .init(
-        key_style: .tenkey_style,
-        key_layout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
+        keyStyle: .tenkeyStyle,
+        keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
         keys: hieroglyphs_keys
     )
 )

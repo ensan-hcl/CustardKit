@@ -60,7 +60,7 @@ design = KeyDesign(
 
 ### アクション
 
-次の引数は`"press_actions"`です。これはキーを単純に押した際のアクションの配列です。キーを押して離した段階で、配列の順序で動作が実行されます。
+次の引数は`press_actions`です。これはキーを単純に押した際のアクションの配列です。キーを押して離した段階で、配列の順序で動作が実行されます。
 
 アクションは例えば以下のように記述されています。
 
@@ -185,7 +185,7 @@ Interface(
     key_style = KeyStyle.tenkey_style,
     keys = [
         KeyData(
-            specifier = Specifier(type = SpecifierType.grid_fit, value = {"x": 0, "y": 0}),
+            specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSepcifierValue(x = 0, y = 1)),
             key = {キーのデータ}
         ),
         (省略)
@@ -200,7 +200,7 @@ Interface(
 | オブジェクト     | 引数                                                         | 説明                                                         |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | GridFitLayout    | row_count: int<br />column_count: int                        | 画面全体に収まるように格子状にキーを配置するレイアウトです。横にrow_count個、縦にcolumn_count個のキーを並べます。 |
-| GridScrollLayout | direction: ScrollDirection<br />row_count: float<br />column_count: float | 画面をスクロールできる状態にして格子状にキーを配置するレイアウトです。<br />スクロールの方向を示すdirectionには`ScrollDirection.vertical`または`ScrollDirection.horizontal`を指定し、row_countとcolumn_countを指定します。<br />スクロール方向に垂直な向きのキー数は切り捨てて整数として利用されますが、平行な向きのキー数は小数のまま用います。<br />このレイアウトが指定されている場合、キーの`"variations"`は一切無効になります。 |
+| GridScrollLayout | direction: ScrollDirection<br />row_count: float<br />column_count: float | 画面をスクロールできる状態にして格子状にキーを配置するレイアウトです。<br />スクロールの方向を示すdirectionには`ScrollDirection.vertical`または`ScrollDirection.horizontal`を指定し、row_countとcolumn_countを指定します。<br />スクロール方向に垂直な向きのキー数は切り捨てて整数として利用されますが、平行な向きのキー数は小数のまま用います。<br />このレイアウトが指定されている場合、キーの`variations`は一切無効になります。 |
 
 ### スタイル
 
@@ -219,7 +219,7 @@ Interface(
 
 ```python
  KeyData(
-      specifier = Specifier(type = SpecifierType.grid_fit, value = {"x": 0, "y": 1}),
+      specifier = Specifier(type = SpecifierType.grid_fit, value = GridFitSepcifierValue(x = 0, y = 1)),
       key = CustomKey(...)
 )
 ```
@@ -230,17 +230,17 @@ Interface(
 
 | type        | value                                               | 説明                                                         |
 | ----------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| grid_fit    | x: int<br />y: int<br />width: int<br />height: int | grid_fitレイアウト上でキーをどの位置に配置するかを指定します。<br />キーの左上が(x, y)となり、widthとheightの分だけ縦横に広がります。 |
+| grid_fit    | x: int<br />y: int<br />width: int<br />height: int | grid_fitレイアウト上でキーをどの位置に配置するかを指定します。<br />キーの左上が(x, y)となり、widthとheightの分だけ縦横に広がります。<br />widthとheightは省略可能です。 |
 | grid_scroll | index: int                                          | grid_scrollレイアウト上で最初から数えた順番を指定します。<br />0から順に指定し、間を開けてはいけません。 |
 
 以下は例です。
 
 ```python
-#specifier_typeがgrid_fitの場合
-Specifier(type = SpecifierType.grid_fit, value = {"x": 0, "y": 1})
+#typeがgrid_fitの場合
+Specifier(type = SpecifierType.grid_fit, value = GridFitSepcifierValue(x = 0, y = 1))
 
-#specifier_typeがgrid_scrollの場合
-Specifier(type = SpecifierType.grid_scroll, value = {"index": 42})
+#typeがgrid_scrollの場合
+Specifier(type = SpecifierType.grid_scroll, value = GridScrollSepcifierValue(index = 42))
 ```
 
 `key`はキーの実体を指定する値で、`SystemKey`または`CustomKey`を指定します。`Customkey`は上で確認したキーのデータです。
@@ -265,20 +265,15 @@ Specifier(type = SpecifierType.grid_scroll, value = {"index": 42})
 
 ```python
 Custard(
-  custard_version = "1.0",
   identifier = "my_flick",
-  display_name = "私のフリック",
   language = Language.ja_JP,
   input_style = InputStyle.direct,
+  metadata = MetaData(custard_version = "1.0", display_name = "私のフリック"),
   interface = {インターフェースの記述}
 )
 ```
 
-`custard_version`はバージョン情報です。この資料に基づいて作成する場合`"1.0"`を指定してください。
-
 `identifier`はカスタードを識別するための文字列です。他のものと被らない値を指定してください。
-
-`display_name`はタブバーなどでデフォルトで用いられる名称です。
 
 `language`は`Language`という列挙型で、変換対象の言語です。以下の値が指定できます。
 
@@ -296,6 +291,11 @@ Custard(
 | ---------- | ---------------------------- |
 | direct     | 入力をそのまま用います。     |
 | roman2kana | ローマ字かな入力を行います。 |
+
+`metadata`は`Metadata`型の値で、キーボードの動作とは無関係な情報を格納します。現在は以下の2つの値を指定してください。
+
+* `custard_version`は規格のバージョン情報です。この資料に基づいて作成する場合`"1.0"`を指定してください。
+* `display_name`はタブバーなどでデフォルトで用いられる名称です。
 
 `interface`には上で記述したとおりのインターフェースの記述を行います。
 
@@ -320,22 +320,21 @@ Custard(
 例としてUnicodeに登録されているヒエログリフを入力できるスクロール可能なタブを作りましょう。
 
 ```python
-from custard import *
-
+from source.custard import *
 #ヒエログリフの文字のリストを取得
 hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 
-#キーの辞書を作成
+#キーのリストを作成
 hieroglyphs_keys = [
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 0}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 0)),
         key = SystemKey(SystemKeyType.change_keyboard)
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 1}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 1)),
         key = CustomKey(
             design = KeyDesign(
-                label = TextLabel(text = "→"),
+                label = TextLabel(text = "←"),
                 color = KeyColor.special
             ),
             press_actions = [
@@ -344,16 +343,16 @@ hieroglyphs_keys = [
             longpress_actions = LongpressAction(
                 repeat = [
                     action_move_cursor(-1)
-                ]
+			    ]
             ),
             variations = []
         )
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 2}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 2)),
         key = CustomKey(
             design = KeyDesign(
-                label = TextLabel(text = "←"),
+                label = TextLabel(text = "→"),
                 color = KeyColor.special
             ),
             press_actions = [
@@ -368,7 +367,7 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 3}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 3)),
         key = CustomKey(
             design = KeyDesign(
                 label = SystemImageLabel(identifier = "list.bullet"),
@@ -382,7 +381,7 @@ hieroglyphs_keys = [
         )
     ),
     KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": 3}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = 4)),
         key = CustomKey(
             design = KeyDesign(
                 label = SystemImageLabel(identifier = "delete.left"),
@@ -396,7 +395,7 @@ hieroglyphs_keys = [
                     action_move_cursor(1)
                 ]
             ),
-            variations = []
+          	variations = []
         )
     ),
 ]
@@ -414,7 +413,7 @@ for glyph in hieroglyphs:
         variations = []
     )
     keydata = KeyData(
-        specifier = Specifier(type = SpecifierType.grid_scroll, value = {"index": len(hieroglyphs_keys)}),
+        specifier = Specifier(type = SpecifierType.grid_scroll, value = GridScrollSpecifierValue(index = len(hieroglyphs_keys))),
         key = key
     )
     hieroglyphs_keys.append(keydata)
@@ -422,18 +421,19 @@ for glyph in hieroglyphs:
 #カスタードオブジェクトを作成
 hieroglyphs_custard = Custard(
     identifier = "Hieroglyphs",
-    display_name = "ヒエログリフ",
     language = Language.none,
     input_style = InputStyle.direct,
+    metadata = Metadata(
+        custard_version = "1.0",
+        display_name = "ヒエログリフ",
+    ),
     interface = Interface(
         key_style = KeyStyle.tenkey_style,
         key_layout = GridScrollLayout(direction = ScrollDirection.vertical, row_count = 8, column_count = 4.2),
         keys = hieroglyphs_keys
     )
 )
-
-#データの書き出し
-custard.write(to = "hieroglyphs.json")
+hieroglyphs_custard.write(to = "hieroglyphs.json")
 ```
 
 ---
