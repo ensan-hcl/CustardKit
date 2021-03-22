@@ -61,7 +61,7 @@ def action_move_tab(tab_type: TabType, text: str):
 
     return {
         "type": "move_tab",
-        "tab_type": tab_type.json(),
+        "tab_type": tab_type,
         "identifier": text
     }
 
@@ -92,7 +92,7 @@ def action_smart_move_cursor(direction: ScanDirection, targets: list[str]):
 
     return {
         "type": "smart_move_cursor",
-        "direction": direction.json(),
+        "direction": direction,
         "targets": targets
     }
 
@@ -123,7 +123,7 @@ def action_smart_delete(direction: ScanDirection, targets: list[str]):
 
     return {
         "type": "smart_delete",
-        "direction": direction.json(),
+        "direction": direction,
         "targets": targets
     }
 
