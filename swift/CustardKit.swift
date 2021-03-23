@@ -186,7 +186,7 @@ public struct CustardInterfaceLayoutGridValue {
     let columnCount: Int
 }
 
-public struct CustardInterfaceLayoutScrollValue: Codable {
+public struct CustardInterfaceLayoutScrollValue {
     public init(direction: ScrollDirection, rowCount: Double, columnCount: Double) {
         self.direction = direction
         self.rowCount = rowCount
