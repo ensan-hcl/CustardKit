@@ -12,47 +12,24 @@ let tex_tab = Custard(
         keys: [
             .gridFit(.init(x: 0, y: 0)): .custom(
                 .init(
-                    design: .init(label: .text("☆123"), color: .special),
+                    design: .init(label: .text("tex"), color: .selected),
                     press_actions: [.moveTab(.system(.flick_numbersymbols))],
                     longpress_actions: .init(start: [.toggleTabBar]),
-                    variations: []
-                )
-            ),
-            .gridFit(.init(x: 0, y: 1)): .custom(
-                .init(
-                    design: .init(label: .text("abc"), color: .special),
-                    press_actions: [.moveTab(.system(.user_english))],
-                    longpress_actions: .none,
                     variations: [
-                        .init(
-                            type: .flickVariation(.right),
-                            key: .init(
-                                design: .init(label: .text("→")),
-                                press_actions: [.moveCursor(1)],
-                                longpress_actions: .init(repeat: [.moveCursor(1)])
-                            )
-                        ),
                         .init(
                             type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .text("αβγ")),
-                                press_actions: [.moveTab(.custom("latex_greek"))],
+                                design: .init(label: .text("☆123")),
+                                press_actions: [.moveTab(.system(.flick_numbersymbols))],
                                 longpress_actions: .none
                             )
                         )
                     ]
                 )
             ),
-            .gridFit(.init(x: 0, y: 2)): .custom(
-                .init(
-                    design: .init(label: .text("あいう"), color: .special),
-                    press_actions: [.moveTab(.system(.user_japanese))],
-                    longpress_actions: .none,
-                    variations: []
-                )
-            ),
+            .gridFit(.init(x: 0, y: 1)): .system(.flick_abc_tab),
+            .gridFit(.init(x: 0, y: 2)): .system(.flick_hira_tab),
             .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
-
             .gridFit(.init(x: 1, y: 0)): .custom(
                 .init(
                     design: .init(label: .text("12345"), color: .normal),
@@ -137,22 +114,22 @@ let tex_tab = Custard(
             ),
             .gridFit(.init(x: 3, y: 0)): .custom(
                 .init(
-                    design: .init(label: .text("(^/_]"), color: .normal),
+                    design: .init(label: .text("/+^-_"), color: .normal),
                     press_actions: [.input("\\frac{}{}"), .moveCursor(-3)],
                     longpress_actions: .none,
                     variations: [
                         .init(
                             type: .flickVariation(.left),
                             key: .init(
-                                design: .init(label: .text("()")),
-                                press_actions: [.input("\\left(\\right)"), .moveCursor(-7)],
+                                design: .init(label: .text("+")),
+                                press_actions: [.input("+")],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
                             type: .flickVariation(.top),
                             key: .init(
-                                design: .init( label: .text("^")),
+                                design: .init(label: .text("^")),
                                 press_actions: [.input("^")],
                                 longpress_actions: .none
                             )
@@ -160,8 +137,8 @@ let tex_tab = Custard(
                         .init(
                             type: .flickVariation(.right),
                             key: .init(
-                                design: .init(label: .text("\\{\\}")),
-                                press_actions: [.input("\\{\\}")],
+                                design: .init(label: .text("-")),
+                                press_actions: [.input("-")],
                                 longpress_actions: .none
                             )
                         ),
@@ -220,23 +197,23 @@ let tex_tab = Custard(
 
             .gridFit(.init(x: 2, y: 1)): .custom(
                 .init(
-                    design: .init(label: .text("+-×"), color: .normal),
-                    press_actions: [.input("+")],
+                    design: .init(label: .text("•±×∓÷"), color: .normal),
+                    press_actions: [.input("\\cdot ")],
                     longpress_actions: .none,
                     variations: [
                         .init(
                             type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("±")),
-                                press_actions: [.input("\\pm")],
+                                press_actions: [.input("\\pm ")],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
                             type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .text("-")),
-                                press_actions: [.input("-")],
+                                design: .init(label: .text("×")),
+                                press_actions: [.input("\\times ")],
                                 longpress_actions: .none
                             )
                         ),
@@ -244,31 +221,31 @@ let tex_tab = Custard(
                             type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("∓")),
-                                press_actions: [.input("\\mp")],
+                                press_actions: [.input("\\mp ")],
                                 longpress_actions: .none
                             )
                         ),
                         .init(
                             type: .flickVariation(.bottom),
                             key: .init(
-                                design: .init(label: .text("×")),
-                                press_actions: [.input("\\times")],
+                                design: .init(label: .text("±")),
+                                press_actions: [.input("\\div ")],
                                 longpress_actions: .none
                             )
-                        )
+                        ),
                     ]
                 )
             ),
             .gridFit(.init(x: 3, y: 1)): .custom(
                 .init(
-                    design: .init(label: .text("{}"), color: .normal),
+                    design: .init(label: .text("{}()[]"), color: .normal),
                     press_actions: [.input("{}"), .moveCursor(-1)],
                     longpress_actions: .none,
                     variations: [
                         .init(
                             type: .flickVariation(.left),
                             key: .init(
-                                design: .init(label: .text("⟨⟩")),
+                                design: .init(label: .text("〈〉")),
                                 press_actions: [.input("\\left\\langle\\right\\rangle"), .moveCursor(-13)],
                                 longpress_actions: .none
                             )
@@ -281,12 +258,28 @@ let tex_tab = Custard(
                                 longpress_actions: .none
                             )
                         ),
+                        .init(
+                            type: .flickVariation(.right),
+                            key: .init(
+                                design: .init(label: .text("()")),
+                                press_actions: [.input("\\left(\\right)"), .moveCursor(-7)],
+                                longpress_actions: .none
+                            )
+                        ),
+                        .init(
+                            type: .flickVariation(.bottom),
+                            key: .init(
+                                design: .init(label: .text("")),
+                                press_actions: [.input("\\left\\{\\right\\}"), .moveCursor(-8)],
+                                longpress_actions: .none
+                            )
+                        ),
                     ]
                 )
             ),
             .gridFit(.init(x: 1, y: 2)): .custom(
                 .init(
-                    design: .init(label: .text("∫"), color: .normal),
+                    design: .init(label: .text("∫∂∬∮"), color: .normal),
                     press_actions: [.input("\\int^{}_{}"), .moveCursor(-4)],
                     longpress_actions: .none,
                     variations: [
@@ -294,7 +287,7 @@ let tex_tab = Custard(
                             type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("∂")),
-                                press_actions: [.input("\\part")],
+                                press_actions: [.input("\\partial ")],
                                 longpress_actions: .none
                             )
                         ),
@@ -302,7 +295,7 @@ let tex_tab = Custard(
                             type: .flickVariation(.top),
                             key: .init(
                                 design: .init( label: .text("∬")),
-                                press_actions: [.input("\\iint")],
+                                press_actions: [.input("\\iint ")],
                                 longpress_actions: .none
                             )
                         ),
@@ -310,10 +303,18 @@ let tex_tab = Custard(
                             type: .flickVariation(.right),
                             key: .init(
                                 design: .init(label: .text("∮")),
-                                press_actions: [.input("\\oint")],
+                                press_actions: [.input("\\oint ")],
                                 longpress_actions: .none
                             )
                         ),
+                        .init(
+                            type: .flickVariation(.bottom),
+                            key: .init(
+                                design: .init(label: .systemImage("shippingbox")),
+                                press_actions: [.input("\\begin{}\\end{}"), .moveCursor(-7)],
+                                longpress_actions: .none
+                            )
+                        )
                     ]
                 )
             ),
@@ -376,7 +377,7 @@ let tex_tab = Custard(
                             type: .flickVariation(.top),
                             key: .init(
                                 design: .init(label: .text("≠")),
-                                press_actions: [.input("\\ne")],
+                                press_actions: [.input("\\ne ")],
                                 longpress_actions: .none
                             )
                         ),
@@ -392,7 +393,7 @@ let tex_tab = Custard(
                             type: .flickVariation(.bottom),
                             key: .init(
                                 design: .init(label: .text("≡")),
-                                press_actions: [.input("\\equiv")],
+                                press_actions: [.input("\\equiv ")],
                                 longpress_actions: .none
                             )
                         ),
@@ -427,14 +428,14 @@ let tex_tab = Custard(
             .gridFit(.init(x: 2, y: 3)): .custom(
                 .init(
                     design: .init(label: .text("π∞∅"), color: .normal),
-                    press_actions: [.input("\\pi")],
+                    press_actions: [.input("\\pi ")],
                     longpress_actions: .none,
                     variations: [
                         .init(
                             type: .flickVariation(.left),
                             key: .init(
                                 design: .init(label: .text("∞")),
-                                press_actions: [.input("\\infty")],
+                                press_actions: [.input("\\infty ")],
                                 longpress_actions: .none
                             )
                         ),
@@ -496,14 +497,6 @@ let tex_tab = Custard(
                                 longpress_actions: .none
                             )
                         ),
-                        .init(
-                            type: .flickVariation(.bottom),
-                            key: .init(
-                                design: .init(label: .systemImage("delete.right")),
-                                press_actions: [.delete(-1)],
-                                longpress_actions: .init(repeat: [.delete(-1)])
-                            )
-                        )
                     ]
                 )
             ),
@@ -524,8 +517,16 @@ let tex_tab = Custard(
                         .init(
                             type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .text("\t")),
-                                press_actions: [.moveCursor(-1)],
+                                design: .init(label: .text("全角")),
+                                press_actions: [.input("　")],
+                                longpress_actions: .none
+                            )
+                        ),
+                        .init(
+                            type: .flickVariation(.bottom),
+                            key: .init(
+                                design: .init(label: .text("tab")),
+                                press_actions: [.input("\t")],
                                 longpress_actions: .none
                             )
                         )
@@ -533,10 +534,10 @@ let tex_tab = Custard(
                 )
             ),
             .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
-
         ]
     )
 )
+
 do {
     try tex_tab.write(to: URL(fileURLWithPath: "../results/tex.json"))
 } catch {
