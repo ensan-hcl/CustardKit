@@ -185,7 +185,7 @@ Interface(
     key_style = KeyStyle.tenkey_style,
     keys = [
         KeyData(
-            specifier = GridFitSepcifier(x = 0, y = 1),
+            specifier = GridFitSpecifier(x = 0, y = 1),
             key = {キーのデータ}
         ),
         (省略)
@@ -219,7 +219,7 @@ Interface(
 
 ```python
  KeyData(
-      specifier = GridFitSepcifier(x = 0, y = 1),
+      specifier = GridFitSpecifier(x = 0, y = 1),
       key = CustomKey(...)
 )
 ```
