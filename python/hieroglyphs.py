@@ -5,110 +5,111 @@ hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 #キーのリストを作成
 hieroglyphs_keys = [
     KeyData(
-        specifier = GridScrollSpecifier(index = 0),
-        key = SystemKey(SystemKeyType.change_keyboard)
+        specifier=GridScrollSpecifier(index=0),
+        key=SystemKey(SystemKeyType.change_keyboard)
     ),
     KeyData(
-        specifier = GridScrollSpecifier(index = 1),
-        key = CustomKey(
-            design = KeyDesign(
-                label = TextLabel(text = "←"),
-                color = KeyColor.special
+        specifier=GridScrollSpecifier(index=1),
+        key=CustomKey(
+            design=KeyDesign(
+                label=TextLabel(text="←"),
+                color=KeyColor.special
             ),
-            press_actions = [
+            press_actions=[
                 action_move_cursor(-1)
             ],
-            longpress_actions = LongpressAction(
-                repeat = [
+            longpress_actions=LongpressAction(
+                repeat=[
                     action_move_cursor(-1)
-			    ]
+                ]
             ),
-            variations = []
+            variations=[]
         )
     ),
     KeyData(
-        specifier = GridScrollSpecifier(index = 2),
-        key = CustomKey(
-            design = KeyDesign(
-                label = TextLabel(text = "→"),
-                color = KeyColor.special
+        specifier=GridScrollSpecifier(index=2),
+        key=CustomKey(
+            design=KeyDesign(
+                label=TextLabel(text="→"),
+                color=KeyColor.special
             ),
-            press_actions = [
+            press_actions=[
                 action_move_cursor(1)
             ],
-            longpress_actions = LongpressAction(
-                repeat = [
+            longpress_actions=LongpressAction(
+                repeat=[
                     action_move_cursor(1)
                 ]
             ),
-            variations = []
+            variations=[]
         )
     ),
     KeyData(
-        specifier = GridScrollSpecifier(index = 3),
-        key = CustomKey(
-            design = KeyDesign(
-                label = SystemImageLabel(identifier = "list.bullet"),
-                color = KeyColor.special
+        specifier=GridScrollSpecifier(index=3),
+        key=CustomKey(
+            design=KeyDesign(
+                label=SystemImageLabel(identifier="list.bullet"),
+                color=KeyColor.special
             ),
-            press_actions = [
+            press_actions=[
                 action_toggle_tab_bar()
             ],
-            longpress_actions = LongpressAction(),
-            variations = []
+            longpress_actions=LongpressAction(),
+            variations=[]
         )
     ),
     KeyData(
-        specifier = GridScrollSpecifier(index = 4),
-        key = CustomKey(
-            design = KeyDesign(
-                label = SystemImageLabel(identifier = "delete.left"),
-                color = KeyColor.special
+        specifier=GridScrollSpecifier(index=4),
+        key=CustomKey(
+            design=KeyDesign(
+                label=SystemImageLabel(identifier="delete.left"),
+                color=KeyColor.special
             ),
-            press_actions = [
+            press_actions=[
                 action_delete(1)
             ],
-            longpress_actions = LongpressAction(
-                repeat = [
+            longpress_actions=LongpressAction(
+                repeat=[
                     action_move_cursor(1)
                 ]
             ),
-          	variations = []
+           	variations=[]
         )
     ),
 ]
 
 for glyph in hieroglyphs:
     key = CustomKey(
-        design = KeyDesign(
-            label = TextLabel(text = glyph),
-            color = KeyColor.normal
+        design=KeyDesign(
+            label=TextLabel(text=glyph),
+            color=KeyColor.normal
         ),
-        press_actions = [
+        press_actions=[
             action_input(glyph)
         ],
-        longpress_actions = LongpressAction(),
-        variations = []
+        longpress_actions=LongpressAction(),
+        variations=[]
     )
     keydata = KeyData(
-        specifier = GridScrollSpecifier(index = len(hieroglyphs_keys)),
-        key = key
+        specifier=GridScrollSpecifier(index=len(hieroglyphs_keys)),
+        key=key
     )
     hieroglyphs_keys.append(keydata)
-      
+
 #カスタードオブジェクトを作成
 hieroglyphs_custard = Custard(
-    identifier = "Hieroglyphs",
-    language = Language.none,
-    input_style = InputStyle.direct,
-    metadata = Metadata(
-        custard_version = "1.0",
-        display_name = "ヒエログリフ",
+    identifier="Hieroglyphs",
+    language=Language.none,
+    input_style=InputStyle.direct,
+    metadata=Metadata(
+        custard_version="1.0",
+        display_name="ヒエログリフ",
     ),
-    interface = Interface(
-        key_style = KeyStyle.tenkey_style,
-        key_layout = GridScrollLayout(direction = ScrollDirection.vertical, row_count = 8, column_count = 4.2),
-        keys = hieroglyphs_keys
+    interface=Interface(
+        key_style=KeyStyle.tenkey_style,
+        key_layout=GridScrollLayout(
+            direction=ScrollDirection.vertical, row_count=8, column_count=4.2),
+        keys=hieroglyphs_keys
     )
 )
-hieroglyphs_custard.write(to = "./results/hieroglyphs.json")
+hieroglyphs_custard.write(to="./results/hieroglyphs.json")

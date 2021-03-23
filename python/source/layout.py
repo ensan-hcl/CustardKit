@@ -1,7 +1,10 @@
 import json
 from enum import Enum, unique
 
-class Layout(object): pass
+
+class Layout(object):
+    pass
+
 
 class GridFitLayout(Layout):
     type: str = "grid_fit"
@@ -12,17 +15,19 @@ class GridFitLayout(Layout):
         self.row_count = row_count
         self.column_count = column_count
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "type": self.type,
             "row_count": self.row_count,
             "column_count": self.column_count
         }
 
-@unique 
+
+@unique
 class ScrollDirection(str, Enum):
     vertical = "vertical"
     horizontal = "horizontal"
+
 
 class GridScrollLayout(Layout):
     type: str = "grid_scroll"
@@ -35,7 +40,7 @@ class GridScrollLayout(Layout):
         self.row_count = row_count
         self.column_count = column_count
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "type":  self.type,
             "direction": self.direction,

@@ -3,14 +3,17 @@ from .keys import *
 import json
 from enum import Enum, unique
 
+
 class CustardJSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, Custard):
             return o.json()
 
-        return super(CustardJSONEncoder, self).default(o) # 他の型はdefaultのエンコード方式を使用
+        # 他の型はdefaultのエンコード方式を使用
+        return super(CustardJSONEncoder, self).default(o)
 
-@unique 
+
+@unique
 class Language(str, Enum):
     ja_JP = "ja_JP"
     en_US = "en_US"
@@ -18,15 +21,18 @@ class Language(str, Enum):
     none = "none"
     undefined = "undefined"
 
-@unique 
+
+@unique
 class InputStyle(str, Enum):
     direct = "direct"
     roman2kana = "roman2kana"
 
-@unique 
+
+@unique
 class KeyStyle(str, Enum):
     tenkey_style = "tenkey_style"
     pc_style = "pc_style"
+
 
 class Interface(object):
     key_layout: Layout
@@ -38,12 +44,13 @@ class Interface(object):
         self.key_style = key_style
         self.keys = keys
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "key_layout": self.key_layout.json(),
             "key_style": self.key_style,
             "keys": list(map(lambda key: key.json(), self.keys)),
         }
+
 
 class Metadata(object):
     custard_version: str
@@ -53,13 +60,14 @@ class Metadata(object):
         self.custard_version = custard_version
         self.display_name = display_name
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "custard_version": self.custard_version,
             "display_name": self.display_name,
         }
 
-class Custard(object):  
+
+class Custard(object):
     identifier: str
     language: Language
     input_style: InputStyle
@@ -73,7 +81,7 @@ class Custard(object):
         self.metadata = metadata
         self.interface = interface
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "identifier": self.identifier,
             "language": self.language,
@@ -82,6 +90,6 @@ class Custard(object):
             "interface": self.interface.json()
         }
 
-    def write(self, to: str) -> dict :
+    def write(self, to: str) -> dict:
         with open(f"{to}", mode="w") as f:
-            f.write(json.dumps(self, cls = CustardJSONEncoder, ensure_ascii = False))
+            f.write(json.dumps(self, cls=CustardJSONEncoder, ensure_ascii=False))

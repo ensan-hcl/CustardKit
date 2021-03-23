@@ -4,7 +4,10 @@ from .design import *
 from .actions import *
 from enum import Enum, unique
 
-class Specifier(object): pass
+
+class Specifier(object):
+    pass
+
 
 class GridFitSpecifier(Specifier):
     type = "grid_fit"
@@ -19,13 +22,14 @@ class GridFitSpecifier(Specifier):
         self.width = width
         self.height = height
 
-    def value(self) -> dict :
+    def value(self) -> dict:
         return {
             "x": self.x,
             "y": self.y,
             "width": self.width,
             "height": self.height
         }
+
 
 class GridScrollSpecifier(Specifier):
     type = "grid_scroll"
@@ -34,12 +38,15 @@ class GridScrollSpecifier(Specifier):
     def __init__(self, index: int):
         self.index = index
 
-    def value(self) -> dict :
+    def value(self) -> dict:
         return {
             "index": self.index,
         }
 
-class Key(object): pass
+
+class Key(object):
+    pass
+
 
 class CustomKey(Key):
     type: str = "custom"
@@ -54,7 +61,7 @@ class CustomKey(Key):
         self.longpress_actions = longpress_actions
         self.variations = variations
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "design": self.design.json(),
             "press_actions": self.press_actions,
@@ -62,7 +69,8 @@ class CustomKey(Key):
             "variations": list(map(lambda variation: variation.json(), self.variations)),
         }
 
-@unique 
+
+@unique
 class SystemKeyType(str, Enum):
     change_keyboard = "change_keyboard"
     enter = "enter"
@@ -72,19 +80,21 @@ class SystemKeyType(str, Enum):
     flick_abc_tab = "flick_abc_tab"
     flick_star123_tab = "flick_star123_tab"
 
-class SystemKey(Key): 
+
+class SystemKey(Key):
     type: str = "system"
     identifier: SystemKeyType
 
     def __init__(self, identifier: SystemKeyType):
         self.identifier = identifier
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "type": self.identifier
         }
 
-class KeyData(object): 
+
+class KeyData(object):
     specifier: Specifier
     key: Key
 
@@ -92,7 +102,7 @@ class KeyData(object):
         self.specifier = specifier
         self.key = key
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "specifier_type": self.specifier.type,
             "specifier": self.specifier.value(),
