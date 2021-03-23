@@ -238,7 +238,7 @@ Interface(
 specifier = GridFitSpecifier(x = 0, y = 1)
 
 #grid_scrollの場合
-specifier = GridScrollSepcifier(index = 42)
+specifier = GridScrollSpecifier(index = 42)
 ```
 
 `key`はキーの実体を指定する値で、`SystemKey`または`CustomKey`を指定します。`Customkey`は上で確認したキーのデータです。
