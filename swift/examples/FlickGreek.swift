@@ -10,14 +10,7 @@ let flick_greek = Custard(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
-            .gridFit(.init(x: 0, y: 0)): .custom(
-                .init(
-                    design: .init(label: .text("☆123"), color: .special),
-                    press_actions: [.moveTab(.system(.flick_numbersymbols))],
-                    longpress_actions: .init(start: [.toggleTabBar]),
-                    variations: []
-                )
-            ),
+            .gridFit(.init(x: 0, y: 0)): .system(.flick_star123_tab),
             .gridFit(.init(x: 0, y: 1)): .custom(
                 .init(
                     design: .init(label: .text("αβγ"), color: .selected),
@@ -42,14 +35,7 @@ let flick_greek = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 0, y: 2)): .custom(
-                .init(
-                    design: .init(label: .text("あいう"), color: .special),
-                    press_actions: [.moveTab(.system(.user_japanese))],
-                    longpress_actions: .none,
-                    variations: []
-                )
-            ),
+            .gridFit(.init(x: 0, y: 2)): .system(.flick_hira_tab),
             .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
             .gridFit(.init(x: 1, y: 0)): .custom(
                 .init(
@@ -422,22 +408,6 @@ let flick_greek = Custard(
                                 longpress_actions: .none
                             )
                         ),
-                        .init(
-                            type: .flickVariation(.bottom),
-                            key: .init(
-                                design: .init(label: .systemImage("xmark")),
-                                press_actions: [.smartMoveCursor(.init(targets: ["、","。","！","？",".",",","．","，", "\n"], direction: .backward))],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.top),
-                            key: .init(
-                                design: .init(label: .systemImage("xmark")),
-                                press_actions: [.smartMoveCursor(.init(targets: ["、","。","！","？",".",",","．","，", "\n"], direction: .forward))],
-                                longpress_actions: .none
-                            )
-                        )
                     ]
                 )
             ),
@@ -458,8 +428,16 @@ let flick_greek = Custard(
                         .init(
                             type: .flickVariation(.top),
                             key: .init(
-                                design: .init(label: .text("\t")),
-                                press_actions: [.moveCursor(-1)],
+                                design: .init(label: .text("全角")),
+                                press_actions: [.input("　")],
+                                longpress_actions: .none
+                            )
+                        ),
+                        .init(
+                            type: .flickVariation(.bottom),
+                            key: .init(
+                                design: .init(label: .text("tab")),
+                                press_actions: [.input("\t")],
                                 longpress_actions: .none
                             )
                         )
