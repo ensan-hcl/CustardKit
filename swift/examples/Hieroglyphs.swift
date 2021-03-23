@@ -52,7 +52,7 @@ hieroglyphs.indices.forEach{
 }
 
 let hieroglyphs_custard = Custard(
-    identifier: "hieroglyphs",
+    identifier: "Hieroglyphs",
     language: .none,
     input_style: .direct,
     metadata: .init(custard_version: .v1_0, display_name: "ヒエログリフ"),
