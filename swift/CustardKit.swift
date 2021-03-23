@@ -7,14 +7,18 @@
 
 import Foundation
 
+extension Encodable{
+    func containerEncode<CodingKeys: CodingKey>(container: inout KeyedEncodingContainer<CodingKeys>, key: CodingKeys) throws {
+        try container.encode(self, forKey: key)
+    }
+}
+
 public enum FlickDirection: String, Codable {
     case left
     case top
     case right
     case bottom
 }
-
-import Foundation
 
 /// - 変換対象の言語を指定します。
 /// - specify language to convert
@@ -58,32 +62,41 @@ public enum CustardVersion: String, Codable {
     case v1_0 = "1.0"
 }
 
-public struct Custard: Codable {
-    public init(custard_version: CustardVersion = .v1_0, identifier: String, display_name: String, language: CustardLanguage, input_style: CustardInputStyle, interface: CustardInterface) {
+public struct CustardMetaData: Codable {
+    public init(custard_version: CustardVersion, display_name: String) {
         self.custard_version = custard_version
-        self.identifier = identifier
         self.display_name = display_name
-        self.language = language
-        self.input_style = input_style
-        self.interface = interface
     }
 
     ///version
-    var custard_version: CustardVersion = .v1_0
-
-    ///identifier
-    /// - must be unique
-    let identifier: String
+    var custard_version: CustardVersion
 
     ///display name
     /// - used in tab bar
     let display_name: String
+}
+
+public struct Custard: Codable {
+    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetaData, interface: CustardInterface) {
+        self.identifier = identifier
+        self.language = language
+        self.input_style = input_style
+        self.metadata = metadata
+        self.interface = interface
+    }
+
+    ///identifier
+    /// - must be unique
+    let identifier: String
 
     ///language to convert
     let language: CustardLanguage
 
     ///input style
     let input_style: CustardInputStyle
+
+    ///metadata
+    let metadata: CustardMetaData
 
     ///interface
     let interface: CustardInterface
@@ -119,12 +132,12 @@ public enum CustardInterfaceLayout: Codable {
 }
 
 public extension CustardInterfaceLayout{
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
         case row_count, column_count
         case direction
     }
-    enum ValueType: String, Codable{
+    private enum ValueType: String, Codable{
         case grid_fit
         case grid_scroll
     }
@@ -134,8 +147,8 @@ public extension CustardInterfaceLayout{
         switch self {
         case let .gridFit(value):
             try container.encode(ValueType.grid_fit, forKey: .type)
-            try container.encode(value.width, forKey: .row_count)
-            try container.encode(value.height, forKey: .column_count)
+            try container.encode(value.rowCount, forKey: .row_count)
+            try container.encode(value.columnCount, forKey: .column_count)
         case let .gridScroll(value):
             try container.encode(ValueType.grid_scroll, forKey: .type)
             try container.encode(value.direction, forKey: .direction)
@@ -151,7 +164,7 @@ public extension CustardInterfaceLayout{
         let columnCount = try container.decode(Double.self, forKey: .column_count)
         switch type {
         case .grid_fit:
-            self = .gridFit(.init(width: Int(rowCount), height: Int(columnCount)))
+            self = .gridFit(.init(rowCount: Int(rowCount), columnCount: Int(columnCount)))
         case .grid_scroll:
             let direction = try container.decode(CustardInterfaceLayoutScrollValue.ScrollDirection.self, forKey: .direction)
             self = .gridScroll(.init(direction: direction, rowCount: rowCount, columnCount: columnCount))
@@ -159,21 +172,21 @@ public extension CustardInterfaceLayout{
     }
 }
 
-public struct CustardInterfaceLayoutGridValue: Codable {
-    public init(width: Int, height: Int) {
-        self.width = width
-        self.height = height
+public struct CustardInterfaceLayoutGridValue {
+    public init(rowCount: Int, columnCount: Int) {
+        self.rowCount = rowCount
+        self.columnCount = columnCount
     }
 
     /// - 横方向に配置するキーの数
     /// - number of keys placed horizontally
-    let width: Int
+    let rowCount: Int
     /// - 縦方向に配置するキーの数
     /// - number of keys placed vertically
-    let height: Int
+    let columnCount: Int
 }
 
-public struct CustardInterfaceLayoutScrollValue: Codable {
+public struct CustardInterfaceLayoutScrollValue {
     public init(direction: ScrollDirection, rowCount: Double, columnCount: Double) {
         self.direction = direction
         self.rowCount = rowCount
@@ -211,23 +224,6 @@ public enum CustardKeyPositionSpecifier: Hashable {
     case gridScroll(GridScrollPositionSpecifier)
 }
 
-public extension CustardKeyPositionSpecifier {
-    private enum ValueType{
-        case grid_fit, grid_scroll
-    }
-
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .gridFit(value):
-            hasher.combine(ValueType.grid_fit)
-            hasher.combine(value)
-        case let .gridScroll(value):
-            hasher.combine(ValueType.grid_scroll)
-            hasher.combine(value)
-        }
-    }
-}
-
 /// - gridFitのレイアウトを利用した際のキーの位置指定子に与える値
 /// - values in position specifier when you use grid fit layout
 public struct GridFitPositionSpecifier: Codable, Hashable {
@@ -246,16 +242,8 @@ public struct GridFitPositionSpecifier: Codable, Hashable {
     /// - vertical positon (top edge is zero)
     let y: Int
 
-
     let width: Int
     let height: Int
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(x)
-        hasher.combine(y)
-        hasher.combine(width)
-        hasher.combine(height)
-    }
 
     private enum CodingKeys: CodingKey{
         case x, y, width, height
@@ -265,8 +253,9 @@ public struct GridFitPositionSpecifier: Codable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.x = try container.decode(Int.self, forKey: .x)
         self.y = try container.decode(Int.self, forKey: .y)
-        self.width = (try? container.decode(Int.self, forKey: .width)) ?? 1
-        self.height = (try? container.decode(Int.self, forKey: .height)) ?? 1
+        let width = try container.decode(Int.self, forKey: .width)
+        let height = try container.decode(Int.self, forKey: .height)
+        (self.width, self.height) = (abs(width), abs(height))
     }
 }
 
@@ -279,10 +268,6 @@ public struct GridScrollPositionSpecifier: Codable, Hashable, ExpressibleByInteg
 
     public init(_ index: Int){
         self.index = index
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(index)
     }
 }
 
@@ -299,20 +284,20 @@ public extension GridScrollPositionSpecifier {
 /// - インターフェース
 /// - interface
 public struct CustardInterface: Codable {
-    public init(key_style: CustardInterfaceStyle, key_layout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier : CustardInterfaceKey]) {
-        self.key_style = key_style
-        self.key_layout = key_layout
+    public init(keyStyle: CustardInterfaceStyle, keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier : CustardInterfaceKey]) {
+        self.keyStyle = keyStyle
+        self.keyLayout = keyLayout
         self.keys = keys
     }
 
     /// - キーのスタイル
     /// - style of keys
     /// - warning: Currently when you use gird scroll. layout, key style would be ignored.
-    let key_style: CustardInterfaceStyle
+    let keyStyle: CustardInterfaceStyle
 
     /// - キーのレイアウト
     /// - layout of keys
-    let key_layout: CustardInterfaceLayout
+    let keyLayout: CustardInterfaceLayout
 
     /// - キーの辞書
     /// - dictionary of keys
@@ -321,10 +306,18 @@ public struct CustardInterface: Codable {
 }
 
 public extension CustardInterface {
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case key_style
         case key_layout
         case keys
+    }
+
+    private enum KeyType: String, Codable {
+        case custom, system
+    }
+
+    private enum SpecifierType: String, Codable {
+        case grid_fit, grid_scroll
     }
 
     private struct Element: Codable{
@@ -336,15 +329,21 @@ public extension CustardInterface {
         let specifier: CustardKeyPositionSpecifier
         let key: CustardInterfaceKey
 
-        enum KeyType: String, Codable {
-            case custom, system
+        private var specifierType: SpecifierType {
+            switch self.specifier{
+            case .gridFit: return .grid_fit
+            case .gridScroll: return .grid_scroll
+            }
         }
 
-        enum SpecifierType: String, Codable {
-            case grid_fit, grid_scroll
+        private var keyType: KeyType {
+            switch self.key{
+            case .system: return .system
+            case .custom: return .custom
+            }
         }
 
-        enum CodingKeys: CodingKey {
+        private enum CodingKeys: CodingKey {
             case specifier_type
             case specifier
             case key_type
@@ -353,27 +352,22 @@ public extension CustardInterface {
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(specifierType, forKey: .specifier_type)
             switch self.specifier{
-            case let .gridFit(value):
-                try container.encode(SpecifierType.grid_fit, forKey: .specifier_type)
-                try container.encode(value, forKey: .specifier)
-            case let .gridScroll(value):
-                try container.encode(SpecifierType.grid_scroll, forKey: .specifier_type)
-                try container.encode(value, forKey: .specifier)
+            case let .gridFit(value as Encodable),
+                 let .gridScroll(value as Encodable):
+                try value.containerEncode(container: &container, key: CodingKeys.specifier)
             }
+            try container.encode(keyType, forKey: .key_type)
             switch self.key{
-            case let .system(value):
-                try container.encode(KeyType.system, forKey: .key_type)
-                try container.encode(value, forKey: .key)
-            case let .custom(value):
-                try container.encode(KeyType.custom, forKey: .key_type)
-                try container.encode(value, forKey: .key)
+            case let .system(value as Encodable),
+                 let .custom(value as Encodable):
+                try value.containerEncode(container: &container, key: CodingKeys.key)
             }
         }
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-
             let specifierType = try container.decode(SpecifierType.self, forKey: .specifier_type)
             switch specifierType{
             case .grid_fit:
@@ -398,16 +392,16 @@ public extension CustardInterface {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(key_style, forKey: .key_style)
-        try container.encode(key_layout, forKey: .key_layout)
+        try container.encode(keyStyle, forKey: .key_style)
+        try container.encode(keyLayout, forKey: .key_layout)
         let elements = self.keys.map{Element(specifier: $0.key, key: $0.value)}
         try container.encode(elements, forKey: .keys)
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.key_style = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
-        self.key_layout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
+        self.keyStyle = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
+        self.keyLayout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
         let elements = try container.decode([Element].self, forKey: .keys)
         self.keys = elements.reduce(into: [:]){dictionary, element in
             dictionary[element.specifier] = element.key
@@ -447,22 +441,28 @@ public struct CustardVariationKeyDesign: Codable {
 /// - labels on the key
 public enum CustardKeyLabelStyle: Codable {
     case text(String)
-    case system_image(String)
+    case systemImage(String)
 }
 
 public extension CustardKeyLabelStyle{
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case text
         case system_image
+    }
+
+    private var key: CodingKeys {
+        switch self{
+        case .text: return .text
+        case .systemImage: return .system_image
+        }
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .text(value):
-            try container.encode(value, forKey: .text)
-        case let .system_image(value):
-            try container.encode(value, forKey: .system_image)
+        case let .text(value),
+             let .systemImage(value):
+            try container.encode(value, forKey: key)
         }
     }
 
@@ -488,7 +488,7 @@ public extension CustardKeyLabelStyle{
                 String.self,
                 forKey: .system_image
             )
-            self = .system_image(value)
+            self = .systemImage(value)
         }
     }
 }
@@ -498,11 +498,11 @@ public extension CustardKeyLabelStyle{
 public enum CustardKeyVariationType {
     /// - variation of flick
     /// - warning: when you use pc style, this type of variation would be ignored.
-    case flick_variation(FlickDirection)
+    case flickVariation(FlickDirection)
 
     /// - variation selectable when keys were longoressed, especially used in pc style keyboard.
     /// - warning: when you use flick key style, this type of variation would be ignored.
-    case longpress_variation
+    case longpressVariation
 }
 
 /// - key's data in interface
@@ -533,9 +533,10 @@ public enum CustardInterfaceSystemKey: Codable {
 }
 
 public extension CustardInterfaceSystemKey{
-    enum CodingKeys: CodingKey {
-        case type, size
+    private enum CodingKeys: CodingKey {
+        case type
     }
+
     private enum ValueType: String, Codable {
         case change_keyboard
         case enter
@@ -622,26 +623,33 @@ public struct CustardInterfaceVariation: Codable {
 }
 
 public extension CustardInterfaceVariation {
-    enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey{
         case type
         case direction
         case key
     }
 
-    enum ValueType: String, Codable {
+    private enum ValueType: String, Codable {
         case flick_variation
         case longpress_variation
+    }
+
+    private var valueType: ValueType {
+        switch self.type{
+        case .flickVariation: return .flick_variation
+        case .longpressVariation: return .longpress_variation
+        }
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.key, forKey: .key)
+        try container.encode(self.valueType, forKey: .type)
         switch self.type{
-        case let .flick_variation(value):
-            try container.encode(ValueType.flick_variation, forKey: .type)
+        case let .flickVariation(value):
             try container.encode(value, forKey: .direction)
-        case .longpress_variation:
-            try container.encode(ValueType.longpress_variation, forKey: .type)
+        case .longpressVariation:
+            break
         }
     }
 
@@ -652,9 +660,9 @@ public extension CustardInterfaceVariation {
         switch valueType{
         case .flick_variation:
             let direction = try container.decode(FlickDirection.self, forKey: .direction)
-            self.type = .flick_variation(direction)
+            self.type = .flickVariation(direction)
         case .longpress_variation:
-            self.type = .longpress_variation
+            self.type = .longpressVariation
         }
     }
 }
@@ -678,14 +686,14 @@ public struct CustardInterfaceVariationKey: Codable {
 }
 
 /// - Tab specifier
-public enum CodableTabData: Codable, Hashable {
+public enum CodableTabData: Hashable{
     /// - tabs prepared by default
     case system(SystemTab)
     /// - tabs made as custom tabs.
     case custom(String)
 
     /// - system tabs
-    public enum SystemTab: String, Codable {
+    public enum SystemTab: String, Codable, Hashable{
         ///japanese input tab. the layout and input style depends on user's setting
         case user_japanese
 
@@ -715,66 +723,6 @@ public enum CodableTabData: Codable, Hashable {
 
         ///the last tab
         case last_tab
-    }
-}
-
-public extension CodableTabData{
-    enum CodingKeys: CodingKey{
-        case type
-        case destination
-    }
-
-    private enum ValueType: String, Codable{
-        case custom, system
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case let .system(value):
-            try container.encode(ValueType.system, forKey: .type)
-            try container.encode(value, forKey: .destination)
-        case let .custom(value):
-            try container.encode(ValueType.custom, forKey: .type)
-            try container.encode(value, forKey: .destination)
-        }
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let valueType = try container.decode(ValueType.self, forKey: .type)
-        switch valueType {
-        case .system:
-            let value = try container.decode(SystemTab.self,forKey: .destination)
-            self = .system(value)
-        case .custom:
-            let value = try container.decode(String.self,forKey: .destination)
-            self = .custom(value)
-        }
-    }
-}
-
-public extension CodableTabData {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs){
-        case let(.system(ltab), .system(rtab)):
-            return ltab == rtab
-        case let (.custom(ltab), .custom(rtab)):
-            return ltab == rtab
-        default:
-            return false
-        }
-    }
-
-    func hash(into hasher: inout Hasher) {
-        switch self{
-        case let .system(tab):
-            hasher.combine(tab)
-            hasher.combine(ValueType.system)
-        case let .custom(tab):
-            hasher.combine(tab)
-            hasher.combine(ValueType.custom)
-        }
     }
 }
 
@@ -827,11 +775,14 @@ public enum CodableActionData: Codable, Hashable {
     /// - move to specified tab
     case moveTab(CodableTabData)
 
+    /// - enable keyboard resizing mode
+    case enableResizingMode
+
     /// - toggle show or not show the cursor move bar
     case toggleCursorBar
 
     /// - toggle capslock or not
-    case toggleCapslockState
+    case toggleCapsLockState
 
     /// - toggle show or not show the tab bar
     case toggleTabBar
@@ -841,8 +792,13 @@ public enum CodableActionData: Codable, Hashable {
 }
 
 public extension CodableActionData{
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
+        case text
+        case count
+        case table
+        case tab_type, identifier
+        case direction, targets
     }
 
     private enum ValueType: String, Codable{
@@ -856,6 +812,7 @@ public extension CodableActionData{
         case move_cursor
         case smart_move_cursor
         case move_tab
+        case enable_resizing_mode
         case toggle_cursor_bar
         case toggle_tab_bar
         case toggle_caps_lock_state
@@ -875,93 +832,65 @@ public extension CodableActionData{
         case .smartDelete: return .smart_delete
         case .smartDeleteDefault: return .smart_delete_default
         case .smartMoveCursor: return .smart_move_cursor
-        case .toggleCapslockState: return .toggle_caps_lock_state
+        case .enableResizingMode: return .enable_resizing_mode
+        case .toggleCapsLockState: return .toggle_caps_lock_state
         case .toggleCursorBar: return .toggle_cursor_bar
         case .toggleTabBar: return .toggle_tab_bar
         }
     }
-
-    private struct InputArgument: Codable {
-        var type: ValueType = .input
-        var text: String
-    }
-    private struct CountArgument: Codable {
-        var type: ValueType
-        var count: Int
-    }
-    private struct TableArgument<Key: Codable&Hashable, Value: Codable>: Codable {
-        var type: ValueType
-        var table: [Key: Value]
-    }
-    private struct CodableTabArgument: Codable {
-        internal init(type: CodableActionData.ValueType, tab: CodableTabData) {
-            self.type = type
+    private struct CodableTabArgument{
+        internal init(tab: CodableTabData) {
             self.tab = tab
         }
-
-        var type: ValueType
-        var tab: CodableTabData
-
-        enum CodingKeys: CodingKey{
-            case type, tab_type, identifier
-        }
+        private var tab: CodableTabData
 
         private enum TabType: String, Codable{
             case custom, system
         }
 
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(type, forKey: .type)
-            switch tab {
-            case let .system(value):
+        func containerEncode(container: inout KeyedEncodingContainer<CodingKeys>) throws {
+            switch tab{
+            case .system:
                 try container.encode(TabType.system, forKey: .tab_type)
-                try container.encode(value, forKey: .identifier)
-            case let .custom(value):
+            case .custom:
                 try container.encode(TabType.custom, forKey: .tab_type)
-                try container.encode(value, forKey: .identifier)
+            }
+            switch tab {
+            case let .system(value as Encodable),
+                 let .custom(value as Encodable):
+                try value.containerEncode(container: &container, key: .identifier)
             }
         }
 
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.type = try container.decode(ValueType.self, forKey: .type)
-            let tabType = try container.decode(TabType.self, forKey: .tab_type)
-            switch tabType {
+        static func containerDecode(container: KeyedDecodingContainer<CodingKeys>) throws -> CodableTabData {
+            let type = try container.decode(TabType.self, forKey: .tab_type)
+            switch type {
             case .system:
-                let value = try container.decode(CodableTabData.SystemTab.self, forKey: .identifier)
-                self.tab = .system(value)
+                let tab = try container.decode(CodableTabData.SystemTab.self, forKey: .identifier)
+                return .system(tab)
             case .custom:
-                let value = try container.decode(String.self, forKey: .identifier)
-                self.tab = .custom(value)
+                let tab = try container.decode(String.self, forKey: .identifier)
+                return .custom(tab)
             }
         }
-    }
-    private struct ScanArgument: Codable {
-        var type: ValueType
-        var direction: ScanItem.Direction
-        var targets: [String]
     }
 
     func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.key, forKey: .type)
         switch self {
         case let .input(value):
-            try InputArgument(text: value).encode(to: encoder)
+            try container.encode(value, forKey: .text)
         case let .replaceLastCharacters(value):
-            try TableArgument(type: .replace_last_characters, table: value).encode(to: encoder)
-        case let .delete(value):
-            try CountArgument(type: .delete, count: value).encode(to: encoder)
-        case let .smartDelete(value):
-            try ScanArgument(type: .smart_delete, direction: value.direction, targets: value.targets).encode(to: encoder)
-        case let .moveCursor(value):
-            try CountArgument(type: .move_cursor, count: value).encode(to: encoder)
-        case let .smartMoveCursor(value):
-            try ScanArgument(type: .smart_move_cursor, direction: value.direction, targets: value.targets).encode(to: encoder)
+            try container.encode(value, forKey: .table)
+        case let .delete(value), let .moveCursor(value):
+            try container.encode(value, forKey: .count)
+        case let .smartDelete(value), let .smartMoveCursor(value):
+            try container.encode(value.direction, forKey: .direction)
+            try container.encode(value.targets, forKey: .targets)
         case let .moveTab(value):
-            try CodableTabArgument(type: .move_tab, tab: value).encode(to: encoder)
-        case .dismissKeyboard, .toggleTabBar, .toggleCursorBar, .toggleCapslockState, .complete, .smartDeleteDefault, .replaceDefault:
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(self.key, forKey: .type)
+            try CodableTabArgument(tab: value).containerEncode(container: &container)
+        case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault: break
         }
     }
 
@@ -970,36 +899,40 @@ public extension CodableActionData{
         let valueType = try container.decode(ValueType.self, forKey: .type)
         switch valueType {
         case .input:
-            let value = try InputArgument.init(from: decoder)
-            self = .input(value.text)
+            let value = try container.decode(String.self, forKey: .text)
+            self = .input(value)
         case .replace_default:
             self = .replaceDefault
         case .replace_last_characters:
-            let value = try TableArgument<String,String>.init(from: decoder)
-            self = .replaceLastCharacters(value.table)
+            let value = try container.decode([String: String].self, forKey: .table)
+            self = .replaceLastCharacters(value)
         case .delete:
-            let value = try CountArgument.init(from: decoder)
-            self = .delete(value.count)
+            let value = try container.decode(Int.self, forKey: .count)
+            self = .delete(value)
         case .smart_delete_default:
             self = .smartDeleteDefault
         case .smart_delete:
-            let value = try ScanArgument.init(from: decoder)
-            self = .smartDelete(.init(targets: value.targets, direction: value.direction))
+            let direction = try container.decode(ScanItem.Direction.self, forKey: .direction)
+            let targets = try container.decode([String].self, forKey: .targets)
+            self = .smartDelete(.init(targets: targets, direction: direction))
         case .complete:
             self = .complete
         case .move_cursor:
-            let value = try CountArgument.init(from: decoder)
-            self = .moveCursor(value.count)
+            let value = try container.decode(Int.self, forKey: .count)
+            self = .moveCursor(value)
         case .smart_move_cursor:
-            let value = try ScanArgument.init(from: decoder)
-            self = .smartMoveCursor(.init(targets: value.targets, direction: value.direction))
+            let direction = try container.decode(ScanItem.Direction.self, forKey: .direction)
+            let targets = try container.decode([String].self, forKey: .targets)
+            self = .smartMoveCursor(.init(targets: targets, direction: direction))
         case .move_tab:
-            let value = try CodableTabArgument.init(from: decoder)
-            self = .moveTab(value.tab)
+            let value = try CodableTabArgument.containerDecode(container: container)
+            self = .moveTab(value)
+        case .enable_resizing_mode:
+            self = .enableResizingMode
         case .toggle_cursor_bar:
             self = .toggleCursorBar
         case .toggle_caps_lock_state:
-            self = .toggleCapslockState
+            self = .toggleCapsLockState
         case .toggle_tab_bar:
             self = .toggleTabBar
         case .dismiss_keyboard:
@@ -1008,92 +941,6 @@ public extension CodableActionData{
     }
 }
 
-public extension CodableActionData {
-    static func == (lhs: CodableActionData, rhs: CodableActionData) -> Bool {
-        switch (lhs, rhs){
-        case let (.input(l), .input(r)):
-            return l == r
-
-        case (.replaceDefault, .replaceDefault):
-            return true
-        case let (.replaceLastCharacters(l), .replaceLastCharacters(r)):
-            return l == r
-
-        case let (.delete(l), .delete(r)):
-            return l == r
-        case (.smartDeleteDefault, .smartDeleteDefault):
-            return true
-        case let (.smartDelete(l), .smartDelete(r)):
-            return l == r
-
-        case (.complete, .complete):
-            return true
-
-        case let (.moveCursor(l),.moveCursor(r)):
-            return l == r
-        case let (.smartMoveCursor(l), .smartMoveCursor(r)):
-            return l == r
-
-        case let (.moveTab(l), .moveTab(r)):
-            return l == r
-
-        case (.toggleTabBar, .toggleTabBar):
-            return true
-        case (.toggleCursorBar,.toggleCursorBar):
-            return true
-        case (.toggleCapslockState,.toggleCapslockState):
-            return true
-
-        case (.dismissKeyboard, .dismissKeyboard):
-            return true
-
-        default:
-            return false
-        }
-    }
-
-    func hash(into hasher: inout Hasher) {
-        let key: ValueType
-        switch self {
-        case let .input(value):
-            hasher.combine(value)
-            key = .input
-        case .replaceDefault:
-            key = .replace_default
-        case let .replaceLastCharacters(value):
-            hasher.combine(value)
-            key = .replace_last_characters
-        case let .delete(value):
-            hasher.combine(value)
-            key = .delete
-        case let .smartDelete(value):
-            hasher.combine(value)
-            key = .smart_delete
-        case .smartDeleteDefault:
-            key = .smart_delete_default
-        case .complete:
-            key = .complete
-        case let .moveCursor(value):
-            hasher.combine(value)
-            key = .move_cursor
-        case let .smartMoveCursor(value):
-            hasher.combine(value)
-            key = .smart_move_cursor
-        case let .moveTab(destination):
-            hasher.combine(destination)
-            key = .move_tab
-        case .toggleCursorBar:
-            key = .toggle_cursor_bar
-        case .toggleTabBar:
-            key = .toggle_tab_bar
-        case .toggleCapslockState:
-            key = .toggle_caps_lock_state
-        case .dismissKeyboard:
-            key = .dismiss_keyboard
-        }
-        hasher.combine(key)
-    }
-}
 
 public struct CodableLongpressActionData: Codable, Equatable {
     public static let none = CodableLongpressActionData()

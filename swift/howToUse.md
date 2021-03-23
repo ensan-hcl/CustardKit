@@ -16,10 +16,10 @@ swiftc -emit-library -emit-module {{{CustardKit.swiftのpath}}} -module-name Cus
 swift -I {{{CustardKit.swiftmoduleのあるdirectory}}} -L {{{libCustardKit.dylibのあるdirectory}}} -lCustardKit {{{CustardKitを用いるSwiftファイルのpath}}}
 ```
 
-このディレクトリ内で作業を行う場合は以下の通りにすれば問題なく動きます。
+`examples`ディレクトリ内で作業を行う場合は以下の通りにすれば問題なく動きます。
 
 ```
-swiftc -emit-library -emit-module CustardKit.swift -module-name CustardKit
+swiftc -emit-library -emit-module ../CustardKit.swift -module-name CustardKit
 swift -I . -L . -lCustardKit Example.swift
 ```
 

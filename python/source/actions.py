@@ -1,4 +1,12 @@
 import json
+from enum import Enum, unique
+
+
+@unique
+class ScanDirection(str, Enum):
+    forward = "forward"
+    backward = "backward"
+
 
 def action_input(text: str):
     """
@@ -28,6 +36,7 @@ def action_replace_last_characters(table: dict[str, str]):
         "table": table
     }
 
+
 def action_replace_default():
     """
     azooKeyデフォルトの置換アクション
@@ -37,12 +46,19 @@ def action_replace_default():
         "type": "replace_default"
     }
 
-def action_move_tab(tab_type: str, text: str):
+
+@unique
+class TabType(str, Enum):
+    system = "system"
+    custom = "custom"
+
+
+def action_move_tab(tab_type: TabType, text: str):
     """
     タブを移動するアクション
     Parameters
     ----------
-    tab_type: str
+    tab_type: TabType
         タブのタイプ。"custom"または"system"を指定。
     text: str
         タブの識別子
@@ -53,6 +69,7 @@ def action_move_tab(tab_type: str, text: str):
         "tab_type": tab_type,
         "identifier": text
     }
+
 
 def action_move_cursor(count: int):
     """
@@ -68,12 +85,13 @@ def action_move_cursor(count: int):
         "count": count
     }
 
-def action_smart_move_cursor(direction: str, targets: list[str]):
+
+def action_smart_move_cursor(direction: ScanDirection, targets: list[str]):
     """
     指定した文字の隣までカーソルを移動するアクション
     Parameters
     ----------
-    direction: str
+    direction: ScanDirection
         移動の向きを"forward"または"backward"で指定。
     targets: list[str]
         停止条件となる文字のリスト。
@@ -84,6 +102,7 @@ def action_smart_move_cursor(direction: str, targets: list[str]):
         "direction": direction,
         "targets": targets
     }
+
 
 def action_delete(count: int):
     """
@@ -99,12 +118,13 @@ def action_delete(count: int):
         "count": count
     }
 
-def action_smart_delete(direction: str, targets: list[str]):
+
+def action_smart_delete(direction: ScanDirection, targets: list[str]):
     """
     指定した文字の隣まで文字を削除するアクション
     Parameters
     ----------
-    direction: str
+    direction: ScanDirection
         削除する向きを"forward"または"backward"で指定。
     targets: list[str]
         停止条件となる文字のリスト。
@@ -116,14 +136,16 @@ def action_smart_delete(direction: str, targets: list[str]):
         "targets": targets
     }
 
+
 def action_smart_delete_default():
     """
     azooKeyデフォルトの文頭まで削除アクション
     """
-    
+
     return {
         "type": "smart_delete_default"
     }
+
 
 def action_enable_resizing_mode():
     """
@@ -144,6 +166,7 @@ def action_toggle_cursor_bar():
         "type": "toggle_cursor_bar"
     }
 
+
 def action_toggle_tab_bar():
     """
     タブバーの表示状態をtoggleするアクション
@@ -151,6 +174,7 @@ def action_toggle_tab_bar():
     return {
         "type": "toggle_tab_bar"
     }
+
 
 def action_toggle_caps_lock_state():
     """
@@ -161,6 +185,7 @@ def action_toggle_caps_lock_state():
         "type": "toggle_caps_lock_state"
     }
 
+
 def action_dismiss_keyboard():
     """
     キーボードを閉じるアクション
@@ -169,6 +194,7 @@ def action_dismiss_keyboard():
     return {
         "type": "dismiss_keyboard"
     }
+
 
 class LongpressAction(object):
     start: list[dict]
@@ -188,7 +214,7 @@ class LongpressAction(object):
         self.start = start
         self.repeat = repeat
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "start": self.start,
             "repeat": self.repeat

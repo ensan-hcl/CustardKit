@@ -2,15 +2,51 @@ import json
 from .variations import *
 from .design import *
 from .actions import *
+from enum import Enum, unique
+
 
 class Specifier(object):
-    type: str
-    value: dict
-    def __init__(self, type: str, value: dict):
-        self.type = type
-        self.value = value
+    pass
 
-class Key(object): pass
+
+class GridFitSpecifier(Specifier):
+    type = "grid_fit"
+    x: int
+    y: int
+    width: int
+    height: int
+
+    def __init__(self, x: int, y: int, width: int = 1, height: int = 1):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def json(self) -> dict:
+        return {
+            "x": self.x,
+            "y": self.y,
+            "width": self.width,
+            "height": self.height
+        }
+
+
+class GridScrollSpecifier(Specifier):
+    type = "grid_scroll"
+    index: int
+
+    def __init__(self, index: int):
+        self.index = index
+
+    def json(self) -> dict:
+        return {
+            "index": self.index,
+        }
+
+
+class Key(object):
+    pass
+
 
 class CustomKey(Key):
     type: str = "custom"
@@ -25,7 +61,7 @@ class CustomKey(Key):
         self.longpress_actions = longpress_actions
         self.variations = variations
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "design": self.design.json(),
             "press_actions": self.press_actions,
@@ -33,19 +69,32 @@ class CustomKey(Key):
             "variations": list(map(lambda variation: variation.json(), self.variations)),
         }
 
-class SystemKey(Key): 
-    type: str = "system"
-    identifier: str
 
-    def __init__(self, identifier: str):
+@unique
+class SystemKeyType(str, Enum):
+    change_keyboard = "change_keyboard"
+    enter = "enter"
+    flick_kogaki = "flick_kogaki"
+    flick_kutoten = "flick_kutoten"
+    flick_hira_tab = "flick_hira_tab"
+    flick_abc_tab = "flick_abc_tab"
+    flick_star123_tab = "flick_star123_tab"
+
+
+class SystemKey(Key):
+    type: str = "system"
+    identifier: SystemKeyType
+
+    def __init__(self, identifier: SystemKeyType):
         self.identifier = identifier
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "type": self.identifier
         }
 
-class KeyData(object): 
+
+class KeyData(object):
     specifier: Specifier
     key: Key
 
@@ -53,10 +102,10 @@ class KeyData(object):
         self.specifier = specifier
         self.key = key
 
-    def json(self) -> dict :
+    def json(self) -> dict:
         return {
             "specifier_type": self.specifier.type,
-            "specifier": self.specifier.value,
+            "specifier": self.specifier.json(),
             "key_type": self.key.type,
             "key": self.key.json()
         }

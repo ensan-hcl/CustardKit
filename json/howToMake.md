@@ -284,7 +284,7 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 
 | 識別子      | 項目                                                | 説明                                                         |
 | ----------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| grid_fit    | x: int<br />y: int<br />width: int<br />height: int | grid_fitレイアウト上でキーをどの位置に配置するかを指定します。<br />キーの左上が(x, y)となり、widthとheightの分だけ縦横に広がります。 |
+| grid_fit    | x: int<br />y: int<br />width: int<br />height: int | grid_fitレイアウト上でキーをどの位置に配置するかを指定します。<br />キーの左上が(x, y)となり、widthとheightの分だけ縦横に広がります。<br /> |
 | grid_scroll | index: int                                          | grid_scrollレイアウト上で最初から数えた順番を指定します。<br />0から順に指定し、間を開けてはいけません。 |
 
 以下は例です。
@@ -322,15 +322,15 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 
 `"system"`の`"type"`として指定できる値は以下の通りです。
 
-| 識別子            | 必要な値 | 説明                                                         |
-| ----------------- | -------- | ------------------------------------------------------------ |
-| change_keyboard   | なし     | 地球儀キー(キーボード切り替えキー)                           |
-| enter             | なし     | 改行・確定キー。                                             |
-| flick_kogaki      | なし     | ユーザがカスタムしている可能性のあるフリックの「小ﾞﾟ」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
-| flick_kutoten     | なし     | ユーザがカスタムしている可能性のあるフリックの「､｡?!」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
-| flick_hira_tab    | なし     | ユーザがカスタムしている可能性のあるフリックの「あいう」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
-| flick_abc_tab     | なし     | ユーザがカスタムしている可能性のあるフリックの「abc」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
-| flick_star123_tab | なし     | ユーザがカスタムしている可能性のあるフリックの「☆123」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
+| 識別子            | 説明                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| change_keyboard   | 地球儀キー(キーボード切り替えキー)。ホームボタンがない端末ではカーソルバーの表示キーに切り替わります。 |
+| enter             | 改行・確定キー。                                             |
+| flick_kogaki      | ユーザがカスタムしている可能性のあるフリックの「小ﾞﾟ」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
+| flick_kutoten     | ユーザがカスタムしている可能性のあるフリックの「､｡?!」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
+| flick_hira_tab    | ユーザがカスタムしている可能性のあるフリックの「あいう」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
+| flick_abc_tab     | ユーザがカスタムしている可能性のあるフリックの「abc」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
+| flick_star123_tab | ユーザがカスタムしている可能性のあるフリックの「☆123」キー。grid_fitのtenkey_style以外での利用は非推奨。 |
 
 以上でインターフェースの記述の説明は終わりです。
 
@@ -340,20 +340,18 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 
 ```json
 {
-	"custard_version": "1.0",
   "identifier": "my_flick",
-	"display_name": "私のフリック",
   "language": "ja_JP",
-	"input_style": "direct",
-	"interface": {インターフェースの記述}
+  "input_style": "direct",
+  "metadata": {
+    "custard_version": "1.0",
+    "display_name": "私のフリック",
+  },
+  "interface": {インターフェースの記述}
 }
 ```
 
-`"custard_version"`はバージョン情報です。この資料に基づいて作成する場合`"1.0"`を指定してください。
-
 `"identifier"`はカスタードを識別するための文字列です。他のものと被らない値を指定してください。
-
-`"display_name"`はタブバーなどでデフォルトで用いられる名称です。
 
 `"language"`は変換対象の言語です。以下の値が指定できます。
 
@@ -371,6 +369,11 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | ---------- | ---------------------------- |
 | direct     | 入力をそのまま用います。     |
 | roman2kana | ローマ字かな入力を行います。 |
+
+`"metadata"`にはキーボードの動作とは無関係な情報を含めます。現在は以下の2つの値を指定してください。
+
+* `"custard_version"`は規格のバージョン情報です。この資料に基づいて作成する場合`"1.0"`を指定してください。
+* `"display_name"`はタブバーなどでデフォルトで用いられる名称です。
 
 `"interface"`には上で記述したとおりのインターフェースの記述を行います。
 
@@ -406,14 +409,14 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 
 ```Swift
 import CustardKit
-//ヒエログリフの文字のリストを取得
-let hieroglyphs = String.UnicodeScalarView((UInt32(0x13000)...UInt32(0x133FF))
-                      .compactMap(UnicodeScalar.init))
-                      .map(String.init)
+
+//ヒエログリフのリストを取得
+let hieroglyphs = String.UnicodeScalarView((UInt32(0x13000)...UInt32(0x133FF)).compactMap(UnicodeScalar.init)).map(String.init)
+
 //キーの辞書を作成
 var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
-    .grid_scroll(0): .system(.change_keyboard),
-    .grid_scroll(1): .custom(
+    .gridScroll(0): .system(.change_keyboard),
+    .gridScroll(1): .custom(
         .init(
             design: .init(label: .text("←"), color: .special),
             press_actions: [.moveCursor(-1)],
@@ -421,7 +424,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             variations: []
         )
     ),
-    .grid_scroll(2): .custom(
+    .gridScroll(2): .custom(
         .init(
             design: .init(label: .text("→"), color: .special),
             press_actions: [.moveCursor(1)],
@@ -429,7 +432,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             variations: []
         )
     ),
-    .grid_scroll(3): .custom(
+    .gridScroll(3): .custom(
         .init(
             design: .init(label: .systemImage("list.bullet"), color: .special),
             press_actions: [.toggleTabBar],
@@ -437,7 +440,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             variations: []
         )
     ),
-    .grid_scroll(4): .custom(
+    .gridScroll(4): .custom(
         .init(
             design: .init(label: .systemImage("delete.left"), color: .special),
             press_actions: [.delete(1)],
@@ -447,9 +450,9 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
     ),
 ]
 
-//キーの辞書にヒエログリフを1文字入力するデータを追加
+//ヒエログリフの入力キーを順次追加
 hieroglyphs.indices.forEach{
-    hieroglyphs_keys[.grid_scroll(GridScrollPositionSpecifier(5+$0))] = .custom(
+    hieroglyphs_keys[.gridScroll(GridScrollPositionSpecifier(hieroglyphs_keys.count))] = .custom(
         .init(
             design: .init(label: .text(hieroglyphs[$0]), color: .normal),
             press_actions: [.input(hieroglyphs[$0])],
@@ -459,16 +462,15 @@ hieroglyphs.indices.forEach{
     )
 }
 
-//カスタードオブジェクトを作成
+//Custardを作成
 let hieroglyphs_custard = Custard(
-    custard_version: .v1_0,
-    identifier: "Hieroglyphs",
-    display_name: "ヒエログリフ",
+    identifier: "hieroglyphs",
     language: .none,
     input_style: .direct,
+    metadata: .init(custard_version: .v1_0, display_name: "ヒエログリフ"),
     interface: .init(
-        key_style: .tenkey_style,
-        key_layout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
+        keyStyle: .tenkeyStyle,
+        keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
         keys: hieroglyphs_keys
     )
 )
