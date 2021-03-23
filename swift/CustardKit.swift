@@ -610,6 +610,31 @@ public struct CustardInterfaceCustomKey: Codable {
 
 
 public extension CustardInterfaceCustomKey {
+    /// Create simple input key using flick
+    /// - parameters:
+    ///  - center: string inputed when tap the key
+    ///  - subs: set string inputed when flick the key up to four letters. letters are stucked in order left -> top -> right -> bottom
+    ///  - centerLabel: (optional) if needed, set label of center. without specification `center` is set as label
+    static func flick_simple_inputs(center: String, subs: [String], centerLabel: String? = nil) -> Self {
+        let variations: [CustardInterfaceVariation] = zip(subs, [FlickDirection.left, .top, .right, .bottom]).map{letter, direction in
+            .init(
+                type: .flickVariation(direction),
+                key: .init(
+                    design: .init(label: .text(letter)),
+                    press_actions: [.input(letter)],
+                    longpress_actions: .none
+                )
+            )
+        }
+
+        return .init(
+            design: .init(label: .text(centerLabel ?? center), color: .normal),
+            press_actions: [.input(center)],
+            longpress_actions: .none,
+            variations: variations
+        )
+    }
+
     static let flick_delete: Self = .init(
         design: .init(label: .systemImage("delete.left"), color: .special),
         press_actions: [.delete(1)],
