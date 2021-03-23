@@ -22,7 +22,7 @@ class GridFitSpecifier(Specifier):
         self.width = width
         self.height = height
 
-    def value(self) -> dict:
+    def json(self) -> dict:
         return {
             "x": self.x,
             "y": self.y,
@@ -38,7 +38,7 @@ class GridScrollSpecifier(Specifier):
     def __init__(self, index: int):
         self.index = index
 
-    def value(self) -> dict:
+    def json(self) -> dict:
         return {
             "index": self.index,
         }
@@ -105,7 +105,7 @@ class KeyData(object):
     def json(self) -> dict:
         return {
             "specifier_type": self.specifier.type,
-            "specifier": self.specifier.value(),
+            "specifier": self.specifier.json(),
             "key_type": self.key.type,
             "key": self.key.json()
         }
