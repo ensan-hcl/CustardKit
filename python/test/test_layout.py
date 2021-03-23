@@ -4,6 +4,7 @@ from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.layout import *
 
+
 class TestLayout(unittest.TestCase):
     """test class of layout.py
     """
@@ -19,11 +20,11 @@ class TestLayout(unittest.TestCase):
         }
         self.assertEqual(expected_json, layout.json())
 
-
     def test_GridScrollLayout(self):
         """test method for GridScrollLayout
         """
-        layout = GridScrollLayout(ScrollDirection.vertical, row_count=8, column_count=4.2)
+        layout = GridScrollLayout(
+            ScrollDirection.vertical, row_count=8, column_count=4.2)
         expected_json = {
             "type": "grid_scroll",
             "direction": ScrollDirection.vertical,
@@ -31,6 +32,7 @@ class TestLayout(unittest.TestCase):
             "column_count": 4.2
         }
         self.assertEqual(expected_json, layout.json())
+
 
 if __name__ == "__main__":
     unittest.main()
