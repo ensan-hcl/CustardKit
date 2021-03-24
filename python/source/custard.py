@@ -1,5 +1,6 @@
 from .layout import *
 from .keys import *
+from .lib import to_json_list
 import json
 from enum import Enum, unique
 
@@ -44,7 +45,7 @@ class Interface(object):
         return {
             "key_layout": self.key_layout.json(),
             "key_style": self.key_style,
-            "keys": list(map(lambda key: key.json(), self.keys)),
+            "keys": to_json_list(self.keys),
         }
 
 

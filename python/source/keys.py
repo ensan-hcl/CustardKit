@@ -2,6 +2,7 @@ import json
 from .variations import *
 from .design import *
 from .actions import *
+from .lib import to_json_list
 from enum import Enum, unique
 
 
@@ -55,9 +56,9 @@ class CustomKey(Key):
     def json(self) -> dict:
         return {
             "design": self.design.json(),
-            "press_actions": list(map(lambda action: action.json(), self.press_actions)),
+            "press_actions": to_json_list(self.press_actions),
             "longpress_actions": self.longpress_actions.json(),
-            "variations": list(map(lambda variation: variation.json(), self.variations)),
+            "variations": to_json_list(self.variations),
         }
 
     #utility
