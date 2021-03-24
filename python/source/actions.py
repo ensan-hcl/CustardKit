@@ -3,6 +3,10 @@ from enum import Enum, unique
 from abc import ABCMeta, abstractmethod
 
 
+class ActionDefaultArguments:
+    scan_target = ["、", "。", "！", "？", ".", ",", "．", "，", "\n"]
+
+
 @unique
 class ScanDirection(str, Enum):
     forward = "forward"
