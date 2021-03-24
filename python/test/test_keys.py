@@ -173,6 +173,8 @@ class TestKeys(unittest.TestCase):
         self.assertEqual(inputs.longpress_actions.start, [])
         self.assertEqual(inputs.longpress_actions.repeat, [])
 
+        self.assertEqual(len(inputs.variations), 3)
+
         self.assertEqual(inputs.variations[0].direction, FlickDirection.left)
         self.assertEqual(inputs.variations[0].key.design.label.text, "冤罪")
         self.assertEqual(inputs.variations[0].key.press_actions, [
