@@ -13,7 +13,7 @@ CustomKey(
         color = KeyColor.normal
     ),
     press_actions = [
-        action_input("@")
+        InputAction("@")
     ],
     longpress_actions = LongpressAction(),
     variations = []
@@ -66,39 +66,36 @@ design = KeyDesign(
 
 ```python
 press_actions = [
-    action_input("@")
+    InputAction("@")
 ],
 ```
 
-`action_input`は引数に取った値を入力するアクションを生成する関数です。
+`InputAction` インスタンスは `text` メンバーで指定された文字列を入力するアクションを表します。
 
-azooKeyでは`action_input`の他にいくつかの動作を行うことができます。
+azooKeyでは`InputAction`の他にいくつかの動作を行うことができます。
 
-| 関数                           | 引数                                             | 挙動                                                         |
+| 関数                           | メンバー変数                                             | 挙動                                                         |
 | :----------------------------- | :----------------------------------------------- | :----------------------------------------------------------- |
-| action_input                   | text: str                                        | 引数textを入力します                                         |
-| action_delete                  | count: int                                       | (countの絶対値)文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
-| action_move_cursor             | count: int                                       | (countの絶対値)文字分カーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
-| action_move_tab                | tab_type: TabType<br />identifier: str           | identifierで指定したタブに移動します。tab_typeが`system`の場合はazooKeyが標準で搭載しているタブに移動し、`custom`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
-| action_replace_last_characters | table: {str: str}                                | カーソル文頭方向の文字列を引数のtableに基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
-| action_replace_default         | なし                                             | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
-| action_smart_delete            | direction: ScanDirection<br />targets: list[str] | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
-| action_smart_delete_default    | なし                                             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
-| action_smart_move_cursor       | direction: ScanDirection<br />target: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
-| action_enable_resizing_mode    | なし                                             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
-| action_toggle_cursor_bar       | なし                                             | カーソルバーの表示をtoggleします。                           |
-| action_toggle_tab_bar          | なし                                             | タブバーの表示をtoggleします。                               |
-| action_toggle_caps_lock_state  | なし                                             | caps lockをtoggleします。                                    |
-| action_dismiss_keyboard        | なし                                             | キーボードを閉じます。                                       |
+| InputAction                   | text: str                                        | 引数textを入力します                                         |
+| DeleteAction                  | count: int                                       | (countの絶対値)文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
+| MoveCursorAction             | count: int                                       | (countの絶対値)文字分カーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
+| MoveTabAction               | tab_type: TabType<br />identifier: str           | identifierで指定したタブに移動します。tab_typeが`system`の場合はazooKeyが標準で搭載しているタブに移動し、`custom`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
+| ReplaceLastCharactersAction | table: {str: str}                                | カーソル文頭方向の文字列を引数のtableに基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
+| ReplaceDefaultAction         | なし                                             | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
+| SmartDeleteAction            | direction: ScanDirection<br />targets: list[str] | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
+| SmartDeleteDefaultAction    | なし                                             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
+| SmartMoveCursorAction       | direction: ScanDirection<br />target: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
+| EnableResizingModeAction    | なし                                             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
+| ToggleCursorBarAction       | なし                                             | カーソルバーの表示をtoggleします。                           |
+| ToggleTabBarAction          | なし                                             | タブバーの表示をtoggleします。                               |
+| ToggleCapsLockStateAction  | なし                                             | caps lockをtoggleします。                                    |
+| DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
 
 ```python
 class LongpressAction(object):
-    start: list[dict]
-    repeat: list[dict]
-
-    def __init__(self, start: list[dict] = [], repeat: list[dict] = []):
+    def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
         self.start = start
         self.repeat = repeat
 ```
@@ -137,7 +134,7 @@ variations = [
                 label = TextLabel(text = "#"),
             ),
             press_actions = [
-                action_input("#")
+                InputAction("#")
             ],
             longpress_actions = LongpressAction()
         )
@@ -149,7 +146,7 @@ variations = [
                 label = TextLabel(text = "/"),
             ),
             press_actions = [
-                action_input("/")
+                InputAction("/")
             ],
             longpress_actions = LongpressAction()
         )
@@ -336,11 +333,11 @@ hieroglyphs_keys = [
                 color = KeyColor.special
             ),
             press_actions = [
-                action_move_cursor(-1)
+                MoveCursorAction(-1)
             ],
             longpress_actions = LongpressAction(
                 repeat = [
-                    action_move_cursor(-1)
+                    MoveCursorAction(-1)
 			    ]
             ),
             variations = []
@@ -354,11 +351,11 @@ hieroglyphs_keys = [
                 color = KeyColor.special
             ),
             press_actions = [
-                action_move_cursor(1)
+                MoveCursorAction(1)
             ],
             longpress_actions = LongpressAction(
                 repeat = [
-                    action_move_cursor(1)
+                    MoveCursorAction(1)
                 ]
             ),
             variations = []
@@ -372,7 +369,7 @@ hieroglyphs_keys = [
                 color = KeyColor.special
             ),
             press_actions = [
-                action_toggle_tab_bar()
+                ToggleTabBarAction()
             ],
             longpress_actions = LongpressAction(),
             variations = []
@@ -386,11 +383,11 @@ hieroglyphs_keys = [
                 color = KeyColor.special
             ),
             press_actions = [
-                action_delete(1)
+                DeleteAction(1)
             ],
             longpress_actions = LongpressAction(
                 repeat = [
-                    action_move_cursor(1)
+                    MoveCursorAction(1)
                 ]
             ),
           	variations = []
@@ -405,7 +402,7 @@ for glyph in hieroglyphs:
             color = KeyColor.normal
         ),
         press_actions = [
-            action_input(glyph)
+            InputAction(glyph)
         ],
         longpress_actions = LongpressAction(),
         variations = []
