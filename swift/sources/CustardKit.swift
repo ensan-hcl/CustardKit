@@ -870,7 +870,7 @@ public enum CodableActionData: Codable, Hashable {
     /// - dismiss keyboard
     case dismissKeyboard
 
-    static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
+    public static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
 }
 
 public extension CodableActionData{
