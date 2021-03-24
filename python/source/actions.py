@@ -4,7 +4,7 @@ from abc import ABCMeta, abstractmethod
 
 
 class ActionDefaultArguments:
-    scan_target = ["、", "。", "！", "？", ".", ",", "．", "，", "\n"]
+    scan_targets = ["、", "。", "！", "？", ".", ",", "．", "，", "\n"]
 
 
 @unique
