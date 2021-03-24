@@ -53,7 +53,7 @@ hieroglyphs_keys = [
                 color=KeyColor.special
             ),
             press_actions=[
-                ToggleTabBarAction
+                ToggleTabBarAction()
             ],
             longpress_actions=LongpressAction(),
             variations=[]
