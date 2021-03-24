@@ -1,6 +1,7 @@
 import json
 from .design import *
 from .actions import *
+from .lib import to_json_list
 from enum import Enum, unique
 
 
@@ -13,7 +14,7 @@ class Variation(object):
     def json(self) -> dict:
         return {
             "design": self.design.json(),
-            "press_actions": list(map(lambda action: action.json(), self.press_actions)),
+            "press_actions": to_json_list(self.press_actions),
             "longpress_actions": self.longpress_actions.json(),
         }
 

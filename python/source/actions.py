@@ -1,4 +1,5 @@
 import json
+from .lib import to_json_list
 from enum import Enum, unique
 from abc import ABCMeta, abstractmethod
 
@@ -233,6 +234,6 @@ class LongpressAction(object):
 
     def json(self) -> dict:
         return {
-            "start": list(map(lambda action: action.json(), self.start)),
-            "repeat": list(map(lambda action: action.json(), self.repeat))
+            "start": to_json_list(self.start),
+            "repeat": to_json_list(self.repeat)
         }
