@@ -5,11 +5,7 @@ from enum import Enum, unique
 
 
 class Variation(object):
-    design: VariationDesign
-    press_actions: list[{str: str}]
-    longpress_actions: LongpressAction
-
-    def __init__(self, design: KeyDesign, press_actions: list[{str: str}], longpress_actions: LongpressAction = LongpressAction()):
+    def __init__(self, design: VariationDesign, press_actions: list[{str: str}], longpress_actions: LongpressAction = LongpressAction()):
         self.design = design
         self.press_actions = press_actions
         self.longpress_actions = longpress_actions
@@ -36,8 +32,6 @@ class FlickDirection(str, Enum):
 
 class FlickVariationData(VariationData):
     type = "flick_variation"
-    direction: FlickDirection
-    key: Variation
 
     def __init__(self, direction: FlickDirection, key: Variation):
         self.direction = direction
@@ -53,7 +47,6 @@ class FlickVariationData(VariationData):
 
 class LongpressVariationData(VariationData):
     type = "longpress_variation"
-    key: Variation
 
     def __init__(self, key: Variation):
         self.key = key

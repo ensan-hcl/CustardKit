@@ -14,8 +14,6 @@ class KeyLabel(object):
 
 
 class TextLabel(KeyLabel):
-    text: str
-
     def __init__(self, text: str):
         self.text = text
 
@@ -26,8 +24,6 @@ class TextLabel(KeyLabel):
 
 
 class SystemImageLabel(KeyLabel):
-    identifier: str
-
     def __init__(self, identifier: str):
         self.identifier = identifier
 
@@ -38,9 +34,6 @@ class SystemImageLabel(KeyLabel):
 
 
 class KeyDesign:
-    label: KeyLabel
-    color: str
-
     def __init__(self, label: KeyLabel, color: KeyColor):
         self.label = label
         self.color = color
@@ -53,8 +46,6 @@ class KeyDesign:
 
 
 class VariationDesign:
-    label: KeyLabel
-
     def __init__(self, label: KeyLabel):
         self.label = label
 

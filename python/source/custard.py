@@ -35,10 +35,6 @@ class KeyStyle(str, Enum):
 
 
 class Interface(object):
-    key_layout: Layout
-    key_style: KeyStyle
-    keys: list[KeyData]
-
     def __init__(self, key_layout: Layout, key_style: KeyStyle, keys: list[KeyData]):
         self.key_layout = key_layout
         self.key_style = key_style
@@ -53,9 +49,6 @@ class Interface(object):
 
 
 class Metadata(object):
-    custard_version: str
-    display_name: str
-
     def __init__(self, custard_version: str, display_name: str):
         self.custard_version = custard_version
         self.display_name = display_name
@@ -68,12 +61,6 @@ class Metadata(object):
 
 
 class Custard(object):
-    identifier: str
-    language: Language
-    input_style: InputStyle
-    metadata: Metadata
-    interface: Interface
-
     def __init__(self, identifier: str, language: Language, input_style: InputStyle, metadata: Metadata, interface: Interface):
         self.identifier = identifier
         self.language = language

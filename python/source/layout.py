@@ -8,8 +8,6 @@ class Layout(object):
 
 class GridFitLayout(Layout):
     type: str = "grid_fit"
-    row_count: int
-    column_count: int
 
     def __init__(self, row_count, column_count):
         self.row_count = row_count
@@ -31,9 +29,6 @@ class ScrollDirection(str, Enum):
 
 class GridScrollLayout(Layout):
     type: str = "grid_scroll"
-    direction: ScrollDirection
-    row_count: float
-    column_count: float
 
     def __init__(self, direction: ScrollDirection, row_count: float, column_count: float):
         self.direction = direction

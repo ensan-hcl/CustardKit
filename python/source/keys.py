@@ -11,10 +11,6 @@ class Specifier(object):
 
 class GridFitSpecifier(Specifier):
     type = "grid_fit"
-    x: int
-    y: int
-    width: int
-    height: int
 
     def __init__(self, x: int, y: int, width: int = 1, height: int = 1):
         self.x = x
@@ -33,7 +29,6 @@ class GridFitSpecifier(Specifier):
 
 class GridScrollSpecifier(Specifier):
     type = "grid_scroll"
-    index: int
 
     def __init__(self, index: int):
         self.index = index
@@ -50,10 +45,6 @@ class Key(object):
 
 class CustomKey(Key):
     type: str = "custom"
-    design: KeyDesign
-    press_actions: list[{str: str}]
-    longpress_actions: LongpressAction
-    variations: list[VariationData]
 
     def __init__(self, design: KeyDesign, press_actions: list[{str: str}], longpress_actions: LongpressAction = LongpressAction(), variations: list[VariationData] = []):
         self.design = design
@@ -83,7 +74,6 @@ class SystemKeyType(str, Enum):
 
 class SystemKey(Key):
     type: str = "system"
-    identifier: SystemKeyType
 
     def __init__(self, identifier: SystemKeyType):
         self.identifier = identifier
@@ -95,9 +85,6 @@ class SystemKey(Key):
 
 
 class KeyData(object):
-    specifier: Specifier
-    key: Key
-
     def __init__(self, specifier: Specifier, key: Key):
         self.specifier = specifier
         self.key = key

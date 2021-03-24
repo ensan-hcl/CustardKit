@@ -197,9 +197,6 @@ def action_dismiss_keyboard():
 
 
 class LongpressAction(object):
-    start: list[dict]
-    repeat: list[dict]
-
     def __init__(self, start: list[dict] = [], repeat: list[dict] = []):
         """
         イニシャライザ
