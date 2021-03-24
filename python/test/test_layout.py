@@ -33,6 +33,15 @@ class TestLayout(unittest.TestCase):
         }
         self.assertEqual(expected_json, layout.json())
 
+    def test_ScrollDirection(self):
+        """test method for ScrollDirection
+        """
+        actual = json.dumps(ScrollDirection.horizontal)
+        self.assertEqual("\"horizontal\"", actual)
+
+        actual = json.dumps(ScrollDirection.vertical)
+        self.assertEqual("\"vertical\"", actual)
+
 
 if __name__ == "__main__":
     unittest.main()
