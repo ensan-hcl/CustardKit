@@ -45,8 +45,8 @@ class TestKeys(unittest.TestCase):
         """
         design = KeyDesign(TextLabel("ティッシュ"), KeyColor.selected)
         press_actions = [
-            action_move_cursor(4),
-            action_input("虫眼鏡型麻酔銃")
+            MoveCursorAction(4),
+            InputAction("虫眼鏡型麻酔銃")
         ]
         key = CustomKey(
             design=design,
@@ -54,7 +54,7 @@ class TestKeys(unittest.TestCase):
         )
         expected_json = {
             "design": design.json(),
-            "press_actions": press_actions,
+            "press_actions": list(map(lambda action: action.json(), press_actions)),
             "longpress_actions": LongpressAction().json(),
             "variations": [],
         }
@@ -62,7 +62,7 @@ class TestKeys(unittest.TestCase):
 
         design = KeyDesign(TextLabel("花粉症"), KeyColor.selected)
         press_actions = [
-            action_move_tab(tab_type=TabType.custom,
+            MoveTabAction(tab_type=TabType.custom,
                             text="superstrongkeyboard"),
         ]
         variation_design = VariationDesign(TextLabel("アレジオン"))
@@ -76,7 +76,7 @@ class TestKeys(unittest.TestCase):
         )
         expected_json = {
             "design": design.json(),
-            "press_actions": press_actions,
+            "press_actions": list(map(lambda action: action.json(), press_actions)),
             "longpress_actions": LongpressAction().json(),
             "variations": [variation.json()],
         }

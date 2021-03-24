@@ -10,18 +10,18 @@ class TestVariations(unittest.TestCase):
     """
     design = VariationDesign(SystemImageLabel("azooKey"))
     press_actions = [
-        action_toggle_caps_lock_state(),
-        action_move_cursor(-4),
-        action_move_tab(TabType.custom, "flick_greek")
+        ToggleCapsLockStateAction(),
+        MoveCursorAction(-4),
+        MoveTabAction(TabType.custom, "flick_greek")
     ]
     start = [
-        action_input("¡™£"),
-        action_replace_last_characters(
+        InputAction("¡™£"),
+        ReplaceLastCharactersAction(
             {"クレヨンしんちゃん": "ドラえもん", "妖怪ウォッチ": "ポケモン"}),
     ]
     repeat = [
-        action_enable_resizing_mode(),
-        action_smart_delete_default(),
+        EnableResizingModeAction(),
+        SmartDeleteDefaultAction(),
     ]
 
     def test_Variation(self):
@@ -32,7 +32,7 @@ class TestVariations(unittest.TestCase):
             self.design, self.press_actions, longpress_actions)
         expected_json = {
             "design": self.design.json(),
-            "press_actions": self.press_actions,
+            "press_actions": list(map(lambda action: action.json(), self.press_actions)),
             "longpress_actions": longpress_actions.json(),
         }
         self.assertEqual(expected_json, variation.json())
