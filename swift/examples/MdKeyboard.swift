@@ -1,28 +1,6 @@
 import Foundation
 import CustardKit
 
-func makeFlickInputKey(center: String, subs: [String]) -> CustardInterfaceKey {
-    let variations: [CustardInterfaceVariation] = zip(subs, [FlickDirection.left, .top, .right, .bottom]).map{letter, direction in
-        .init(
-            type: .flickVariation(direction),
-            key: .init(
-                design: .init(label: .text(letter)),
-                press_actions: [.input(letter)],
-                longpress_actions: .none
-            )
-        )
-    }
-
-    return .custom(
-        .init(
-            design: .init(label: .text(center), color: .normal),
-            press_actions: [.input(center)],
-            longpress_actions: .none,
-            variations: variations
-        )
-    )
-}
-
 let md_custard = Custard(
     identifier: "flick_md_ja_JP",
     language: .ja_JP,
@@ -32,8 +10,8 @@ let md_custard = Custard(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 6, columnCount: 4)),
         keys: [
-            .gridFit(.init(x: 0, y: 0)): .system(.flick_star123_tab),
-            .gridFit(.init(x: 0, y: 1)): .system(.flick_abc_tab),
+            .gridFit(.init(x: 0, y: 0)): .system(.flickStar123Tab),
+            .gridFit(.init(x: 0, y: 1)): .system(.flickAbcTab),
             .gridFit(.init(x: 0, y: 2)): .custom(
                 .init(
                     design: .init(label: .text("あいう"), color: .selected),
@@ -42,19 +20,19 @@ let md_custard = Custard(
                     variations: []
                 )
             ),
-            .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
-            .gridFit(.init(x: 1, y: 0)): makeFlickInputKey(center: "あ", subs: ["い", "う", "え", "お"]),
-            .gridFit(.init(x: 2, y: 0)): makeFlickInputKey(center: "か", subs: ["き", "く", "け", "こ"]),
-            .gridFit(.init(x: 3, y: 0)): makeFlickInputKey(center: "さ", subs: ["し", "す", "せ", "そ"]),
-            .gridFit(.init(x: 1, y: 1)): makeFlickInputKey(center: "た", subs: ["ち", "つ", "て", "と"]),
-            .gridFit(.init(x: 2, y: 1)): makeFlickInputKey(center: "な", subs: ["に", "ぬ", "ね", "の"]),
-            .gridFit(.init(x: 3, y: 1)): makeFlickInputKey(center: "は", subs: ["ひ", "ふ", "へ", "ほ"]),
-            .gridFit(.init(x: 1, y: 2)): makeFlickInputKey(center: "ま", subs: ["み", "む", "め", "も"]),
-            .gridFit(.init(x: 2, y: 2)): makeFlickInputKey(center: "や", subs: ["「", "ゆ", "」", "よ"]),
-            .gridFit(.init(x: 3, y: 2)): makeFlickInputKey(center: "ら", subs: ["り", "る", "れ", "ろ"]),
-            .gridFit(.init(x: 1, y: 3)): .system(.flick_kogaki),
-            .gridFit(.init(x: 2, y: 3)): makeFlickInputKey(center: "わ", subs: ["を", "ん", "ー", ""]),
-            .gridFit(.init(x: 3, y: 3)): .system(.flick_kutoten),
+            .gridFit(.init(x: 0, y: 3)): .system(.changeKeyboard),
+            .gridFit(.init(x: 1, y: 0)): .custom(.flickSimpleInputs(center: "あ", subs: ["い", "う", "え", "お"])),
+            .gridFit(.init(x: 2, y: 0)): .custom(.flickSimpleInputs(center: "か", subs: ["き", "く", "け", "こ"])),
+            .gridFit(.init(x: 3, y: 0)): .custom(.flickSimpleInputs(center: "さ", subs: ["し", "す", "せ", "そ"])),
+            .gridFit(.init(x: 1, y: 1)): .custom(.flickSimpleInputs(center: "た", subs: ["ち", "つ", "て", "と"])),
+            .gridFit(.init(x: 2, y: 1)): .custom(.flickSimpleInputs(center: "な", subs: ["に", "ぬ", "ね", "の"])),
+            .gridFit(.init(x: 3, y: 1)): .custom(.flickSimpleInputs(center: "は", subs: ["ひ", "ふ", "へ", "ほ"])),
+            .gridFit(.init(x: 1, y: 2)): .custom(.flickSimpleInputs(center: "ま", subs: ["み", "む", "め", "も"])),
+            .gridFit(.init(x: 2, y: 2)): .custom(.flickSimpleInputs(center: "や", subs: ["「", "ゆ", "」", "よ"])),
+            .gridFit(.init(x: 3, y: 2)): .custom(.flickSimpleInputs(center: "ら", subs: ["り", "る", "れ", "ろ"])),
+            .gridFit(.init(x: 1, y: 3)): .system(.flickKogaki),
+            .gridFit(.init(x: 2, y: 3)): .custom(.flickSimpleInputs(center: "わ", subs: ["を", "ん", "ー", ""])),
+            .gridFit(.init(x: 3, y: 3)): .system(.flickKutoten),
             .gridFit(.init(x: 4, y: 0)): .custom(
                 .init(
                     design: .init(label: .systemImage("bold"), color: .special),
@@ -202,56 +180,8 @@ let md_custard = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 5, y: 0)): .custom(
-                .init(
-                    design: .init(label: .systemImage("delete.left"), color: .special),
-                    press_actions: [.delete(1)],
-                    longpress_actions: .init(repeat: [.delete(1)]),
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .systemImage("xmark")),
-                                press_actions: [.smartDeleteDefault],
-                                longpress_actions: .none
-                            )
-                        ),
-                    ]
-                )
-            ),
-            .gridFit(.init(x: 5, y: 1)): .custom(
-                .init(
-                    design: .init(label: .text("空白"), color: .special),
-                    press_actions: [.input(" ")],
-                    longpress_actions: .init(start: [.toggleCursorBar]),
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .text("←")),
-                                press_actions: [.moveCursor(-1)],
-                                longpress_actions: .init(repeat: [.moveCursor(-1)])
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.top),
-                            key: .init(
-                                design: .init(label: .text("全角")),
-                                press_actions: [.input("　")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.bottom),
-                            key: .init(
-                                design: .init(label: .text("tab")),
-                                press_actions: [.input("\t")],
-                                longpress_actions: .none
-                            )
-                        )
-                    ]
-                )
-            ),
+            .gridFit(.init(x: 5, y: 0)): .custom(.flickDelete()),
+            .gridFit(.init(x: 5, y: 1)): .custom(.flickSpace()),
             .gridFit(.init(x: 5, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )

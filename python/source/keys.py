@@ -60,6 +60,89 @@ class CustomKey(Key):
             "variations": list(map(lambda variation: variation.json(), self.variations)),
         }
 
+    #utility
+
+    @staticmethod
+    def flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None):
+        variations: [FlickVariationData] = []
+        for (letter, direction) in zip(subs, [FlickDirection.left, FlickDirection.top, FlickDirection.right, FlickDirection.bottom]):
+            variations.append(
+                FlickVariationData(
+                    direction=direction,
+                    key=Variation(
+                        design=VariationDesign(TextLabel(letter)),
+                        press_actions=[
+                            InputAction(letter)
+                        ]
+                    )
+                )
+            )
+
+        if centerLabel is None:
+            centerLabel = center
+
+        return CustomKey(
+            design=KeyDesign(TextLabel(centerLabel), KeyColor.normal),
+            press_actions=[
+                InputAction(center)
+            ],
+            variations=variations
+        )
+
+    #utility
+    @staticmethod
+    def flickDelete():
+        return CustomKey(
+            design=KeyDesign(SystemImageLabel(
+                "delete.left"), KeyColor.special),
+            press_actions=[DeleteAction(1)],
+            longpress_actions=LongpressAction(repeat=[DeleteAction(1)]),
+            variations=[
+                FlickVariationData(
+                    FlickDirection.left,
+                    Variation(
+                        design=VariationDesign(SystemImageLabel("xmark")),
+                        press_actions=[SmartDeleteDefaultAction()]
+                    )
+                )
+            ]
+        )
+
+    #utility
+    @staticmethod
+    def flickSpace():
+        return CustomKey(
+            design=KeyDesign(TextLabel("空白"), KeyColor.special),
+            press_actions=[InputAction(" ")],
+            longpress_actions=LongpressAction(
+                start=[ToggleCursorBarAction()]),
+            variations=[
+                FlickVariationData(
+                    FlickDirection.left,
+                    Variation(
+                        design=VariationDesign(TextLabel("←")),
+                        press_actions=[MoveCursorAction(-1)],
+                        longpress_actions=LongpressAction(
+                            repeat=[MoveCursorAction(-1)])
+                    )
+                ),
+                FlickVariationData(
+                    FlickDirection.top,
+                    Variation(
+                        design=VariationDesign(TextLabel("全角")),
+                        press_actions=[InputAction("　")]
+                    )
+                ),
+                FlickVariationData(
+                    FlickDirection.bottom,
+                    Variation(
+                        design=VariationDesign(TextLabel("tab")),
+                        press_actions=[InputAction("\t")]
+                    )
+                ),
+            ]
+        )
+
 
 @unique
 class SystemKeyType(str, Enum):

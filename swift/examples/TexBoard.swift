@@ -27,91 +27,11 @@ let tex_tab = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 0, y: 1)): .system(.flick_abc_tab),
-            .gridFit(.init(x: 0, y: 2)): .system(.flick_hira_tab),
-            .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
-            .gridFit(.init(x: 1, y: 0)): .custom(
-                .init(
-                    design: .init(label: .text("12345"), color: .normal),
-                    press_actions: [.input("1")],
-                    longpress_actions: .none,
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .text("2")),
-                                press_actions: [.input("2")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.top),
-                            key: .init(
-                                design: .init(label: .text("3")),
-                                press_actions: [.input("3")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.right),
-                            key: .init(
-                                design: .init(label: .text("4")),
-                                press_actions: [.input("4")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.bottom),
-                            key: .init(
-                                design: .init( label: .text("5")),
-                                press_actions: [.input("5")],
-                                longpress_actions: .none
-                            )
-                        )
-                    ]
-                )
-            ),
-            .gridFit(.init(x: 2, y: 0)): .custom(
-                .init(
-                    design: .init(label: .text("67890"), color: .normal),
-                    press_actions: [.input("6")],
-                    longpress_actions: .none,
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .text("7")),
-                                press_actions: [.input("7")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.top),
-                            key: .init(
-                                design: .init(label: .text("8")),
-                                press_actions: [.input("8")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.right),
-                            key: .init(
-                                design: .init(label: .text("9")),
-                                press_actions: [.input("9")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.bottom),
-                            key: .init(
-                                design: .init(label: .text("0")),
-                                press_actions: [.input("0")],
-                                longpress_actions: .none
-                            )
-                        )
-                    ]
-                )
-            ),
+            .gridFit(.init(x: 0, y: 1)): .system(.flickAbcTab),
+            .gridFit(.init(x: 0, y: 2)): .system(.flickHiraTab),
+            .gridFit(.init(x: 0, y: 3)): .system(.changeKeyboard),
+            .gridFit(.init(x: 1, y: 0)): .custom(.flickSimpleInputs(center: "1", subs: ["2", "3", "4", "5"], centerLabel: "12345")),
+            .gridFit(.init(x: 2, y: 0)): .custom(.flickSimpleInputs(center: "6", subs: ["7", "8", "9", "0"], centerLabel: "67890")),
             .gridFit(.init(x: 3, y: 0)): .custom(
                 .init(
                     design: .init(label: .text("/+^-_"), color: .normal),
@@ -450,89 +370,9 @@ let tex_tab = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 3, y: 3)): .custom(
-                .init(
-                    design: .init(label: .text(".,!?"), color: .normal),
-                    press_actions: [.input(".")],
-                    longpress_actions: .none,
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .text(",")),
-                                press_actions: [.input(",")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.top),
-                            key: .init(
-                                design: .init(label: .text("?")),
-                                press_actions: [.input("?")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.right),
-                            key: .init(
-                                design: .init(label: .text("!")),
-                                press_actions: [.input("!")],
-                                longpress_actions: .none
-                            )
-                        ),
-                    ]
-                )
-            ),
-            .gridFit(.init(x: 4, y: 0)): .custom(
-                .init(
-                    design: .init(label: .systemImage("delete.left"), color: .special),
-                    press_actions: [.delete(1)],
-                    longpress_actions: .init(repeat: [.delete(1)]),
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .systemImage("xmark")),
-                                press_actions: [.smartDeleteDefault],
-                                longpress_actions: .none
-                            )
-                        ),
-                    ]
-                )
-            ),
-            .gridFit(.init(x: 4, y: 1)): .custom(
-                .init(
-                    design: .init(label: .text("空白"), color: .special),
-                    press_actions: [.input(" ")],
-                    longpress_actions: .init(start: [.toggleCursorBar]),
-                    variations: [
-                        .init(
-                            type: .flickVariation(.left),
-                            key: .init(
-                                design: .init(label: .text("←")),
-                                press_actions: [.moveCursor(-1)],
-                                longpress_actions: .init(repeat: [.moveCursor(-1)])
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.top),
-                            key: .init(
-                                design: .init(label: .text("全角")),
-                                press_actions: [.input("　")],
-                                longpress_actions: .none
-                            )
-                        ),
-                        .init(
-                            type: .flickVariation(.bottom),
-                            key: .init(
-                                design: .init(label: .text("tab")),
-                                press_actions: [.input("\t")],
-                                longpress_actions: .none
-                            )
-                        )
-                    ]
-                )
-            ),
+            .gridFit(.init(x: 3, y: 3)): .custom(.flickSimpleInputs(center: ".", subs: [",", "!", "?"], centerLabel: ".,!?")),
+            .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete()),
+            .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace()),
             .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )

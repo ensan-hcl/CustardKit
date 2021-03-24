@@ -514,22 +514,22 @@ public enum CustardInterfaceKey {
 /// - keys prepared in default
 public enum CustardInterfaceSystemKey: Codable {
     /// - the globe key
-    case change_keyboard
+    case changeKeyboard
 
     /// - the enter key that changes its label in condition
     case enter
 
     ///custom keys.
     /// - flick 小ﾞﾟkey
-    case flick_kogaki
+    case flickKogaki
     /// - flick ､｡!? key
-    case flick_kutoten
+    case flickKutoten
     /// - flick hiragana tab
-    case flick_hira_tab
+    case flickHiraTab
     /// - flick abc tab
-    case flick_abc_tab
+    case flickAbcTab
     /// - flick number and symbols tab
-    case flick_star123_tab
+    case flickStar123Tab
 }
 
 public extension CustardInterfaceSystemKey{
@@ -549,13 +549,13 @@ public extension CustardInterfaceSystemKey{
 
     private var valueType: ValueType {
         switch self{
-        case .change_keyboard: return .change_keyboard
+        case .changeKeyboard: return .change_keyboard
         case .enter: return .enter
-        case .flick_kogaki: return .flick_kogaki
-        case .flick_kutoten: return .flick_kutoten
-        case .flick_hira_tab: return .flick_hira_tab
-        case .flick_abc_tab: return .flick_abc_tab
-        case .flick_star123_tab: return .flick_star123_tab
+        case .flickKogaki: return .flick_kogaki
+        case .flickKutoten: return .flick_kutoten
+        case .flickHiraTab: return .flick_hira_tab
+        case .flickAbcTab: return .flick_abc_tab
+        case .flickStar123Tab: return .flick_star123_tab
         }
     }
 
@@ -571,17 +571,17 @@ public extension CustardInterfaceSystemKey{
         case .enter:
             self = .enter
         case .change_keyboard:
-            self = .change_keyboard
+            self = .changeKeyboard
         case .flick_kogaki:
-            self = .flick_kogaki
+            self = .flickKogaki
         case .flick_kutoten:
-            self = .flick_kutoten
+            self = .flickKutoten
         case .flick_hira_tab:
-            self = .flick_hira_tab
+            self = .flickHiraTab
         case .flick_abc_tab:
-            self = .flick_abc_tab
+            self = .flickAbcTab
         case .flick_star123_tab:
-            self = .flick_star123_tab
+            self = .flickStar123Tab
         }
     }
 }
@@ -606,6 +606,86 @@ public struct CustardInterfaceCustomKey: Codable {
 
     /// - variations available when user flick or longpress this key
     let variations: [CustardInterfaceVariation]
+}
+
+
+public extension CustardInterfaceCustomKey {
+    /// Create simple input key using flick
+    /// - parameters:
+    ///  - center: string inputed when tap the key
+    ///  - subs: set string inputed when flick the key up to four letters. letters are stucked in order left -> top -> right -> bottom
+    ///  - centerLabel: (optional) if needed, set label of center. without specification `center` is set as label
+    static func flickSimpleInputs(center: String, subs: [String], centerLabel: String? = nil) -> Self {
+        let variations: [CustardInterfaceVariation] = zip(subs, [FlickDirection.left, .top, .right, .bottom]).map{letter, direction in
+            .init(
+                type: .flickVariation(direction),
+                key: .init(
+                    design: .init(label: .text(letter)),
+                    press_actions: [.input(letter)],
+                    longpress_actions: .none
+                )
+            )
+        }
+
+        return .init(
+            design: .init(label: .text(centerLabel ?? center), color: .normal),
+            press_actions: [.input(center)],
+            longpress_actions: .none,
+            variations: variations
+        )
+    }
+
+    static func flickDelete() -> Self {
+        .init(
+            design: .init(label: .systemImage("delete.left"), color: .special),
+            press_actions: [.delete(1)],
+            longpress_actions: .init(repeat: [.delete(1)]),
+            variations: [
+                .init(
+                    type: .flickVariation(.left),
+                    key: .init(
+                        design: .init(label: .systemImage("xmark")),
+                        press_actions: [.smartDeleteDefault],
+                        longpress_actions: .none
+                    )
+                ),
+            ]
+        )
+    }
+
+    static func flickSpace() -> Self {
+        .init(
+            design: .init(label: .text("空白"), color: .special),
+            press_actions: [.input(" ")],
+            longpress_actions: .init(start: [.toggleCursorBar]),
+            variations: [
+                .init(
+                    type: .flickVariation(.left),
+                    key: .init(
+                        design: .init(label: .text("←")),
+                        press_actions: [.moveCursor(-1)],
+                        longpress_actions: .init(repeat: [.moveCursor(-1)])
+                    )
+                ),
+                .init(
+                    type: .flickVariation(.top),
+                    key: .init(
+                        design: .init(label: .text("全角")),
+                        press_actions: [.input("　")],
+                        longpress_actions: .none
+                    )
+                ),
+                .init(
+                    type: .flickVariation(.bottom),
+                    key: .init(
+                        design: .init(label: .text("tab")),
+                        press_actions: [.input("\t")],
+                        longpress_actions: .none
+                    )
+                )
+            ]
+        )
+    }
 }
 
 /// - variation of key, includes flick keys and selectable variations in pc style keyboard.
@@ -760,7 +840,7 @@ public enum CodableActionData: Codable, Hashable {
 
     /// - delete to the ` direction` until `target` appears in the direction of travel..
     /// - if `target` is `[".", ","]`, `direction` is `.backward`, and current text is `I love this. But |she likes`, after the action, the text become `I love this.|she likes`.
-    case smartDelete(ScanItem)
+    case smartDelete(ScanItem = .init(targets: Self.scanTargets, direction: .forward))
 
     /// - complete current inputting words
     case complete
@@ -770,7 +850,7 @@ public enum CodableActionData: Codable, Hashable {
 
     /// - move cursor to the ` direction` until `target` appears in the direction of travel..
     /// - if `target` is `[".", ","]`, `direction` is `.backward`, and current text is `I love this. But |she likes`, after the action, the text become `I love this.| But she likes`.
-    case smartMoveCursor(ScanItem)
+    case smartMoveCursor(ScanItem = .init(targets: Self.scanTargets, direction: .forward))
 
     /// - move to specified tab
     case moveTab(CodableTabData)
@@ -789,6 +869,8 @@ public enum CodableActionData: Codable, Hashable {
 
     /// - dismiss keyboard
     case dismissKeyboard
+
+    static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
 }
 
 public extension CodableActionData{
