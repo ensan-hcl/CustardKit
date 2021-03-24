@@ -26,7 +26,7 @@ custard = Custard(
                     press_actions=[],
                     longpress_actions=LongpressAction(
                         start=[
-                            action_delete(1),
+                            DeleteAction(1),
                         ]
                     ),
                     variations=[
@@ -37,7 +37,7 @@ custard = Custard(
                                     label=TextLabel(text="い"),
                                 ),
                                 press_actions=[
-                                    action_input("い")
+                                    InputAction("い")
                                 ],
                                 longpress_actions=LongpressAction()
                             )
@@ -56,7 +56,7 @@ custard = Custard(
                     press_actions=[],
                     longpress_actions=LongpressAction(
                         start=[
-                            action_delete(1),
+                            DeleteAction(1),
                         ]
                     ),
                     variations=[
@@ -67,7 +67,7 @@ custard = Custard(
                                     label=TextLabel(text="い"),
                                 ),
                                 press_actions=[
-                                    action_input("い")
+                                    InputAction("い")
                                 ],
                             )
                         )
@@ -85,7 +85,7 @@ custard = Custard(
                     press_actions=[],
                     longpress_actions=LongpressAction(
                         start=[
-                            action_delete(1),
+                            DeleteAction(1),
                         ]
                     ),
                     variations=[
@@ -96,7 +96,7 @@ custard = Custard(
                                     label=TextLabel(text="い"),
                                 ),
                                 press_actions=[
-                                    action_input("い")
+                                    InputAction("い")
                                 ],
                             )
                         )

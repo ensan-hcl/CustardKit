@@ -8,7 +8,7 @@ def pc_style_input_key(char: str) -> CustomKey:
             color=KeyColor.normal
         ),
         press_actions=[
-            action_input(char)
+            InputAction(char)
         ],
         longpress_actions=LongpressAction(),
         variations=[]
@@ -41,7 +41,7 @@ keys.append(KeyData(
             color=KeyColor.special
         ),
         press_actions=[
-            action_toggle_tab_bar()
+            ToggleTabBarAction()
         ],
         longpress_actions=LongpressAction(),
         variations=[]
@@ -61,11 +61,11 @@ keys.append(KeyData(
             color=KeyColor.special
         ),
         press_actions=[
-            action_delete(1)
+            DeleteAction(1)
         ],
         longpress_actions=LongpressAction(
             repeat=[
-                action_delete(1)
+                DeleteAction(1)
             ]
         ),
         variations=[]
@@ -80,11 +80,11 @@ keys.append(KeyData(
             color=KeyColor.normal
         ),
         press_actions=[
-            action_input(" ")
+            InputAction(" ")
         ],
         longpress_actions=LongpressAction(
             start=[
-                action_toggle_cursor_bar()
+                ToggleTabBarAction()
             ]
         ),
         variations=[]
