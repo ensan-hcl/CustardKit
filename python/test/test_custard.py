@@ -35,6 +35,42 @@ class TestCustard(unittest.TestCase):
         }
         self.assertEqual(expected_json, metadata.json())
 
+    def test_Language(self):
+        """test method for Language
+        """
+        actual = json.dumps(Language.el_GR)
+        self.assertEqual("\"el_GR\"", actual)
+
+        actual = json.dumps(Language.none)
+        self.assertEqual("\"none\"", actual)
+
+        actual = json.dumps(Language.ja_JP)
+        self.assertEqual("\"ja_JP\"", actual)
+
+        actual = json.dumps(Language.en_US)
+        self.assertEqual("\"en_US\"", actual)
+
+        actual = json.dumps(Language.undefined)
+        self.assertEqual("\"undefined\"", actual)
+
+    def test_InputStyle(self):
+        """test method for InputStyle
+        """
+        actual = json.dumps(InputStyle.direct)
+        self.assertEqual("\"direct\"", actual)
+
+        actual = json.dumps(InputStyle.roman2kana)
+        self.assertEqual("\"roman2kana\"", actual)
+
+    def test_KeyStyle(self):
+        """test method for KeyStyle
+        """
+        actual = json.dumps(KeyStyle.pc_style)
+        self.assertEqual("\"pc_style\"", actual)
+
+        actual = json.dumps(KeyStyle.tenkey_style)
+        self.assertEqual("\"tenkey_style\"", actual)
+
     def test_Custard(self):
         """test method for Custard
         """
