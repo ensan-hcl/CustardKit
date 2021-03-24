@@ -170,6 +170,24 @@ class TestActions(unittest.TestCase):
 
         self.assertEqual(expected_json, action.json())
 
+    def test_ScanDirection(self):
+        """test method for ScanDirection
+        """
+        actual = json.dumps(ScanDirection.backward)
+        self.assertEqual("\"backward\"", actual)
+
+        actual = json.dumps(ScanDirection.forward)
+        self.assertEqual("\"forward\"", actual)
+
+    def test_TabType(self):
+        """test method for TabType
+        """
+        actual = json.dumps(TabType.system)
+        self.assertEqual("\"system\"", actual)
+
+        actual = json.dumps(TabType.custom)
+        self.assertEqual("\"custom\"", actual)
+
 
 if __name__ == "__main__":
     unittest.main()
