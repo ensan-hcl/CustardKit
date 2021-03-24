@@ -37,6 +37,21 @@ class TestVariations(unittest.TestCase):
         }
         self.assertEqual(expected_json, variation.json())
 
+    def test_FlickDirection(self):
+        """test method for FlickDirection
+        """
+        actual = json.dumps(FlickDirection.left)
+        self.assertEqual("\"left\"", actual)
+
+        actual = json.dumps(FlickDirection.top)
+        self.assertEqual("\"top\"", actual)
+
+        actual = json.dumps(FlickDirection.bottom)
+        self.assertEqual("\"bottom\"", actual)
+
+        actual = json.dumps(FlickDirection.right)
+        self.assertEqual("\"right\"", actual)
+
     def test_FlickVariationData(self):
         """test method for FlickVariationData
         """
