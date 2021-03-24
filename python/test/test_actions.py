@@ -151,7 +151,7 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-    def test_LongoressAction(self):
+    def test_LongpressAction(self):
         """test method for LongpressAction
         """
 
