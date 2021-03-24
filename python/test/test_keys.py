@@ -145,7 +145,7 @@ class TestKeys(unittest.TestCase):
     def test_StaticKeys(self):
         """test method for flickSpace and flickDelete
         """
-        flickSpace = CustomKey.flickSpace
+        flickSpace = CustomKey.flickSpace()
         self.assertEqual(flickSpace.design.label.text, "空白")
         self.assertEqual(flickSpace.design.color, KeyColor.special)
         self.assertEqual(flickSpace.press_actions, [action_input(" ")])
@@ -154,7 +154,7 @@ class TestKeys(unittest.TestCase):
         self.assertEqual(flickSpace.longpress_actions.repeat, [])
         self.assertEqual(len(flickSpace.variations), 3)
 
-        flickDelete = CustomKey.flickDelete
+        flickDelete = CustomKey.flickDelete()
         self.assertEqual(flickDelete.design.label.identifier, "delete.left")
         self.assertEqual(flickDelete.design.color, KeyColor.special)
         self.assertEqual(flickDelete.press_actions, [action_delete(1)])
