@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.keys import *
+from source.lib import to_json_list
 
 
 class TestKeys(unittest.TestCase):
@@ -54,7 +55,7 @@ class TestKeys(unittest.TestCase):
         )
         expected_json = {
             "design": design.json(),
-            "press_actions": list(map(lambda action: action.json(), press_actions)),
+            "press_actions": to_json_list(press_actions),
             "longpress_actions": LongpressAction().json(),
             "variations": [],
         }
@@ -76,7 +77,7 @@ class TestKeys(unittest.TestCase):
         )
         expected_json = {
             "design": design.json(),
-            "press_actions": list(map(lambda action: action.json(), press_actions)),
+            "press_actions": to_json_list(press_actions),
             "longpress_actions": LongpressAction().json(),
             "variations": [variation.json()],
         }

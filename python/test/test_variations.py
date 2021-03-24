@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.variations import *
+from source.lib import to_json_list
 
 
 class TestVariations(unittest.TestCase):
@@ -32,7 +33,7 @@ class TestVariations(unittest.TestCase):
             self.design, self.press_actions, longpress_actions)
         expected_json = {
             "design": self.design.json(),
-            "press_actions": list(map(lambda action: action.json(), self.press_actions)),
+            "press_actions": to_json_list(self.press_actions),
             "longpress_actions": longpress_actions.json(),
         }
         self.assertEqual(expected_json, variation.json())
