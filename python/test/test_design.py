@@ -9,6 +9,18 @@ class TestDesign(unittest.TestCase):
     """test class of design.py
     """
 
+    def test_KeyColor(self):
+        """test method for KeyColor
+        """
+        actual = json.dumps(KeyColor.normal)
+        self.assertEqual("\"normal\"", actual)
+
+        actual = json.dumps(KeyColor.special)
+        self.assertEqual("\"special\"", actual)
+
+        actual = json.dumps(KeyColor.selected)
+        self.assertEqual("\"selected\"", actual)
+
     def test_TextLabel(self):
         """test method for TextLabel
         """
