@@ -1,5 +1,6 @@
 import json
 from enum import Enum, unique
+from abc import ABCMeta, abstractmethod
 
 
 @unique
@@ -7,194 +8,209 @@ class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
 
+class Action(metaclass=ABCMeta):
+    @abstractmethod
+    def json(self): pass
 
-def action_input(text: str):
-    """
-    文字を入力するアクション
-    Parameters
-    ----------
-    text: str
-        入力する文字
-    """
-    return {
-        "type": "input",
-        "text": text
-    }
+class InputAction(Action):
+    def __init__(self, text: str):
+        """
+        文字を入力するアクション
+        Parameters
+        ----------
+        text: str
+            入力する文字
+        """
+        self.text = text
 
+    def json(self):
+        return {
+            "type": "input",
+            "text": self.text
+        }
 
-def action_replace_last_characters(table: dict[str, str]):
-    """
-    最後の文字を置換するアクション
-    Parameters
-    ----------
-    table: dict[str, str]
-        置換に用いるテーブル
-    """
+class ReplaceLastCharactersAction(Action):
+    def __init__(self, table: dict[str, str]):
+        """
+        最後の文字を置換するアクション
+        Parameters
+        ----------
+        table: dict[str, str]
+            置換に用いるテーブル
+        """
+        self.table = table
 
-    return {
-        "type": "replace_last_characters",
-        "table": table
-    }
+    def json(self):
+        return {
+            "type": "replace_last_characters",
+            "table": self.table
+        }
 
-
-def action_replace_default():
-    """
-    azooKeyデフォルトの置換アクション
-    """
-
-    return {
-        "type": "replace_default"
-    }
-
+class ReplaceDefaultAction(Action):
+    def json(self):
+        """
+        azooKeyデフォルトの置換アクション
+        """
+        return {
+            "type": "replace_default"
+        }
 
 @unique
 class TabType(str, Enum):
     system = "system"
     custom = "custom"
 
+class MoveTabAction(Action):
+    def __init__(self, tab_type: TabType, text: str):
+        """
+        タブを移動するアクション
+        Parameters
+        ----------
+        tab_type: TabType
+            タブのタイプ。"custom"または"system"を指定。
+        text: str
+            タブの識別子
+        """
+        self.tab_type = tab_type
+        self.text = text
 
-def action_move_tab(tab_type: TabType, text: str):
-    """
-    タブを移動するアクション
-    Parameters
-    ----------
-    tab_type: TabType
-        タブのタイプ。"custom"または"system"を指定。
-    text: str
-        タブの識別子
-    """
+    def json(self):
+        return {
+            "type": "move_tab",
+            "tab_type": self.tab_type,
+            "identifier": self.text
+        }
 
-    return {
-        "type": "move_tab",
-        "tab_type": tab_type,
-        "identifier": text
-    }
+class MoveCursorAction(Action):
+    def __init__(self, count: int):
+        """
+        カーソルを移動するアクション
+        Parameters
+        ----------
+        count: int
+            移動する文字数。負の値を指定した場合文頭方向に移動。
+        """
+        self.count = count
 
+    def json(self):
+        return {
+            "type": "move_cursor",
+            "count": self.count
+        }
 
-def action_move_cursor(count: int):
-    """
-    カーソルを移動するアクション
-    Parameters
-    ----------
-    count: int
-        移動する文字数。負の値を指定した場合文頭方向に移動。
-    """
+class SmartMoveCursorAction(Action):
+    def __init__(self, direction: ScanDirection, targets: list[str]):
+        """
+        指定した文字の隣までカーソルを移動するアクション
+        Parameters
+        ----------
+        direction: ScanDirection
+            移動の向きを"forward"または"backward"で指定。
+        targets: list[str]
+            停止条件となる文字のリスト。
+        """
+        self.direction = direction
+        self.targets = targets
 
-    return {
-        "type": "move_cursor",
-        "count": count
-    }
+    def json(self):
+        return {
+            "type": "smart_move_cursor",
+            "direction": self.direction,
+            "targets": self.targets
+        }
 
+class DeleteAction(Action):
+    def __init__(self, count: int):
+        """
+        文字を削除するアクション
+        Parameters
+        ----------
+        count: int
+            削除する文字数。負の値を指定した場合は文末方向の文字を削除。
+        """
+        self.count = count
 
-def action_smart_move_cursor(direction: ScanDirection, targets: list[str]):
-    """
-    指定した文字の隣までカーソルを移動するアクション
-    Parameters
-    ----------
-    direction: ScanDirection
-        移動の向きを"forward"または"backward"で指定。
-    targets: list[str]
-        停止条件となる文字のリスト。
-    """
+    def json(self):
+        return {
+            "type": "delete",
+            "count": self.count
+        }
 
-    return {
-        "type": "smart_move_cursor",
-        "direction": direction,
-        "targets": targets
-    }
+class SmartDeleteAction(Action):
+    def __init__(self, direction: ScanDirection, targets: list[str]):
+        """
+        指定した文字の隣まで文字を削除するアクション
+        Parameters
+        ----------
+        direction: ScanDirection
+            削除する向きを"forward"または"backward"で指定。
+        targets: list[str]
+            停止条件となる文字のリスト。
+        """
+        self.direction = direction
+        self.targets = targets
 
+    def json(self):
+        return {
+            "type": "smart_delete",
+            "direction": self.direction,
+            "targets": self.targets
+        }
 
-def action_delete(count: int):
-    """
-    文字を削除するアクション
-    Parameters
-    ----------
-    count: int
-        削除する文字数。負の値を指定した場合は文末方向の文字を削除。
-    """
-
-    return {
-        "type": "delete",
-        "count": count
-    }
-
-
-def action_smart_delete(direction: ScanDirection, targets: list[str]):
-    """
-    指定した文字の隣まで文字を削除するアクション
-    Parameters
-    ----------
-    direction: ScanDirection
-        削除する向きを"forward"または"backward"で指定。
-    targets: list[str]
-        停止条件となる文字のリスト。
-    """
-
-    return {
-        "type": "smart_delete",
-        "direction": direction,
-        "targets": targets
-    }
-
-
-def action_smart_delete_default():
+class SmartDeleteDefaultAction(Action):
     """
     azooKeyデフォルトの文頭まで削除アクション
     """
 
-    return {
-        "type": "smart_delete_default"
-    }
+    def json(self):
+        return {
+            "type": "smart_delete_default"
+        }
 
-
-def action_enable_resizing_mode():
+class EnableResizingModeAction(Action):
     """
     片手モードの調整を始めるアクション
     """
+    def json(self):
+        return {
+            "type": "enable_resizing_mode"
+        }
 
-    return {
-        "type": "enable_resizing_mode"
-    }
-
-
-def action_toggle_cursor_bar():
+class ToggleCursorBarAction(Action):
     """
     カーソルバーの表示状態をtoggleするアクション
     """
+    def json(self):
+        return {
+            "type": "toggle_cursor_bar"
+        }
 
-    return {
-        "type": "toggle_cursor_bar"
-    }
-
-
-def action_toggle_tab_bar():
+class ToggleTabBarAction(Action):
     """
     タブバーの表示状態をtoggleするアクション
     """
-    return {
-        "type": "toggle_tab_bar"
-    }
+    def json(self):
+        return {
+            "type": "toggle_tab_bar"
+        }
 
-
-def action_toggle_caps_lock_state():
+class ToggleCapsLockStateAction(Action):
     """
     Caps lockの状態をtoggleするアクション
     """
+    def json(self):
+        return {
+            "type": "toggle_caps_lock_state"
+        }
 
-    return {
-        "type": "toggle_caps_lock_state"
-    }
-
-
-def action_dismiss_keyboard():
+class DismissKeyboardAction(Action):
     """
     キーボードを閉じるアクション
     """
-
-    return {
-        "type": "dismiss_keyboard"
-    }
-
+    def json(self):
+        return {
+            "type": "dismiss_keyboard"
+        }
 
 class LongpressAction(object):
     def __init__(self, start: list[dict] = [], repeat: list[dict] = []):
@@ -213,6 +229,6 @@ class LongpressAction(object):
 
     def json(self) -> dict:
         return {
-            "start": self.start,
-            "repeat": self.repeat
+            "start": list(map(lambda action: action.json(), self.start)),
+            "repeat": list(map(lambda action: action.json(), self.repeat))
         }
