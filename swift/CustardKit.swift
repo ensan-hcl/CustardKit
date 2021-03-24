@@ -635,53 +635,57 @@ public extension CustardInterfaceCustomKey {
         )
     }
 
-    static let flickDelete: Self = .init(
-        design: .init(label: .systemImage("delete.left"), color: .special),
-        press_actions: [.delete(1)],
-        longpress_actions: .init(repeat: [.delete(1)]),
-        variations: [
-            .init(
-                type: .flickVariation(.left),
-                key: .init(
-                    design: .init(label: .systemImage("xmark")),
-                    press_actions: [.smartDeleteDefault],
-                    longpress_actions: .none
-                )
-            ),
-        ]
-    )
+    static func flickDelete() -> Self {
+        .init(
+            design: .init(label: .systemImage("delete.left"), color: .special),
+            press_actions: [.delete(1)],
+            longpress_actions: .init(repeat: [.delete(1)]),
+            variations: [
+                .init(
+                    type: .flickVariation(.left),
+                    key: .init(
+                        design: .init(label: .systemImage("xmark")),
+                        press_actions: [.smartDeleteDefault],
+                        longpress_actions: .none
+                    )
+                ),
+            ]
+        )
+    }
 
-    static let flickSpace: Self = .init(
-        design: .init(label: .text("空白"), color: .special),
-        press_actions: [.input(" ")],
-        longpress_actions: .init(start: [.toggleCursorBar]),
-        variations: [
-            .init(
-                type: .flickVariation(.left),
-                key: .init(
-                    design: .init(label: .text("←")),
-                    press_actions: [.moveCursor(-1)],
-                    longpress_actions: .init(repeat: [.moveCursor(-1)])
+    static func flickSpace() -> Self {
+        .init(
+            design: .init(label: .text("空白"), color: .special),
+            press_actions: [.input(" ")],
+            longpress_actions: .init(start: [.toggleCursorBar]),
+            variations: [
+                .init(
+                    type: .flickVariation(.left),
+                    key: .init(
+                        design: .init(label: .text("←")),
+                        press_actions: [.moveCursor(-1)],
+                        longpress_actions: .init(repeat: [.moveCursor(-1)])
+                    )
+                ),
+                .init(
+                    type: .flickVariation(.top),
+                    key: .init(
+                        design: .init(label: .text("全角")),
+                        press_actions: [.input("　")],
+                        longpress_actions: .none
+                    )
+                ),
+                .init(
+                    type: .flickVariation(.bottom),
+                    key: .init(
+                        design: .init(label: .text("tab")),
+                        press_actions: [.input("\t")],
+                        longpress_actions: .none
+                    )
                 )
-            ),
-            .init(
-                type: .flickVariation(.top),
-                key: .init(
-                    design: .init(label: .text("全角")),
-                    press_actions: [.input("　")],
-                    longpress_actions: .none
-                )
-            ),
-            .init(
-                type: .flickVariation(.bottom),
-                key: .init(
-                    design: .init(label: .text("tab")),
-                    press_actions: [.input("\t")],
-                    longpress_actions: .none
-                )
-            )
-        ]
-    )
+            ]
+        )
+    }
 }
 
 /// - variation of key, includes flick keys and selectable variations in pc style keyboard.

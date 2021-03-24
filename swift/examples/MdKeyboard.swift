@@ -180,8 +180,8 @@ let md_custard = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 5, y: 0)): .custom(.flickDelete),
-            .gridFit(.init(x: 5, y: 1)): .custom(.flickSpace),
+            .gridFit(.init(x: 5, y: 0)): .custom(.flickDelete()),
+            .gridFit(.init(x: 5, y: 1)): .custom(.flickSpace()),
             .gridFit(.init(x: 5, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )

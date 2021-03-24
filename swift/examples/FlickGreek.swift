@@ -88,8 +88,8 @@ let flick_greek = Custard(
             ),
             .gridFit(.init(x: 2, y: 3)): .custom(.flickSimpleInputs(center: "'", subs: ["\"", "(", ")"], centerLabel: "'\"()")),
             .gridFit(.init(x: 3, y: 3)): .custom(.flickSimpleInputs(center: ".", subs: [",", ";", "!"], centerLabel: ".,;!")),
-            .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete),
-            .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace),
+            .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete()),
+            .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace()),
             .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )
