@@ -7,3 +7,8 @@ __pycache__
 *.swiftsourceinfo
 /python/results/
 /swift/results/
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+.swiftpm/
