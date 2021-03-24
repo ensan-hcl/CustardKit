@@ -1,5 +1,7 @@
 # CustardKit
 
+![](https://api.travis-ci.org/ensan-hcl/CustardKit.svg?branch=main&status=unknown)
+
 azookeyのカスタムタブのデータファイルを作成するための補助ツールです。
 
 現在以下を含みます。
