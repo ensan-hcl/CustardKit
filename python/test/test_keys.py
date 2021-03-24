@@ -148,19 +148,17 @@ class TestKeys(unittest.TestCase):
         flickSpace = CustomKey.flickSpace()
         self.assertEqual(flickSpace.design.label.text, "空白")
         self.assertEqual(flickSpace.design.color, KeyColor.special)
-        self.assertEqual(flickSpace.press_actions, [action_input(" ")])
-        self.assertEqual(flickSpace.longpress_actions.start,
-                         [action_toggle_cursor_bar()])
+        self.assertEqual(list(map(lambda action: action.json(), flickSpace.press_actions)), [InputAction(" ").json()])
+        self.assertEqual(list(map(lambda action: action.json(), flickSpace.longpress_actions.start)), [ToggleCursorBarAction().json()])
         self.assertEqual(flickSpace.longpress_actions.repeat, [])
         self.assertEqual(len(flickSpace.variations), 3)
 
         flickDelete = CustomKey.flickDelete()
         self.assertEqual(flickDelete.design.label.identifier, "delete.left")
         self.assertEqual(flickDelete.design.color, KeyColor.special)
-        self.assertEqual(flickDelete.press_actions, [action_delete(1)])
+        self.assertEqual(list(map(lambda action: action.json(), flickDelete.press_actions)), [DeleteAction(1).json()])
         self.assertEqual(flickDelete.longpress_actions.start, [])
-        self.assertEqual(flickDelete.longpress_actions.repeat,
-                         [action_delete(1)])
+        self.assertEqual(list(map(lambda action: action.json(), flickDelete.longpress_actions.repeat)), [DeleteAction(1).json()])
         self.assertEqual(len(flickDelete.variations), 1)
 
     def test_FlickSimpleInputs(self):
@@ -169,7 +167,7 @@ class TestKeys(unittest.TestCase):
         inputs = CustomKey.flickSimpleInputs("裁判", subs=["冤罪", "贖罪", "脅迫罪"])
         self.assertEqual(inputs.design.label.text, "裁判")
         self.assertEqual(inputs.design.color, KeyColor.normal)
-        self.assertEqual(inputs.press_actions, [action_input("裁判")])
+        self.assertEqual(list(map(lambda action: action.json(), inputs.press_actions)), [InputAction("裁判").json()])
         self.assertEqual(inputs.longpress_actions.start, [])
         self.assertEqual(inputs.longpress_actions.repeat, [])
 
@@ -177,29 +175,28 @@ class TestKeys(unittest.TestCase):
 
         self.assertEqual(inputs.variations[0].direction, FlickDirection.left)
         self.assertEqual(inputs.variations[0].key.design.label.text, "冤罪")
-        self.assertEqual(inputs.variations[0].key.press_actions, [
-                         action_input("冤罪")])
+        self.assertEqual(list(map(lambda action: action.json(), inputs.variations[0].key.press_actions)), [InputAction("冤罪").json()])
+
         self.assertEqual(inputs.variations[0].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[0].key.longpress_actions.repeat, [])
 
         self.assertEqual(inputs.variations[1].direction, FlickDirection.top)
         self.assertEqual(inputs.variations[1].key.design.label.text, "贖罪")
-        self.assertEqual(inputs.variations[1].key.press_actions, [
-                         action_input("贖罪")])
+        self.assertEqual(list(map(lambda action: action.json(), inputs.variations[1].key.press_actions)), [InputAction("贖罪").json()])
         self.assertEqual(inputs.variations[1].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[1].key.longpress_actions.repeat, [])
 
         self.assertEqual(inputs.variations[2].direction, FlickDirection.right)
         self.assertEqual(inputs.variations[2].key.design.label.text, "脅迫罪")
-        self.assertEqual(inputs.variations[2].key.press_actions, [
-                         action_input("脅迫罪")])
+        self.assertEqual(list(map(lambda action: action.json(), inputs.variations[2].key.press_actions)), [InputAction("脅迫罪").json()])
+
         self.assertEqual(inputs.variations[2].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[2].key.longpress_actions.repeat, [])
 
         inputs = CustomKey.flickSimpleInputs(
             "iOS", subs=["Android", "macOS", "Windows", "chromeOS"], centerLabel="OS")
         self.assertEqual(inputs.design.label.text, "OS")
-        self.assertEqual(inputs.press_actions, [action_input("iOS")])
+        self.assertEqual(list(map(lambda action: action.json(), inputs.press_actions)), [InputAction("iOS").json()])
 
 
 if __name__ == "__main__":
