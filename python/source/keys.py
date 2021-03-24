@@ -46,7 +46,7 @@ class Key(object):
 class CustomKey(Key):
     type: str = "custom"
 
-    def __init__(self, design: KeyDesign, press_actions: list[{str: str}], longpress_actions: LongpressAction = LongpressAction(), variations: list[VariationData] = []):
+    def __init__(self, design: KeyDesign, press_actions: list[Action], longpress_actions: LongpressAction = LongpressAction(), variations: list[VariationData] = []):
         self.design = design
         self.press_actions = press_actions
         self.longpress_actions = longpress_actions
@@ -55,7 +55,7 @@ class CustomKey(Key):
     def json(self) -> dict:
         return {
             "design": self.design.json(),
-            "press_actions": self.press_actions,
+            "press_actions": list(map(lambda action: action.json(), self.press_actions)),
             "longpress_actions": self.longpress_actions.json(),
             "variations": list(map(lambda variation: variation.json(), self.variations)),
         }

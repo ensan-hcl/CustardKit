@@ -9,30 +9,30 @@ class TestActions(unittest.TestCase):
     """test class of actions.py
     """
 
-    def test_action_input(self):
-        """test method for action_input
+    def test_InputAction(self):
+        """test method for InputAction
         """
-        actual = action_input("hoge😊√異")
+        actual = InputAction("hoge😊√異").json()
         expected_json = {
             "type": "input",
             "text": "hoge😊√異"
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_replace_last_characters(self):
-        """test method for action_replace_last_characters
+    def test_ReplaceLastCharactersAction(self):
+        """test method for ReplaceLastCharactersAction
         """
-        actual = action_replace_last_characters({"あ": "ぁ", "か": "が", "😆": "😭"})
+        actual = ReplaceLastCharactersAction({"あ": "ぁ", "か": "が", "😆": "😭"}).json()
         expected_json = {
             "type": "replace_last_characters",
             "table": {"あ": "ぁ", "か": "が", "😆": "😭"}
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_move_tab(self):
-        """test method for action_move_tab
+    def test_MoveTabAction(self):
+        """test method for MoveTabAction
         """
-        actual = action_move_tab(tab_type=TabType.custom, text="flick_greek")
+        actual = MoveTabAction(tab_type=TabType.custom, text="flick_greek").json()
         expected_json = {
             "type": "move_tab",
             "tab_type": TabType.custom,
@@ -40,7 +40,7 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_move_tab(tab_type=TabType.system, text="flick_kutoten")
+        actual = MoveTabAction(tab_type=TabType.system, text="flick_kutoten").json()
         expected_json = {
             "type": "move_tab",
             "tab_type": TabType.system,
@@ -48,28 +48,28 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_move_cursor(self):
-        """test method for action_move_cursor
+    def test_MoveCursorAction(self):
+        """test method for MoveCursorAction
         """
-        actual = action_move_cursor(3)
+        actual = MoveCursorAction(3).json()
         expected_json = {
             "type": "move_cursor",
             "count": 3
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_move_cursor(-2)
+        actual = MoveCursorAction(-2).json()
         expected_json = {
             "type": "move_cursor",
             "count": -2
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_smart_move_cursor(self):
-        """test method for action_smart_move_cursor
+    def test_SmartMoveCursorAction(self):
+        """test method for SmartMoveCursorAction
         """
-        actual = action_smart_move_cursor(ScanDirection.forward, targets=[
-                                          "!", "?", ".", ",", ":", ";"])
+        actual = SmartMoveCursorAction(ScanDirection.forward, targets=[
+                                          "!", "?", ".", ",", ":", ";"]).json()
         expected_json = {
             "type": "smart_move_cursor",
             "direction": ScanDirection.forward,
@@ -77,28 +77,28 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_delete(self):
-        """test method for action_delete
+    def test_DeleteAction(self):
+        """test method for DeleteAction
         """
-        actual = action_delete(12)
+        actual = DeleteAction(12).json()
         expected_json = {
             "type": "delete",
             "count": 12,
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_delete(-4)
+        actual = DeleteAction(-4).json()
         expected_json = {
             "type": "delete",
             "count": -4,
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_smart_delete(self):
-        """test method for action_smart_delete
+    def test_SmartDeleteAction(self):
+        """test method for SmartDeleteAction
         """
-        actual = action_smart_delete(ScanDirection.forward, targets=[
-                                     "!", "?", ".", ",", ":", ";"])
+        actual = SmartDeleteAction(ScanDirection.forward, targets=[
+                                     "!", "?", ".", ",", ":", ";"]).json()
         expected_json = {
             "type": "smart_delete",
             "direction": ScanDirection.forward,
@@ -106,46 +106,46 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-    def test_action_no_arguments(self):
+    def test_NoArgumentsAction(self):
         """test method for actions without arguments
         """
-        actual = action_replace_default()
+        actual = ReplaceDefaultAction().json()
         expected_json = {
             "type": "replace_default",
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_smart_delete_default()
+        actual = SmartDeleteDefaultAction().json()
         expected_json = {
             "type": "smart_delete_default",
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_enable_resizing_mode()
+        actual = EnableResizingModeAction().json()
         expected_json = {
             "type": "enable_resizing_mode",
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_toggle_cursor_bar()
+        actual = ToggleCursorBarAction().json()
         expected_json = {
             "type": "toggle_cursor_bar",
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_toggle_tab_bar()
+        actual = ToggleTabBarAction().json()
         expected_json = {
             "type": "toggle_tab_bar",
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_toggle_caps_lock_state()
+        actual = ToggleCapsLockStateAction().json()
         expected_json = {
             "type": "toggle_caps_lock_state",
         }
         self.assertEqual(expected_json, actual)
 
-        actual = action_dismiss_keyboard()
+        actual = DismissKeyboardAction().json()
         expected_json = {
             "type": "dismiss_keyboard",
         }
@@ -155,17 +155,17 @@ class TestActions(unittest.TestCase):
         """test method for LongpressAction
         """
 
-        input = action_input("happy")
-        delete = action_delete(-1)
-        smart_move_cursor = action_smart_move_cursor(
+        input = InputAction("happy")
+        delete = DeleteAction(-1)
+        smart_move_cursor = SmartMoveCursorAction(
             ScanDirection.backward, targets=["0"])
-        dismiss_keyboard = action_dismiss_keyboard
+        dismiss_keyboard = DismissKeyboardAction()
         action = LongpressAction(start=[input, delete], repeat=[
                                  smart_move_cursor, dismiss_keyboard])
 
         expected_json = {
-            "start": [input, delete],
-            "repeat": [smart_move_cursor, dismiss_keyboard]
+            "start": [input.json(), delete.json()],
+            "repeat": [smart_move_cursor.json(), dismiss_keyboard.json()]
         }
 
         self.assertEqual(expected_json, action.json())

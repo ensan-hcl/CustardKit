@@ -5,7 +5,7 @@ from enum import Enum, unique
 
 
 class Variation(object):
-    def __init__(self, design: VariationDesign, press_actions: list[{str: str}], longpress_actions: LongpressAction = LongpressAction()):
+    def __init__(self, design: VariationDesign, press_actions: list[Action], longpress_actions: LongpressAction = LongpressAction()):
         self.design = design
         self.press_actions = press_actions
         self.longpress_actions = longpress_actions
@@ -13,7 +13,7 @@ class Variation(object):
     def json(self) -> dict:
         return {
             "design": self.design.json(),
-            "press_actions": self.press_actions,
+            "press_actions": list(map(lambda action: action.json(), self.press_actions)),
             "longpress_actions": self.longpress_actions.json(),
         }
 

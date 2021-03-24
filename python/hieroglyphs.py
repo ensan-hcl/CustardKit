@@ -1,4 +1,5 @@
 from source.custard import *
+
 #ヒエログリフの文字のリストを取得
 hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 
@@ -16,11 +17,11 @@ hieroglyphs_keys = [
                 color=KeyColor.special
             ),
             press_actions=[
-                action_move_cursor(-1)
+                MoveCursorAction(-1)
             ],
             longpress_actions=LongpressAction(
                 repeat=[
-                    action_move_cursor(-1)
+                    MoveCursorAction(-1)
                 ]
             ),
             variations=[]
@@ -34,11 +35,11 @@ hieroglyphs_keys = [
                 color=KeyColor.special
             ),
             press_actions=[
-                action_move_cursor(1)
+                MoveCursorAction(1)
             ],
             longpress_actions=LongpressAction(
                 repeat=[
-                    action_move_cursor(1)
+                    MoveCursorAction(1)
                 ]
             ),
             variations=[]
@@ -52,7 +53,7 @@ hieroglyphs_keys = [
                 color=KeyColor.special
             ),
             press_actions=[
-                action_toggle_tab_bar()
+                ToggleTabBarAction()
             ],
             longpress_actions=LongpressAction(),
             variations=[]
@@ -66,11 +67,11 @@ hieroglyphs_keys = [
                 color=KeyColor.special
             ),
             press_actions=[
-                action_delete(1)
+                DeleteAction(1)
             ],
             longpress_actions=LongpressAction(
                 repeat=[
-                    action_move_cursor(1)
+                    MoveCursorAction(1)
                 ]
             ),
            	variations=[]
@@ -85,7 +86,7 @@ for glyph in hieroglyphs:
             color=KeyColor.normal
         ),
         press_actions=[
-            action_input(glyph)
+            InputAction(glyph)
         ],
         longpress_actions=LongpressAction(),
         variations=[]
