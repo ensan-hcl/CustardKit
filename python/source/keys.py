@@ -63,7 +63,7 @@ class CustomKey(Key):
 
     #utility
     @staticmethod
-    def flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None) -> CustomKey :
+    def flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None):
         variations: [FlickVariationData] = []
         for (letter, direction) in zip(subs, [FlickDirection.left, FlickDirection.top, FlickDirection.right, FlickDirection.bottom]):
             variations.append(
@@ -90,52 +90,57 @@ class CustomKey(Key):
         )
     
     #utility
-    flickDelete = CustomKey(
-        design=KeyDesign(SystemImageLabel("delete.left"), Color.special),
+    flickDelete = None
+
+    #utility
+    flickSpace = None
+
+
+CustomKey.flickDelete = CustomKey(
+        design=KeyDesign(SystemImageLabel("delete.left"), KeyColor.special),
         press_actions=[action_delete(1)],
         longpress_actions=LongpressAction(repeat=[action_delete(1)]),
         variations=[
             FlickVariationData(
-                FlickDirection.left, 
+                FlickDirection.left,
                 Variation(
-                    design=VariationDesign(SystemImageLabel("xmark")), 
+                    design=VariationDesign(SystemImageLabel("xmark")),
                     press_actions=[action_smart_delete_default()]
                 )
             )
         ]
     )
 
-    #utility
-    flickSpace = CustomKey(
-        design=KeyDesign(TextLabel("空白"), Color.special),
+CustomKey.flickSpace = CustomKey(
+        design=KeyDesign(TextLabel("空白"), KeyColor.special),
         press_actions= [action_input(" ")],
         longpress_actions=LongpressAction(start=[action_toggle_cursor_bar()]),
         variations= [
             FlickVariationData(
-                FlickDirection.left, 
+                FlickDirection.left,
                 Variation(
-                    design=VariationDesign(TextLabel("←")), 
+                    design=VariationDesign(TextLabel("←")),
                     press_actions=[action_move_cursor(-1)],
                     longpress_actions=LongpressAction(repeat=[action_move_cursor(-1)])
                 )
             ),
             FlickVariationData(
-                FlickDirection.top, 
+                FlickDirection.top,
                 Variation(
-                    design=VariationDesign(TextLabel("全角")), 
-                    press_actions=[action_input("　")])
+                    design=VariationDesign(TextLabel("全角")),
+                    press_actions=[action_input("　")]
                 )
             ),
             FlickVariationData(
-                FlickDirection.bottom, 
+                FlickDirection.bottom,
                 Variation(
-                    design=VariationDesign(TextLabel("tab")), 
-                    press_actions=[action_input("\t")])
+                    design=VariationDesign(TextLabel("tab")),
+                    press_actions=[action_input("\t")]
                 )
             ),
         ]
     )
-}
+
 
 @unique
 class SystemKeyType(str, Enum):
