@@ -74,6 +74,30 @@ class TestKeys(unittest.TestCase):
         }
         self.assertEqual(expected_json, key.json())
 
+    def test_SystemKeyType(self):
+        """test method for SystemKeyType
+        """
+        actual = json.dumps(SystemKeyType.change_keyboard)
+        self.assertEqual("\"change_keyboard\"", actual)
+
+        actual = json.dumps(SystemKeyType.flick_kogaki)
+        self.assertEqual("\"flick_kogaki\"", actual)
+
+        actual = json.dumps(SystemKeyType.flick_kutoten)
+        self.assertEqual("\"flick_kutoten\"", actual)
+
+        actual = json.dumps(SystemKeyType.flick_abc_tab)
+        self.assertEqual("\"flick_abc_tab\"", actual)
+
+        actual = json.dumps(SystemKeyType.flick_hira_tab)
+        self.assertEqual("\"flick_hira_tab\"", actual)
+
+        actual = json.dumps(SystemKeyType.flick_star123_tab)
+        self.assertEqual("\"flick_star123_tab\"", actual)
+
+        actual = json.dumps(SystemKeyType.enter)
+        self.assertEqual("\"enter\"", actual)
+
     def test_SystemKey(self):
         """test method for SystemKey
         """
