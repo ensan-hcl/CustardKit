@@ -44,31 +44,39 @@ class TestKeys(unittest.TestCase):
         """test method for CustomKey
         """
         design = KeyDesign(TextLabel("ティッシュ"), KeyColor.selected)
+        press_actions = [
+            action_move_cursor(4),
+            action_input("虫眼鏡型麻酔銃")
+        ]
         key = CustomKey(
             design=design,
-            press_actions=[],
+            press_actions=press_actions,
         )
         expected_json = {
             "design": design.json(),
-            "press_actions": [],
+            "press_actions": press_actions,
             "longpress_actions": LongpressAction().json(),
             "variations": [],
         }
         self.assertEqual(expected_json, key.json())
 
         design = KeyDesign(TextLabel("花粉症"), KeyColor.selected)
+        press_actions = [
+            action_move_tab(tab_type=TabType.custom,
+                            text="superstrongkeyboard"),
+        ]
         variation_design = VariationDesign(TextLabel("アレジオン"))
         variation = Variation(variation_design, [], LongpressAction())
 
         key = CustomKey(
             design=design,
-            press_actions=[],
+            press_actions=press_actions,
             longpress_actions=LongpressAction(),
             variations=[variation]
         )
         expected_json = {
             "design": design.json(),
-            "press_actions": [],
+            "press_actions": press_actions,
             "longpress_actions": LongpressAction().json(),
             "variations": [variation.json()],
         }
