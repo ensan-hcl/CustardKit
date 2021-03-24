@@ -10,7 +10,7 @@ let flick_greek = Custard(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
         keys: [
-            .gridFit(.init(x: 0, y: 0)): .system(.flick_star123_tab),
+            .gridFit(.init(x: 0, y: 0)): .system(.flickStar123Tab),
             .gridFit(.init(x: 0, y: 1)): .custom(
                 .init(
                     design: .init(label: .text("αβγ"), color: .selected),
@@ -35,17 +35,17 @@ let flick_greek = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 0, y: 2)): .system(.flick_hira_tab),
-            .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
-            .gridFit(.init(x: 1, y: 0)): .custom(.flick_simple_inputs(center: "@", subs: ["#", "/", "&", "_"], centerLabel: "@#/&_")),
-            .gridFit(.init(x: 2, y: 0)): .custom(.flick_simple_inputs(center: "α", subs: ["β", "γ"], centerLabel: "αβγ")),
-            .gridFit(.init(x: 3, y: 0)): .custom(.flick_simple_inputs(center: "δ", subs: ["ε", "ζ"], centerLabel: "δεζ")),
-            .gridFit(.init(x: 1, y: 1)): .custom(.flick_simple_inputs(center: "η", subs: ["θ", "ι"], centerLabel: "ηθι")),
-            .gridFit(.init(x: 2, y: 1)): .custom(.flick_simple_inputs(center: "κ", subs: ["λ", "μ"], centerLabel: "κλμ")),
-            .gridFit(.init(x: 3, y: 1)): .custom(.flick_simple_inputs(center: "ν", subs: ["ξ", "ο"], centerLabel: "νξο")),
-            .gridFit(.init(x: 1, y: 2)): .custom(.flick_simple_inputs(center: "π", subs: ["ρ", "σ", "ς"], centerLabel: "πρσς")),
-            .gridFit(.init(x: 2, y: 2)): .custom(.flick_simple_inputs(center: "τ", subs: ["υ", "φ"], centerLabel: "τυφ")),
-            .gridFit(.init(x: 3, y: 2)): .custom(.flick_simple_inputs(center: "χ", subs: ["ψ", "ω"], centerLabel: "χψω")),
+            .gridFit(.init(x: 0, y: 2)): .system(.flickHiraTab),
+            .gridFit(.init(x: 0, y: 3)): .system(.changeKeyboard),
+            .gridFit(.init(x: 1, y: 0)): .custom(.flickSimpleInputs(center: "@", subs: ["#", "/", "&", "_"], centerLabel: "@#/&_")),
+            .gridFit(.init(x: 2, y: 0)): .custom(.flickSimpleInputs(center: "α", subs: ["β", "γ"], centerLabel: "αβγ")),
+            .gridFit(.init(x: 3, y: 0)): .custom(.flickSimpleInputs(center: "δ", subs: ["ε", "ζ"], centerLabel: "δεζ")),
+            .gridFit(.init(x: 1, y: 1)): .custom(.flickSimpleInputs(center: "η", subs: ["θ", "ι"], centerLabel: "ηθι")),
+            .gridFit(.init(x: 2, y: 1)): .custom(.flickSimpleInputs(center: "κ", subs: ["λ", "μ"], centerLabel: "κλμ")),
+            .gridFit(.init(x: 3, y: 1)): .custom(.flickSimpleInputs(center: "ν", subs: ["ξ", "ο"], centerLabel: "νξο")),
+            .gridFit(.init(x: 1, y: 2)): .custom(.flickSimpleInputs(center: "π", subs: ["ρ", "σ", "ς"], centerLabel: "πρσς")),
+            .gridFit(.init(x: 2, y: 2)): .custom(.flickSimpleInputs(center: "τ", subs: ["υ", "φ"], centerLabel: "τυφ")),
+            .gridFit(.init(x: 3, y: 2)): .custom(.flickSimpleInputs(center: "χ", subs: ["ψ", "ω"], centerLabel: "χψω")),
             .gridFit(.init(x: 1, y: 3)): .custom(
                 .init(
                     design: .init(label: .text("a/A"), color: .normal),
@@ -86,10 +86,10 @@ let flick_greek = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 2, y: 3)): .custom(.flick_simple_inputs(center: "'", subs: ["\"", "(", ")"], centerLabel: "'\"()")),
-            .gridFit(.init(x: 3, y: 3)): .custom(.flick_simple_inputs(center: ".", subs: [",", ";", "!"], centerLabel: ".,;!")),
-            .gridFit(.init(x: 4, y: 0)): .custom(.flick_delete),
-            .gridFit(.init(x: 4, y: 1)): .custom(.flick_space),
+            .gridFit(.init(x: 2, y: 3)): .custom(.flickSimpleInputs(center: "'", subs: ["\"", "(", ")"], centerLabel: "'\"()")),
+            .gridFit(.init(x: 3, y: 3)): .custom(.flickSimpleInputs(center: ".", subs: [",", ";", "!"], centerLabel: ".,;!")),
+            .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete),
+            .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace),
             .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )

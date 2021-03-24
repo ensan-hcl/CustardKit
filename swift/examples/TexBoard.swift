@@ -27,11 +27,11 @@ let tex_tab = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 0, y: 1)): .system(.flick_abc_tab),
-            .gridFit(.init(x: 0, y: 2)): .system(.flick_hira_tab),
-            .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
-            .gridFit(.init(x: 1, y: 0)): .custom(.flick_simple_inputs(center: "1", subs: ["2", "3", "4", "5"], centerLabel: "12345")),
-            .gridFit(.init(x: 2, y: 0)): .custom(.flick_simple_inputs(center: "6", subs: ["7", "8", "9", "0"], centerLabel: "67890")),
+            .gridFit(.init(x: 0, y: 1)): .system(.flickAbcTab),
+            .gridFit(.init(x: 0, y: 2)): .system(.flickHiraTab),
+            .gridFit(.init(x: 0, y: 3)): .system(.changeKeyboard),
+            .gridFit(.init(x: 1, y: 0)): .custom(.flickSimpleInputs(center: "1", subs: ["2", "3", "4", "5"], centerLabel: "12345")),
+            .gridFit(.init(x: 2, y: 0)): .custom(.flickSimpleInputs(center: "6", subs: ["7", "8", "9", "0"], centerLabel: "67890")),
             .gridFit(.init(x: 3, y: 0)): .custom(
                 .init(
                     design: .init(label: .text("/+^-_"), color: .normal),
@@ -370,9 +370,9 @@ let tex_tab = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 3, y: 3)): .custom(.flick_simple_inputs(center: ".", subs: [",", "!", "?"], centerLabel: ".,!?")),
-            .gridFit(.init(x: 4, y: 0)): .custom(.flick_delete),
-            .gridFit(.init(x: 4, y: 1)): .custom(.flick_space),
+            .gridFit(.init(x: 3, y: 3)): .custom(.flickSimpleInputs(center: ".", subs: [",", "!", "?"], centerLabel: ".,!?")),
+            .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete),
+            .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace),
             .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )

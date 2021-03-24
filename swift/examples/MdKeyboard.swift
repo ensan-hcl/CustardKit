@@ -10,8 +10,8 @@ let md_custard = Custard(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridFit(.init(rowCount: 6, columnCount: 4)),
         keys: [
-            .gridFit(.init(x: 0, y: 0)): .system(.flick_star123_tab),
-            .gridFit(.init(x: 0, y: 1)): .system(.flick_abc_tab),
+            .gridFit(.init(x: 0, y: 0)): .system(.flickStar123Tab),
+            .gridFit(.init(x: 0, y: 1)): .system(.flickAbcTab),
             .gridFit(.init(x: 0, y: 2)): .custom(
                 .init(
                     design: .init(label: .text("あいう"), color: .selected),
@@ -20,19 +20,19 @@ let md_custard = Custard(
                     variations: []
                 )
             ),
-            .gridFit(.init(x: 0, y: 3)): .system(.change_keyboard),
-            .gridFit(.init(x: 1, y: 0)): .custom(.flick_simple_inputs(center: "あ", subs: ["い", "う", "え", "お"])),
-            .gridFit(.init(x: 2, y: 0)): .custom(.flick_simple_inputs(center: "か", subs: ["き", "く", "け", "こ"])),
-            .gridFit(.init(x: 3, y: 0)): .custom(.flick_simple_inputs(center: "さ", subs: ["し", "す", "せ", "そ"])),
-            .gridFit(.init(x: 1, y: 1)): .custom(.flick_simple_inputs(center: "た", subs: ["ち", "つ", "て", "と"])),
-            .gridFit(.init(x: 2, y: 1)): .custom(.flick_simple_inputs(center: "な", subs: ["に", "ぬ", "ね", "の"])),
-            .gridFit(.init(x: 3, y: 1)): .custom(.flick_simple_inputs(center: "は", subs: ["ひ", "ふ", "へ", "ほ"])),
-            .gridFit(.init(x: 1, y: 2)): .custom(.flick_simple_inputs(center: "ま", subs: ["み", "む", "め", "も"])),
-            .gridFit(.init(x: 2, y: 2)): .custom(.flick_simple_inputs(center: "や", subs: ["「", "ゆ", "」", "よ"])),
-            .gridFit(.init(x: 3, y: 2)): .custom(.flick_simple_inputs(center: "ら", subs: ["り", "る", "れ", "ろ"])),
-            .gridFit(.init(x: 1, y: 3)): .system(.flick_kogaki),
-            .gridFit(.init(x: 2, y: 3)): .custom(.flick_simple_inputs(center: "わ", subs: ["を", "ん", "ー", ""])),
-            .gridFit(.init(x: 3, y: 3)): .system(.flick_kutoten),
+            .gridFit(.init(x: 0, y: 3)): .system(.changeKeyboard),
+            .gridFit(.init(x: 1, y: 0)): .custom(.flickSimpleInputs(center: "あ", subs: ["い", "う", "え", "お"])),
+            .gridFit(.init(x: 2, y: 0)): .custom(.flickSimpleInputs(center: "か", subs: ["き", "く", "け", "こ"])),
+            .gridFit(.init(x: 3, y: 0)): .custom(.flickSimpleInputs(center: "さ", subs: ["し", "す", "せ", "そ"])),
+            .gridFit(.init(x: 1, y: 1)): .custom(.flickSimpleInputs(center: "た", subs: ["ち", "つ", "て", "と"])),
+            .gridFit(.init(x: 2, y: 1)): .custom(.flickSimpleInputs(center: "な", subs: ["に", "ぬ", "ね", "の"])),
+            .gridFit(.init(x: 3, y: 1)): .custom(.flickSimpleInputs(center: "は", subs: ["ひ", "ふ", "へ", "ほ"])),
+            .gridFit(.init(x: 1, y: 2)): .custom(.flickSimpleInputs(center: "ま", subs: ["み", "む", "め", "も"])),
+            .gridFit(.init(x: 2, y: 2)): .custom(.flickSimpleInputs(center: "や", subs: ["「", "ゆ", "」", "よ"])),
+            .gridFit(.init(x: 3, y: 2)): .custom(.flickSimpleInputs(center: "ら", subs: ["り", "る", "れ", "ろ"])),
+            .gridFit(.init(x: 1, y: 3)): .system(.flickKogaki),
+            .gridFit(.init(x: 2, y: 3)): .custom(.flickSimpleInputs(center: "わ", subs: ["を", "ん", "ー", ""])),
+            .gridFit(.init(x: 3, y: 3)): .system(.flickKutoten),
             .gridFit(.init(x: 4, y: 0)): .custom(
                 .init(
                     design: .init(label: .systemImage("bold"), color: .special),
@@ -180,8 +180,8 @@ let md_custard = Custard(
                     ]
                 )
             ),
-            .gridFit(.init(x: 5, y: 0)): .custom(.flick_delete),
-            .gridFit(.init(x: 5, y: 1)): .custom(.flick_space),
+            .gridFit(.init(x: 5, y: 0)): .custom(.flickDelete),
+            .gridFit(.init(x: 5, y: 1)): .custom(.flickSpace),
             .gridFit(.init(x: 5, y: 2, width: 1, height: 2)): .system(.enter),
         ]
     )

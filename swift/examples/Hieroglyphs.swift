@@ -4,7 +4,7 @@ import CustardKit
 let hieroglyphs = String.UnicodeScalarView((UInt32(0x13000)...UInt32(0x133FF)).compactMap(UnicodeScalar.init)).map(String.init)
 
 let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
-    .gridScroll(0): .system(.change_keyboard),
+    .gridScroll(0): .system(.changeKeyboard),
     .gridScroll(1): .custom(
         .init(
             design: .init(label: .text("←"), color: .special),

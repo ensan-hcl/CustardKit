@@ -34,7 +34,7 @@ numberkeys[.gridFit(.init(x: 0, y: 4))] = .custom(
     )
 )
 
-numberkeys[.gridFit(.init(x: 1, y: 4))] = .system(.change_keyboard)
+numberkeys[.gridFit(.init(x: 1, y: 4))] = .system(.changeKeyboard)
 numberkeys[.gridFit(.init(x: 2, y: 4))] = .custom(
     .init(
         design: .init(label: .systemImage("delete.left"), color: .special),
