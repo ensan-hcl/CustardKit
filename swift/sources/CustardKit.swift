@@ -493,18 +493,6 @@ public extension CustardKeyLabelStyle{
     }
 }
 
-/// - キーの変種の種類
-/// - type of key variation
-public enum CustardKeyVariationType: Equatable {
-    /// - variation of flick
-    /// - warning: when you use pc style, this type of variation would be ignored.
-    case flickVariation(FlickDirection)
-
-    /// - variation selectable when keys were longoressed, especially used in pc style keyboard.
-    /// - warning: when you use flick key style, this type of variation would be ignored.
-    case longpressVariation
-}
-
 /// - key's data in interface
 public enum CustardInterfaceKey: Equatable {
     case system(CustardInterfaceSystemKey)
@@ -690,16 +678,28 @@ public extension CustardInterfaceCustomKey {
 
 /// - variation of key, includes flick keys and selectable variations in pc style keyboard.
 public struct CustardInterfaceVariation: Codable, Equatable {
-    public init(type: CustardKeyVariationType, key: CustardInterfaceVariationKey) {
+    public init(type: VariationType, key: CustardInterfaceVariationKey) {
         self.type = type
         self.key = key
     }
 
     /// - type of the variation
-    let type: CustardKeyVariationType
+    let type: VariationType
 
     /// - data of variation
     let key: CustardInterfaceVariationKey
+
+    /// - キーの変種の種類
+    /// - type of key variation
+    public enum VariationType: Equatable {
+        /// - variation of flick
+        /// - warning: when you use pc style, this type of variation would be ignored.
+        case flickVariation(FlickDirection)
+
+        /// - variation selectable when keys were longoressed, especially used in pc style keyboard.
+        /// - warning: when you use flick key style, this type of variation would be ignored.
+        case longpressVariation
+    }
 }
 
 public extension CustardInterfaceVariation {
