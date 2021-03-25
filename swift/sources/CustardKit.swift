@@ -62,7 +62,7 @@ public enum CustardVersion: String, Codable {
     case v1_0 = "1.0"
 }
 
-public struct CustardMetaData: Codable, Equatable {
+public struct CustardMetadata: Codable, Equatable {
     public init(custard_version: CustardVersion, display_name: String) {
         self.custard_version = custard_version
         self.display_name = display_name
@@ -77,7 +77,7 @@ public struct CustardMetaData: Codable, Equatable {
 }
 
 public struct Custard: Codable, Equatable {
-    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetaData, interface: CustardInterface) {
+    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetadata, interface: CustardInterface) {
         self.identifier = identifier
         self.language = language
         self.input_style = input_style
@@ -96,7 +96,7 @@ public struct Custard: Codable, Equatable {
     let input_style: CustardInputStyle
 
     ///metadata
-    let metadata: CustardMetaData
+    let metadata: CustardMetadata
 
     ///interface
     let interface: CustardInterface
