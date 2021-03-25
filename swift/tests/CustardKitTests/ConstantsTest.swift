@@ -13,8 +13,29 @@ final class ConstantsTest: XCTestCase {
         XCTAssertEqual(FlickDirection.bottom.rawValue, "bottom")
     }
 
+    func testCustardLanguage() {
+        XCTAssertEqual(CustardLanguage.el_GR.rawValue, "el_GR")
+        XCTAssertEqual(CustardLanguage.ja_JP.rawValue, "ja_JP")
+        XCTAssertEqual(CustardLanguage.en_US.rawValue, "en_US")
+        XCTAssertEqual(CustardLanguage.none.rawValue, "none")
+        XCTAssertEqual(CustardLanguage.undefined.rawValue, "undefined")
+    }
+
+    func testCustardInputStyle() {
+        XCTAssertEqual(CustardInputStyle.direct.rawValue, "direct")
+        XCTAssertEqual(CustardInputStyle.roman2kana.rawValue, "roman2kana")
+    }
+
+    func testCustardInterfaceStyle() {
+        XCTAssertEqual(CustardInterfaceStyle.pcStyle.rawValue, "pc_style")
+        XCTAssertEqual(CustardInterfaceStyle.tenkeyStyle.rawValue, "tenkey_style")
+    }
+
     static var allTests = [
         ("testCustardVersion", testCustardVersion),
         ("testFlickDirection", testFlickDirection),
+        ("testCustardLanguage", testCustardLanguage),
+        ("testCustardInputStyle", testCustardInputStyle),
+        ("testCustardInterfaceStyle", testCustardInterfaceStyle)
     ]
 }
