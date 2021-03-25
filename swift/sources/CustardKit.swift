@@ -806,7 +806,7 @@ public enum TabData: Hashable{
     }
 }
 
-public struct ScanItem: Codable, Hashable {
+public struct ScanItem: Hashable {
     public init(targets: [String], direction: ScanItem.Direction) {
         self.targets = targets
         self.direction = direction
