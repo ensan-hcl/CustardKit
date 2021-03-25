@@ -1,8 +1,15 @@
-//
-//  File.swift
-//  
-//
-//  Created by β α on 2021/03/25.
-//
+import XCTest
+@testable import CustardKit
 
-import Foundation
+
+final class TabDataTest: XCTestCase {
+    func testSystemTab() {
+        XCTAssertEqual(TabData.SystemTab.flick_english.rawValue, "flick_english")
+        XCTAssertEqual(TabData.SystemTab.qwerty_japanese.rawValue, "qwerty_japanese")
+        XCTAssertEqual(TabData.SystemTab.last_tab.rawValue, "last_tab")
+    }
+
+    static var allTests = [
+        ("testSystemTab", testSystemTab),
+    ]
+}
