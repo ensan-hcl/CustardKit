@@ -111,4 +111,4 @@ hieroglyphs_custard = Custard(
         keys=keys
     )
 )
-hieroglyphs_custard.write(to="./results/number_font.json")
+hieroglyphs_custard.write(name="number_font")

@@ -107,4 +107,4 @@ custard = Custard(
     )
 )
 
-custard.write(to="./results/my_custard.json")
+custard.write(name="my_custard")

@@ -1,3 +1,4 @@
+from pathlib import Path
 from .layout import *
 from .keys import *
 from .lib import to_json_list
@@ -78,6 +79,31 @@ class Custard(object):
             "interface": self.interface.json()
         }
 
-    def write(self, to: str) -> dict:
+
+    def write(self, to: str = None, name: str = None, allow_overwrite: bool = False) -> dict:
+        """
+        Custardファイルを出力する関数
+        Parameters
+        ----------
+        to: str = None
+            出力先のパスを指定
+        name: str = None
+            出力先のパスを指定しない場合にファイル名を指定
+        allow_overwrite: bool = False
+            上書きを許可するか否か
+        """
+        if to is None:
+            result_directory_path = Path('__file__').resolve().parent / 'results'
+            if not result_directory_path.exists():
+                result_directory_path.mkdir()
+            if name is None:
+                name = 'custard'
+            target = result_directory_path / f'{name}.json'
+            number = 1
+            while target.exists() and not allow_overwrite:
+                number += 1
+                target = result_directory_path / f'{name}#{number}.json'
+            to = str(target)
+
         with open(f"{to}", mode="w") as f:
             f.write(json.dumps(self, cls=CustardJSONEncoder, ensure_ascii=False))

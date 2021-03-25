@@ -113,4 +113,4 @@ hieroglyphs_custard = Custard(
         keys=hieroglyphs_keys
     )
 )
-hieroglyphs_custard.write(to="./results/hieroglyphs.json")
+hieroglyphs_custard.write(name="hieroglyphs")
