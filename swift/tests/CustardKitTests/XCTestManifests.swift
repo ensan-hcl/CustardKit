@@ -9,7 +9,8 @@ public func allTests() -> [XCTestCaseEntry] {
         testCade(EncodeCodableActionTest.allTests),
         testCode(CustardVariationKeyDesignTest.allTests),
         testCode(CustardInterfaceVariationKeyTest.allTests),
-        testCode(CustardInterfaceVariationTest.allTests)
+        testCode(CustardInterfaceVariationTest.allTests),
+        testCode(CustardInterfaceSystemKeyTest.allTests)
     ]
 }
 #endif
