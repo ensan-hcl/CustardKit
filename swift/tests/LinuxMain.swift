@@ -3,5 +3,6 @@ import XCTest
 import CustardKitTests
 
 var tests = [XCTestCaseEntry]()
-tests += CustardKitTests.allTests()
+tests += ConstantsTest.allTests()
+tests += DecodeCodableActionTest.allTests()
 XCTMain(tests)
