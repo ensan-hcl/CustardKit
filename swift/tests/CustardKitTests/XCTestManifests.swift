@@ -16,7 +16,8 @@ public func allTests() -> [XCTestCaseEntry] {
         testCode(CustardInterfaceCustomKeyTest.allTests),
         testCode(CustardInterfaceLayoutTest.allTests),
         testCode(CustardInterfaceTest.allTests),
-        testCode(CustardMetadataTest.allTests)
+        testCode(CustardMetadataTest.allTests),
+        testCode(CustardTest.allTests)
     ]
 }
 #endif
