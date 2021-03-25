@@ -6,7 +6,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(ConstantsTest.allTests),
         testCade(TabDataTest.allTests),
         testCase(DecodeCodableActionTest.allTests),
-        testCade(EncodeCodableActionTest.allTests)
+        testCade(EncodeCodableActionTest.allTests),
         testCode(CustardVariationKeyDesignTest.allTests)
     ]
 }
