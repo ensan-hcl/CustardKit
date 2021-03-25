@@ -2,12 +2,6 @@ import XCTest
 @testable import CustardKit
 
 final class DecodeCodableActionTest: XCTestCase {
-    private func quickDecode(target: String) -> CodableActionData? {
-        let decoder = JSONDecoder()
-        let decoded = try? decoder.decode(CodableActionData.self, from: target.data(using: .utf8) ?? Data())
-        return decoded
-    }
-
     func testDecodeInput() {
         do{
             let target = """
@@ -16,7 +10,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "text": "😆"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .input("😆"))
         }
         do{
@@ -26,7 +20,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "text": 42
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, nil)
         }
     }
@@ -44,7 +38,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 }
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .replaceLastCharacters([
                 "天": "地",
                 "海": "山",
@@ -59,7 +53,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "table": {}
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .replaceLastCharacters([:]))
         }
     }
@@ -72,7 +66,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "count": 3
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .delete(3))
         }
         do{
@@ -82,7 +76,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "count": "-8"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, nil)
         }
     }
@@ -96,7 +90,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "direction": "backward"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartDelete(.init(targets: ["_"], direction: .backward)))
         }
         do{
@@ -107,7 +101,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "targets": ["、","。","！","？",".",",","．","，", "\\n"]
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartDelete())
         }
     }
@@ -120,7 +114,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "count": 3
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .moveCursor(3))
         }
         do{
@@ -130,7 +124,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "count": "-8"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, nil)
         }
     }
@@ -145,7 +139,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "direction": "backward"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartMoveCursor(.init(targets: ["…"], direction: .backward)))
         }
         do{
@@ -156,7 +150,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "targets": ["、","。","！","？",".",",","．","，", "\\n"]
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartMoveCursor())
         }
     }
@@ -170,7 +164,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "identifier": "last_tab"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .moveTab(.system(.last_tab)))
         }
         do{
@@ -181,7 +175,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "identifier": "flick_greek"
             }
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .moveTab(.custom("flick_greek")))
         }
     }
@@ -192,56 +186,56 @@ final class DecodeCodableActionTest: XCTestCase {
             let target = """
             {"type": "replace_default"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .replaceDefault)
         }
         do{
             let target = """
             {"type": "smart_delete_default"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartDeleteDefault)
         }
         do{
             let target = """
             {"type": "complete"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .complete)
         }
         do{
             let target = """
             {"type": "enable_resizing_mode"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .enableResizingMode)
         }
         do{
             let target = """
             {"type": "toggle_cursor_bar"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .toggleCursorBar)
         }
         do{
             let target = """
             {"type": "toggle_tab_bar"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .toggleTabBar)
         }
         do{
             let target = """
             {"type": "toggle_caps_lock_state"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .toggleCapsLockState)
         }
         do{
             let target = """
             {"type": "dismiss_keyboard"}
             """
-            let decoded = quickDecode(target: target)
+            let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .dismissKeyboard)
         }
     }
