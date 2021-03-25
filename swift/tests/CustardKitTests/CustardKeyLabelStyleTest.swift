@@ -15,6 +15,12 @@ final class CustardKeyLabelStyleTest: XCTestCase {
             """
             XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .systemImage("aris_to_teles"))
         }
+        do{
+            let target = """
+            {"systemimage": "aris_to_teles"}
+            """
+            XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), nil)
+        }
     }
 
     func testEncode() {

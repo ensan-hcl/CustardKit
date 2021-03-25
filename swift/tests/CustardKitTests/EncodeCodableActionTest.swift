@@ -5,22 +5,6 @@ import XCTest
 ///Test class for encoding of `CodableActionData`
 ///Make sure that decoding of `CodablaActionData` is successfuly working
 final class EncodeCodableActionTest: XCTestCase {
-    private func quickEncode(target: CodableActionData) -> Data? {
-        let encoder = JSONEncoder()
-        let encoded = try? encoder.encode(target)
-        return encoded
-    }
-
-    private func quickDecode(target: Data?) -> CodableActionData? {
-        let decoder = JSONDecoder()
-        let decoded = try? decoder.decode(CodableActionData.self, from: target ?? Data())
-        return decoded
-    }
-
-    private func quickEncodeDecode(target: CodableActionData) -> CodableActionData? {
-        return quickDecode(target: quickEncode(target: target))
-    }
-
     func testEncodeInput() {
         XCTAssertEqual(CodableActionData.input("😆").quickEncodeDecode(), .input("😆"))
         XCTAssertEqual(CodableActionData.input("\u{13000}").quickEncodeDecode(), .input("\u{13000}"))
