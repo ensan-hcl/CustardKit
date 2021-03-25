@@ -7,6 +7,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCade(TabDataTest.allTests),
         testCase(DecodeCodableActionTest.allTests),
         testCade(EncodeCodableActionTest.allTests),
+        testCode(CustardKeyLabelStyleTest.allTests),
         testCode(CustardVariationKeyDesignTest.allTests),
         testCode(CustardInterfaceVariationKeyTest.allTests),
         testCode(CustardInterfaceVariationTest.allTests),
