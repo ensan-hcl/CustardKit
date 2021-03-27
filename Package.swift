@@ -25,7 +25,7 @@ let package = Package(
             path: "swift/sources"
         ),
         .testTarget(
-            name: "ConstantsTest",
+            name: "CustardKitTests",
             dependencies: ["CustardKit"],
             path: "swift/tests/CustardKitTests"
         ),
