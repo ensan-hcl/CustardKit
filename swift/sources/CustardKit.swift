@@ -107,6 +107,13 @@ public struct Custard: Codable, Equatable {
     }
 }
 
+extension Array where Element == Custard {
+    public func write(to url: URL) throws {
+        let encoded_data = try JSONEncoder().encode(self)
+        try encoded_data.write(to: url)
+    }
+}
+
 /// - インターフェースのキーのスタイルです
 /// - style of keys
 public enum CustardInterfaceStyle: String, Codable {
