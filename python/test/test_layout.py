@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.layout import *
+from source.lib import to_json
 
 
 class TestLayout(unittest.TestCase):
@@ -18,7 +19,7 @@ class TestLayout(unittest.TestCase):
             "row_count": 0,
             "column_count": 1
         }
-        self.assertEqual(expected_json, layout.json())
+        self.assertEqual(expected_json, to_json(layout))
 
     def test_GridScrollLayout(self):
         """test method for GridScrollLayout
@@ -31,7 +32,7 @@ class TestLayout(unittest.TestCase):
             "row_count": 8,
             "column_count": 4.2
         }
-        self.assertEqual(expected_json, layout.json())
+        self.assertEqual(expected_json, to_json(layout))
 
     def test_ScrollDirection(self):
         """test method for ScrollDirection

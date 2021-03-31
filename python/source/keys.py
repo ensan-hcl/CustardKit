@@ -2,7 +2,7 @@ import json
 from .variations import *
 from .design import *
 from .actions import *
-from .lib import to_json_list
+from .lib import to_json_list, ignoreJSON, renameJSON
 from enum import Enum, unique
 
 
@@ -11,7 +11,10 @@ class Specifier(object):
 
 
 class GridFitSpecifier(Specifier):
-    type = "grid_fit"
+    @ignoreJSON
+    @property
+    def type(self):
+        return "grid_fit"
 
     def __init__(self, x: int, y: int, width: int = 1, height: int = 1):
         self.x = x
@@ -19,25 +22,15 @@ class GridFitSpecifier(Specifier):
         self.width = width
         self.height = height
 
-    def json(self) -> dict:
-        return {
-            "x": self.x,
-            "y": self.y,
-            "width": self.width,
-            "height": self.height
-        }
-
 
 class GridScrollSpecifier(Specifier):
-    type = "grid_scroll"
+    @ignoreJSON
+    @property
+    def type(self):
+        return "grid_scroll"
 
     def __init__(self, index: int):
         self.index = index
-
-    def json(self) -> dict:
-        return {
-            "index": self.index,
-        }
 
 
 class Key(object):
@@ -45,7 +38,9 @@ class Key(object):
 
 
 class CustomKey(Key):
-    type: str = "custom"
+    @ignoreJSON
+    @property
+    def type(self): return "custom"
 
     def __init__(self, design: KeyDesign, press_actions: list[Action], longpress_actions: LongpressAction = LongpressAction(), variations: list[VariationData] = []):
         self.design = design
@@ -53,16 +48,8 @@ class CustomKey(Key):
         self.longpress_actions = longpress_actions
         self.variations = variations
 
-    def json(self) -> dict:
-        return {
-            "design": self.design.json(),
-            "press_actions": to_json_list(self.press_actions),
-            "longpress_actions": self.longpress_actions.json(),
-            "variations": to_json_list(self.variations),
-        }
-
     #utility
-
+    @ignoreJSON
     @staticmethod
     def flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None):
         variations: [FlickVariationData] = []
@@ -91,6 +78,7 @@ class CustomKey(Key):
         )
 
     #utility
+    @ignoreJSON
     @staticmethod
     def flickDelete():
         return CustomKey(
@@ -110,6 +98,7 @@ class CustomKey(Key):
         )
 
     #utility
+    @ignoreJSON
     @staticmethod
     def flickSpace():
         return CustomKey(
@@ -157,15 +146,16 @@ class SystemKeyType(str, Enum):
 
 
 class SystemKey(Key):
-    type: str = "system"
+    @ignoreJSON
+    @property
+    def type(self): return "system"
 
     def __init__(self, identifier: SystemKeyType):
-        self.identifier = identifier
+        self._identfier = identifier
 
-    def json(self) -> dict:
-        return {
-            "type": self.identifier
-        }
+    @renameJSON("type")
+    @property
+    def identifier(self): return self._identfier
 
 
 class KeyData(object):
@@ -173,10 +163,8 @@ class KeyData(object):
         self.specifier = specifier
         self.key = key
 
-    def json(self) -> dict:
-        return {
-            "specifier_type": self.specifier.type,
-            "specifier": self.specifier.json(),
-            "key_type": self.key.type,
-            "key": self.key.json()
-        }
+    @property
+    def specifier_type(self): return self.specifier.type
+
+    @property
+    def key_type(self): return self.key.type

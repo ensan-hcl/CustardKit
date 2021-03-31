@@ -43,6 +43,7 @@ class TestLib(unittest.TestCase):
                 self.child = SomeJSONableChild()
                 self.a = True
                 self.b = [100, "foo", False]
+            def fuga(): pass
 
         actual = to_json(SomeJSONable())
         expected_json = {
@@ -60,6 +61,30 @@ class TestLib(unittest.TestCase):
             foo = "foo"
             bar = "bar"
         self.assertEqual(SomeJSONableEnum.foo, to_json(SomeJSONableEnum.foo))
+
+        class SomeJSONableWithProperties:
+            def __init__(self, uniqueId):
+                self.uniqueId = uniqueId
+
+            @property
+            def twice(self): return self.uniqueId * 2
+
+            @ignoreJSON
+            @property
+            def half(self): return self.uniqueId / 2
+
+            @renameJSON("1/4")
+            @property
+            def quarter(self): return self.uniqueId / 4
+
+        actual = to_json(SomeJSONableWithProperties(12))
+        expected_json = {
+            "uniqueId": 12,
+            "twice": 24,
+            "1/4": 3
+        }
+
+        self.assertEqual(actual, expected_json)
 
 if __name__ == "__main__":
     unittest.main()

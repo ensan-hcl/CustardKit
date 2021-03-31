@@ -13,9 +13,7 @@ class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
 
-class Action:
-    def json(self):
-        return to_json(self)
+class Action: pass
 
 class ActionMeta(type):
     def __new__(meta, name, bases, attributes):
@@ -72,7 +70,7 @@ class MoveTabAction(metaclass=ActionMeta):
             タブの識別子
         """
         self.tab_type = tab_type
-        self.text = text
+        self.identifier = text
 
 class MoveCursorAction(metaclass=ActionMeta):
     type = "move_cursor"

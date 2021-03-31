@@ -43,24 +43,11 @@ class Interface(object):
         self.key_style = key_style
         self.keys = keys
 
-    def json(self) -> dict:
-        return {
-            "key_layout": self.key_layout.json(),
-            "key_style": self.key_style,
-            "keys": to_json_list(self.keys),
-        }
-
 
 class Metadata(object):
     def __init__(self, custard_version: str, display_name: str):
         self.custard_version = custard_version
         self.display_name = display_name
-
-    def json(self) -> dict:
-        return {
-            "custard_version": self.custard_version,
-            "display_name": self.display_name,
-        }
 
 
 class Custard(object):
@@ -70,15 +57,6 @@ class Custard(object):
         self.input_style = input_style
         self.metadata = metadata
         self.interface = interface
-
-    def json(self) -> dict:
-        return {
-            "identifier": self.identifier,
-            "language": self.language,
-            "input_style": self.input_style,
-            "metadata": self.metadata.json(),
-            "interface": self.interface.json()
-        }
 
     def write(self, to: str = None, name: str = None, allow_overwrite: bool = False):
         """
