@@ -1,5 +1,6 @@
 import unittest
 import sys
+from enum import unique, Enum
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.lib import *
@@ -27,6 +28,38 @@ class TestLib(unittest.TestCase):
             { "index": 10 }
         ]
         self.assertEqual(expected_json, actual)
+
+    def test_to_json(self):
+        self.assertEqual(10, to_json(10))
+        self.assertEqual(1.2, to_json(1.2))
+        self.assertEqual("hoge", to_json("hoge"))
+        self.assertEqual(True, to_json(True))
+        class SomeJSONableChild:
+            def __init__(self):
+                self.a = 100
+                self.b = "hoge"
+        class SomeJSONable:
+            def __init__(self):
+                self.child = SomeJSONableChild()
+                self.a = True
+                self.b = [100, "foo", False]
+
+        actual = to_json(SomeJSONable())
+        expected_json = {
+            "child": {
+                "a": 100,
+                "b": "hoge"
+            },
+            "a": True,
+            "b": [100, "foo", False]
+        }
+        self.assertEqual(expected_json, actual)
+
+        @unique
+        class SomeJSONableEnum(Enum):
+            foo = "foo"
+            bar = "bar"
+        self.assertEqual(SomeJSONableEnum.foo, to_json(SomeJSONableEnum.foo))
 
 if __name__ == "__main__":
     unittest.main()
