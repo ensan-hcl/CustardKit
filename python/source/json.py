@@ -1,7 +1,7 @@
 from enum import Enum
 import collections
 
-_ignore_funcs = []
+_ignore_objects = []
 def ignore_json(func):
     """
     デコレーター修飾されたメソッドをjsonに含まない際に利用するデコレーター。
@@ -9,10 +9,10 @@ def ignore_json(func):
     例：@propertyと@rename_jsonと@ignore_jsonがある時：@propertyを一番下にする。
     @ignore_jsonと@rename_jsonの順序は問わない。
     """
-    _ignore_funcs.append(func)
+    _ignore_objects.append(func)
     return func
 
-_rename_funcs = {}
+_rename_objects = {}
 def rename_json(export_name):
     """
     デコレーター修飾されたメソッドをjsonに含む際に、キー名を変更するデコレーター。
@@ -21,7 +21,7 @@ def rename_json(export_name):
     @ignore_jsonと@rename_jsonの順序は問わない。
     """
     def _rename_json(func):
-        _rename_funcs[func] = export_name
+        _rename_objects[func] = export_name
         return func
     return _rename_json
 
@@ -29,11 +29,11 @@ def _make_json(dict, instance):
     json = {}
     for key in dict:
         value = dict[key]
-        if value in _ignore_funcs: continue
+        if value in _ignore_objects: continue
         if key.startswith('_'): continue
         if callable(value): continue
-        if isinstance(value, collections.Hashable) and value in _rename_funcs:
-            json[_rename_funcs[value]] = _to_json(value, instance)
+        if isinstance(value, collections.Hashable) and value in _rename_objects:
+            json[_rename_objects[value]] = _to_json(value, instance)
         else:
             json[key] = _to_json(value, instance)
     return json
