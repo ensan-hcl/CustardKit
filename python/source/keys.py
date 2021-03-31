@@ -2,7 +2,7 @@ import json
 from .variations import *
 from .design import *
 from .actions import *
-from .lib import ignore_json, rename_json
+from .json import ignore_json, rename_json
 from enum import Enum, unique
 
 

@@ -3,11 +3,11 @@ import sys
 from enum import unique, Enum
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
-from source.lib import *
+from source.json import *
 
 
-class TestLib(unittest.TestCase):
-    """test class of lib.py
+class TestJSON(unittest.TestCase):
+    """test class of json.py
     """
 
     def test_to_json(self):

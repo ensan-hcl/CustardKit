@@ -1,7 +1,7 @@
 from pathlib import Path
 from .layout import *
 from .keys import *
-from .lib import to_json
+from .json import to_json
 import json
 from enum import Enum, unique
 

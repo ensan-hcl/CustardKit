@@ -1,5 +1,5 @@
 import json
-from .lib import to_json
+from .json import to_json
 from enum import Enum, unique
 from abc import ABCMeta, abstractmethod
 

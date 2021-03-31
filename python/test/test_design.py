@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.design import *
-from source.lib import to_json
+from source.json import to_json
 
 
 class TestDesign(unittest.TestCase):
