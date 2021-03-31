@@ -10,25 +10,6 @@ class TestLib(unittest.TestCase):
     """test class of lib.py
     """
 
-    def test_to_json_list(self):
-        """test method for to_json_list
-        """
-
-        class SomeJSONableListItem:
-            def __init__(self, index: int):
-                self.index = index
-            def json(self):
-                return { "index": self.index }
-
-        actual = to_json_list([
-            SomeJSONableListItem(0), SomeJSONableListItem(5), SomeJSONableListItem(10)])
-        expected_json = [
-            { "index": 0 },
-            { "index": 5 },
-            { "index": 10 }
-        ]
-        self.assertEqual(expected_json, actual)
-
     def test_to_json(self):
         self.assertEqual(10, to_json(10))
         self.assertEqual(1.2, to_json(1.2))
@@ -42,7 +23,7 @@ class TestLib(unittest.TestCase):
             def __init__(self):
                 self.child = SomeJSONableChild()
                 self.a = True
-                self.b = [100, "foo", False]
+                self.b = [100, "foo", False, { "a": "b" }]
             def fuga(): pass
 
         actual = to_json(SomeJSONable())
@@ -52,7 +33,7 @@ class TestLib(unittest.TestCase):
                 "b": "hoge"
             },
             "a": True,
-            "b": [100, "foo", False]
+            "b": [100, "foo", False, { "a": "b" }]
         }
         self.assertEqual(expected_json, actual)
 

@@ -13,9 +13,6 @@ def rename_json(export_name):
         return func
     return _rename_json
 
-def to_json_list(jsonable_list):
-    return list(map(lambda item: to_json(item), jsonable_list))
-
 def _make_json(dict, instance):
     json = {}
     for key in dict:
@@ -33,7 +30,7 @@ def to_json(value, instance = None):
     if isinstance(value, Enum):
         return value
     elif isinstance(value, list):
-        return to_json_list(value)
+        return list(map(lambda item: to_json(item, instance), value))
     elif not instance is None and isinstance(value, property):
         return value.__get__(instance)
     elif hasattr(value, '__dict__'):
