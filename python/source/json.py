@@ -33,22 +33,16 @@ def _make_json(dict, instance):
         if key.startswith('_'): continue
         if callable(value): continue
         if isinstance(value, collections.Hashable) and value in _rename_funcs:
-            json[_rename_funcs[value]] = to_json(value, instance)
+            json[_rename_funcs[value]] = _to_json(value, instance)
         else:
-            json[key] = to_json(value, instance)
+            json[key] = _to_json(value, instance)
     return json
 
-def to_json(value, instance = None):
-    """
-    あらゆるものを、JSON Serializableにする。
-    Enumはそのまま維持されるので、JSONになるわけではない。
-    クラスのインスタンスは、メンバー変数・デコレーター修飾されたメソッド(propertyなど)が書き出される。
-    普通のメソッドは書きだされない。
-    """
+def _to_json(value, instance = None):
     if isinstance(value, Enum):
         return value
     elif isinstance(value, list):
-        return list(map(lambda item: to_json(item, instance), value))
+        return list(map(lambda item: _to_json(item, instance), value))
     elif not instance is None and isinstance(value, property):
         return value.__get__(instance)
     elif hasattr(value, '__dict__'):
@@ -57,3 +51,17 @@ def to_json(value, instance = None):
             **_make_json(value.__class__.__dict__, value)
         }
     return value
+
+def to_json(value):
+    """
+    あらゆるものを、JSON Serializableにする。
+    Enumはそのまま維持されるので、JSONになるわけではない。
+    クラスのインスタンスは、メンバー変数・デコレーター修飾されたメソッド(propertyなど)が書き出される。
+    普通のメソッドは書きだされない。
+
+    Parameters
+    ----------
+    value: Any
+        JSON Serializableにするもの。
+    """
+    return _to_json(value)
