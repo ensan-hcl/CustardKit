@@ -151,11 +151,11 @@ class SystemKey(Key):
     def type(self): return "system"
 
     def __init__(self, identifier: SystemKeyType):
-        self._identfier = identifier
+        self._identifier = identifier
 
     @rename_json("type")
     @property
-    def identifier(self): return self._identfier
+    def identifier(self): return self._identifier
 
 
 class KeyData(object):
