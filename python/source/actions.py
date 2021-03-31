@@ -13,9 +13,19 @@ class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
 
-class Action: pass
+class Action:
+    """
+    全てのActionの継承元となるクラス。
+    metaclassによって、自動的に割り当てられる。
+    """
+    pass
 
 class ActionMeta(type):
+    """
+    全てのActionのメタクラス。
+    メンバー`type`を持つかの検証と、継承元の割り当てを行う。
+    Actionを作る際は、このクラスをmetaclassとして指定すればよい。
+    """
     def __new__(meta, name, bases, attributes):
         bases = (Action,)
         if not "type" in attributes:
