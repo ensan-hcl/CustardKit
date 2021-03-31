@@ -163,7 +163,7 @@ class DismissKeyboardAction(metaclass=ActionMeta):
     type = "dismiss_keyboard"
 
 class LongpressAction(object):
-    def __init__(self, start: list[dict] = [], repeat: list[dict] = []):
+    def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
         """
         イニシャライザ
         Parameters
