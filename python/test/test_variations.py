@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.variations import *
-from source.lib import to_json_list
+from source.json import to_json
 
 
 class TestVariations(unittest.TestCase):
@@ -32,11 +32,11 @@ class TestVariations(unittest.TestCase):
         variation = Variation(
             self.design, self.press_actions, longpress_actions)
         expected_json = {
-            "design": self.design.json(),
-            "press_actions": to_json_list(self.press_actions),
-            "longpress_actions": longpress_actions.json(),
+            "design": to_json(self.design),
+            "press_actions": to_json(self.press_actions),
+            "longpress_actions": to_json(longpress_actions),
         }
-        self.assertEqual(expected_json, variation.json())
+        self.assertEqual(expected_json, to_json(variation))
 
     def test_FlickDirection(self):
         """test method for FlickDirection
@@ -63,9 +63,9 @@ class TestVariations(unittest.TestCase):
         expected_json = {
             "type": "flick_variation",
             "direction": FlickDirection.bottom,
-            "key": variation.json()
+            "key": to_json(variation)
         }
-        self.assertEqual(expected_json, data.json())
+        self.assertEqual(expected_json, to_json(data))
 
     def test_LongpressVariationData(self):
         """test method for LongpressVariationData
@@ -76,9 +76,9 @@ class TestVariations(unittest.TestCase):
         data = LongpressVariationData(variation)
         expected_json = {
             "type": "longpress_variation",
-            "key": variation.json()
+            "key": to_json(variation)
         }
-        self.assertEqual(expected_json, data.json())
+        self.assertEqual(expected_json, to_json(data))
 
 
 if __name__ == "__main__":

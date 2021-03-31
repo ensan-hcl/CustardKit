@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.design import *
+from source.json import to_json
 
 
 class TestDesign(unittest.TestCase):
@@ -28,7 +29,7 @@ class TestDesign(unittest.TestCase):
         expected_json = {
             "text": "hogefugapiyo",
         }
-        self.assertEqual(expected_json, label.json())
+        self.assertEqual(expected_json, to_json(label))
 
     def test_SystemImageLabel(self):
         """test method for SystemImageLabel
@@ -37,7 +38,7 @@ class TestDesign(unittest.TestCase):
         expected_json = {
             "system_image": "azooKey",
         }
-        self.assertEqual(expected_json, label.json())
+        self.assertEqual(expected_json, to_json(label))
 
     def test_KeyDesign(self):
         """test method for KeyDesign
@@ -46,19 +47,19 @@ class TestDesign(unittest.TestCase):
         color = KeyColor.special
         key_design = KeyDesign(label, color)
         expected_json = {
-            "label": label.json(),
+            "label": to_json(label),
             "color": color
         }
-        self.assertEqual(expected_json, key_design.json())
+        self.assertEqual(expected_json, to_json(key_design))
 
         label = TextLabel("😭😭😭")
         color = KeyColor.selected
         key_design = KeyDesign(label, color)
         expected_json = {
-            "label": label.json(),
+            "label": to_json(label),
             "color": color
         }
-        self.assertEqual(expected_json, key_design.json())
+        self.assertEqual(expected_json, to_json(key_design))
 
     def test_VariationDesign(self):
         """test method for KeyDesign
@@ -66,16 +67,16 @@ class TestDesign(unittest.TestCase):
         label = SystemImageLabel("azooKey")
         design = VariationDesign(label)
         expected_json = {
-            "label": label.json(),
+            "label": to_json(label),
         }
-        self.assertEqual(expected_json, design.json())
+        self.assertEqual(expected_json, to_json(design))
 
         label = TextLabel("😭😭😭")
         design = VariationDesign(label)
         expected_json = {
-            "label": label.json(),
+            "label": to_json(label),
         }
-        self.assertEqual(expected_json, design.json())
+        self.assertEqual(expected_json, to_json(design))
 
 
 if __name__ == "__main__":

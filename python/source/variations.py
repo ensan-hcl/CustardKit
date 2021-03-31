@@ -1,7 +1,6 @@
 import json
 from .design import *
 from .actions import *
-from .lib import to_json_list
 from enum import Enum, unique
 
 
@@ -10,13 +9,6 @@ class Variation(object):
         self.design = design
         self.press_actions = press_actions
         self.longpress_actions = longpress_actions
-
-    def json(self) -> dict:
-        return {
-            "design": self.design.json(),
-            "press_actions": to_json_list(self.press_actions),
-            "longpress_actions": self.longpress_actions.json(),
-        }
 
 
 class VariationData(object):
@@ -38,22 +30,8 @@ class FlickVariationData(VariationData):
         self.direction = direction
         self.key = key
 
-    def json(self) -> dict:
-        return {
-            "type": self.type,
-            "direction": self.direction,
-            "key": self.key.json()
-        }
-
-
 class LongpressVariationData(VariationData):
     type = "longpress_variation"
 
     def __init__(self, key: Variation):
         self.key = key
-
-    def json(self) -> dict:
-        return {
-            "type": self.type,
-            "key": self.key.json()
-        }

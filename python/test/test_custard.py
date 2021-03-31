@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.custard import *
+from source.json import to_json
 
 
 class TestCustard(unittest.TestCase):
@@ -19,11 +20,11 @@ class TestCustard(unittest.TestCase):
 
         interface = Interface(layout, style, [key])
         expected_json = {
-            "key_layout": layout.json(),
+            "key_layout": to_json(layout),
             "key_style": style,
-            "keys": [key.json()],
+            "keys": [to_json(key)],
         }
-        self.assertEqual(expected_json, interface.json())
+        self.assertEqual(expected_json, to_json(interface))
 
     def test_Metadata(self):
         """test method for Metadata
@@ -33,7 +34,7 @@ class TestCustard(unittest.TestCase):
             "custard_version": "1.0",
             "display_name": "アインシュタインロンポウ",
         }
-        self.assertEqual(expected_json, metadata.json())
+        self.assertEqual(expected_json, to_json(metadata))
 
     def test_Language(self):
         """test method for Language
@@ -96,10 +97,10 @@ class TestCustard(unittest.TestCase):
             "identifier": identifier,
             "language": language,
             "input_style": input_style,
-            "metadata": metadata.json(),
-            "interface": interface.json()
+            "metadata": to_json(metadata),
+            "interface": to_json(interface)
         }
-        self.assertEqual(expected_json, custard.json())
+        self.assertEqual(expected_json, to_json(custard))
 
 
 if __name__ == "__main__":

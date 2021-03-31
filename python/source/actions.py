@@ -1,5 +1,5 @@
 import json
-from .lib import to_json_list
+from .json import to_json
 from enum import Enum, unique
 from abc import ABCMeta, abstractmethod
 
@@ -13,11 +13,27 @@ class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
 
-class Action(metaclass=ABCMeta):
-    @abstractmethod
-    def json(self): pass
+class Action:
+    """
+    全てのActionの継承元となるクラス。
+    metaclassによって、自動的に割り当てられる。
+    """
+    pass
 
-class InputAction(Action):
+class ActionMeta(type):
+    """
+    全てのActionのメタクラス。
+    メンバー`type`を持つかの検証と、継承元の割り当てを行う。
+    Actionを作る際は、このクラスをmetaclassとして指定すればよい。
+    """
+    def __new__(meta, name, bases, attributes):
+        bases = (Action,)
+        if not "type" in attributes:
+            raise TypeError("Action has no type!")
+        return type.__new__(meta, name, bases, attributes)
+
+class InputAction(metaclass=ActionMeta):
+    type = "input"
     def __init__(self, text: str):
         """
         文字を入力するアクション
@@ -28,13 +44,8 @@ class InputAction(Action):
         """
         self.text = text
 
-    def json(self):
-        return {
-            "type": "input",
-            "text": self.text
-        }
-
-class ReplaceLastCharactersAction(Action):
+class ReplaceLastCharactersAction(metaclass=ActionMeta):
+    type = "replace_last_characters"
     def __init__(self, table: dict[str, str]):
         """
         最後の文字を置換するアクション
@@ -45,27 +56,19 @@ class ReplaceLastCharactersAction(Action):
         """
         self.table = table
 
-    def json(self):
-        return {
-            "type": "replace_last_characters",
-            "table": self.table
-        }
-
-class ReplaceDefaultAction(Action):
-    def json(self):
-        """
-        azooKeyデフォルトの置換アクション
-        """
-        return {
-            "type": "replace_default"
-        }
+class ReplaceDefaultAction(metaclass=ActionMeta):
+    """
+    azooKeyデフォルトの置換アクション
+    """
+    type = "replace_default"
 
 @unique
 class TabType(str, Enum):
     system = "system"
     custom = "custom"
 
-class MoveTabAction(Action):
+class MoveTabAction(metaclass=ActionMeta):
+    type = "move_tab"
     def __init__(self, tab_type: TabType, text: str):
         """
         タブを移動するアクション
@@ -77,16 +80,10 @@ class MoveTabAction(Action):
             タブの識別子
         """
         self.tab_type = tab_type
-        self.text = text
+        self.identifier = text
 
-    def json(self):
-        return {
-            "type": "move_tab",
-            "tab_type": self.tab_type,
-            "identifier": self.text
-        }
-
-class MoveCursorAction(Action):
+class MoveCursorAction(metaclass=ActionMeta):
+    type = "move_cursor"
     def __init__(self, count: int):
         """
         カーソルを移動するアクション
@@ -97,13 +94,8 @@ class MoveCursorAction(Action):
         """
         self.count = count
 
-    def json(self):
-        return {
-            "type": "move_cursor",
-            "count": self.count
-        }
-
-class SmartMoveCursorAction(Action):
+class SmartMoveCursorAction(metaclass=ActionMeta):
+    type = "smart_move_cursor"
     def __init__(self, direction: ScanDirection, targets: list[str]):
         """
         指定した文字の隣までカーソルを移動するアクション
@@ -117,14 +109,8 @@ class SmartMoveCursorAction(Action):
         self.direction = direction
         self.targets = targets
 
-    def json(self):
-        return {
-            "type": "smart_move_cursor",
-            "direction": self.direction,
-            "targets": self.targets
-        }
-
-class DeleteAction(Action):
+class DeleteAction(metaclass=ActionMeta):
+    type = "delete"
     def __init__(self, count: int):
         """
         文字を削除するアクション
@@ -135,13 +121,8 @@ class DeleteAction(Action):
         """
         self.count = count
 
-    def json(self):
-        return {
-            "type": "delete",
-            "count": self.count
-        }
-
-class SmartDeleteAction(Action):
+class SmartDeleteAction(metaclass=ActionMeta):
+    type = "smart_delete"
     def __init__(self, direction: ScanDirection, targets: list[str]):
         """
         指定した文字の隣まで文字を削除するアクション
@@ -155,70 +136,44 @@ class SmartDeleteAction(Action):
         self.direction = direction
         self.targets = targets
 
-    def json(self):
-        return {
-            "type": "smart_delete",
-            "direction": self.direction,
-            "targets": self.targets
-        }
-
-class SmartDeleteDefaultAction(Action):
+class SmartDeleteDefaultAction(metaclass=ActionMeta):
     """
     azooKeyデフォルトの文頭まで削除アクション
     """
+    type = "smart_delete_default"
 
-    def json(self):
-        return {
-            "type": "smart_delete_default"
-        }
-
-class EnableResizingModeAction(Action):
+class EnableResizingModeAction(metaclass=ActionMeta):
     """
     片手モードの調整を始めるアクション
     """
-    def json(self):
-        return {
-            "type": "enable_resizing_mode"
-        }
+    type = "enable_resizing_mode"
 
-class ToggleCursorBarAction(Action):
+class ToggleCursorBarAction(metaclass=ActionMeta):
     """
     カーソルバーの表示状態をtoggleするアクション
     """
-    def json(self):
-        return {
-            "type": "toggle_cursor_bar"
-        }
+    type = "toggle_cursor_bar"
 
-class ToggleTabBarAction(Action):
+class ToggleTabBarAction(metaclass=ActionMeta):
     """
     タブバーの表示状態をtoggleするアクション
     """
-    def json(self):
-        return {
-            "type": "toggle_tab_bar"
-        }
+    type = "toggle_tab_bar"
 
-class ToggleCapsLockStateAction(Action):
+class ToggleCapsLockStateAction(metaclass=ActionMeta):
     """
     Caps lockの状態をtoggleするアクション
     """
-    def json(self):
-        return {
-            "type": "toggle_caps_lock_state"
-        }
+    type = "toggle_caps_lock_state"
 
-class DismissKeyboardAction(Action):
+class DismissKeyboardAction(metaclass=ActionMeta):
     """
     キーボードを閉じるアクション
     """
-    def json(self):
-        return {
-            "type": "dismiss_keyboard"
-        }
+    type = "dismiss_keyboard"
 
 class LongpressAction(object):
-    def __init__(self, start: list[dict] = [], repeat: list[dict] = []):
+    def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
         """
         イニシャライザ
         Parameters
@@ -231,9 +186,3 @@ class LongpressAction(object):
 
         self.start = start
         self.repeat = repeat
-
-    def json(self) -> dict:
-        return {
-            "start": to_json_list(self.start),
-            "repeat": to_json_list(self.repeat)
-        }

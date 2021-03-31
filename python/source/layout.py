@@ -13,13 +13,6 @@ class GridFitLayout(Layout):
         self.row_count = row_count
         self.column_count = column_count
 
-    def json(self) -> dict:
-        return {
-            "type": self.type,
-            "row_count": self.row_count,
-            "column_count": self.column_count
-        }
-
 
 @unique
 class ScrollDirection(str, Enum):
@@ -34,11 +27,3 @@ class GridScrollLayout(Layout):
         self.direction = direction
         self.row_count = row_count
         self.column_count = column_count
-
-    def json(self) -> dict:
-        return {
-            "type":  self.type,
-            "direction": self.direction,
-            "row_count": self.row_count,
-            "column_count": self.column_count
-        }
