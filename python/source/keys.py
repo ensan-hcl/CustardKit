@@ -2,7 +2,7 @@ import json
 from .variations import *
 from .design import *
 from .actions import *
-from .lib import to_json_list, ignoreJSON, renameJSON
+from .lib import ignore_json, rename_json
 from enum import Enum, unique
 
 
@@ -11,7 +11,7 @@ class Specifier(object):
 
 
 class GridFitSpecifier(Specifier):
-    @ignoreJSON
+    @ignore_json
     @property
     def type(self):
         return "grid_fit"
@@ -24,7 +24,7 @@ class GridFitSpecifier(Specifier):
 
 
 class GridScrollSpecifier(Specifier):
-    @ignoreJSON
+    @ignore_json
     @property
     def type(self):
         return "grid_scroll"
@@ -38,7 +38,7 @@ class Key(object):
 
 
 class CustomKey(Key):
-    @ignoreJSON
+    @ignore_json
     @property
     def type(self): return "custom"
 
@@ -49,7 +49,7 @@ class CustomKey(Key):
         self.variations = variations
 
     #utility
-    @ignoreJSON
+    @ignore_json
     @staticmethod
     def flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None):
         variations: [FlickVariationData] = []
@@ -78,7 +78,7 @@ class CustomKey(Key):
         )
 
     #utility
-    @ignoreJSON
+    @ignore_json
     @staticmethod
     def flickDelete():
         return CustomKey(
@@ -98,7 +98,7 @@ class CustomKey(Key):
         )
 
     #utility
-    @ignoreJSON
+    @ignore_json
     @staticmethod
     def flickSpace():
         return CustomKey(
@@ -146,14 +146,14 @@ class SystemKeyType(str, Enum):
 
 
 class SystemKey(Key):
-    @ignoreJSON
+    @ignore_json
     @property
     def type(self): return "system"
 
     def __init__(self, identifier: SystemKeyType):
         self._identfier = identifier
 
-    @renameJSON("type")
+    @rename_json("type")
     @property
     def identifier(self): return self._identfier
 

@@ -69,11 +69,11 @@ class TestLib(unittest.TestCase):
             @property
             def twice(self): return self.uniqueId * 2
 
-            @ignoreJSON
+            @ignore_json
             @property
             def half(self): return self.uniqueId / 2
 
-            @renameJSON("1/4")
+            @rename_json("1/4")
             @property
             def quarter(self): return self.uniqueId / 4
 

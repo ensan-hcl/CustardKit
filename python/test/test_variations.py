@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
 from source.variations import *
-from source.lib import to_json_list, to_json
+from source.lib import to_json
 
 
 class TestVariations(unittest.TestCase):

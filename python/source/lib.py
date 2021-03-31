@@ -2,16 +2,16 @@ from enum import Enum
 import collections
 
 _ignore_funcs = []
-def ignoreJSON(func):
+def ignore_json(func):
     _ignore_funcs.append(func)
     return func
 
 _rename_funcs = {}
-def renameJSON(export_name):
-    def _renameJSON(func):
+def rename_json(export_name):
+    def _rename_json(func):
         _rename_funcs[func] = export_name
         return func
-    return _renameJSON
+    return _rename_json
 
 def to_json_list(jsonable_list):
     return list(map(lambda item: to_json(item), jsonable_list))
@@ -21,7 +21,6 @@ def _make_json(dict, instance):
     for key in dict:
         value = dict[key]
         if value in _ignore_funcs: continue
-        if hasattr(value, '__ignore_json__') and value.__ignore_json__: continue
         if key.startswith('_'): continue
         if callable(value): continue
         if isinstance(value, collections.Hashable) and value in _rename_funcs:

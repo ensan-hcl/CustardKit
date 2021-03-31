@@ -1,17 +1,15 @@
 from pathlib import Path
 from .layout import *
 from .keys import *
-from .lib import to_json_list,to_json
+from .lib import to_json
 import json
 from enum import Enum, unique
 
 
 class CustardJSONEncoder(json.JSONEncoder):
     def default(self, o):
-        if isinstance(o, Custard):
-            return o.json()
-        if isinstance(o, CustardList):
-            return to_json_list(o.custards)
+        if isinstance(o, Custard) or isinstance(o, CustardList):
+            return to_json(o)
         # 他の型はdefaultのエンコード方式を使用
         return super(CustardJSONEncoder, self).default(o)
 

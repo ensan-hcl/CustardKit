@@ -1,5 +1,5 @@
 import json
-from .lib import to_json_list, to_json
+from .lib import to_json
 from enum import Enum, unique
 from abc import ABCMeta, abstractmethod
 
@@ -176,9 +176,3 @@ class LongpressAction(object):
 
         self.start = start
         self.repeat = repeat
-
-    def json(self) -> dict:
-        return {
-            "start": to_json_list(self.start),
-            "repeat": to_json_list(self.repeat)
-        }
