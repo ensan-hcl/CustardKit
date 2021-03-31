@@ -4,7 +4,7 @@ import collections
 _ignore_funcs = []
 def ignore_json(func):
     """
-    プロパティ(@property指定されたメソッド)をjsonに含まない際に利用するデコレーター。
+    デコレーター修飾されたメソッドをjsonに含まない際に利用するデコレーター。
     デコレーターが複数ある際は、他のjson系以外のデコレーターより上部にくるように指定する。
     例：@propertyと@rename_jsonと@ignore_jsonがある時：@propertyを一番下にする。
     @ignore_jsonと@rename_jsonの順序は問わない。
@@ -15,7 +15,7 @@ def ignore_json(func):
 _rename_funcs = {}
 def rename_json(export_name):
     """
-    プロパティ(@property指定されたメソッド)をjsonに含む際に、キー前を変更するデコレーター。
+    デコレーター修飾されたメソッドをjsonに含む際に、キー名を変更するデコレーター。
     デコレーターが複数ある際は、他のjson系以外のデコレーターより上部にくるように指定する。
     例：@propertyと@rename_jsonと@ignore_jsonがある時：@propertyを一番下にする。
     @ignore_jsonと@rename_jsonの順序は問わない。
