@@ -296,19 +296,83 @@ Custard(
 
 ### 複数のカスタードファイルを1つにまとめる
 
-カスタードのデータを配列で指定することで、読み込み側が複数のファイルを一括でに読み込めます。
+カスタードのデータを配列で指定することで、読み込み側が複数のファイルを一括で読み込めます。
 
-```
-[
+```Python
+custards = [
   {カスタードの記述1},
   {カスタードの記述2},
   {カスタードの記述3},
 ]
 ```
 
----
-
 以上でカスタードの記述の説明は終わりです。
+
+## ツール
+
+特定の状況でより簡単に記述するため、ユーティリティが用意されています。
+
+### キーの作成
+
+以下の2つの関数が用意されています。
+
+```python
+CustomKey.flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None) -> CustomKey
+
+CustomKey.flickSimpleInputAndLabels(center: Union[tuple[str, str], str], left: Union[tuple[str, str], str, None] = None, top: Union[tuple[str, str], str, None] = None, right: Union[tuple[str, str], str, None] = None, bottom: Union[tuple[str, str], str, None] = None) -> CustomKey
+```
+
+`CustomKey.flickSimpleInputs`では、中心の文字とフリックで入力する文字を順番に指定することで`CustomKey`オブジェクトを作成します。以下のように用いることができます。
+
+```python
+key = CustomKey.flickSimpleInputs(center = "あ", subs = ["い", "う", "え", "お"], centerLabel = "あいう")
+```
+
+`CustomKey.flickSimpleInputAndLabels`では、フリックで入力する文字にもラベルを指定することができます。以下のように用いることができます。
+
+```python
+key = CustomKey.flickSimpleInputAndLab(
+    center = ("😸", ":smile_cat:"), 
+    left = ("😿", ":crying_cat_face:"),
+    right = ("😻", ":heart_eyes_cat:"),
+)
+```
+
+この関数では、ラベルと入力が同じ場合に指定を省略することができます。
+
+```python
+key = CustomKey.flickSimpleInputAndLab(
+    center = ("あ", "あ゛"), 
+    left = ("い", "い゛"),
+    top = "ゔ",
+    right = ("え", "え゛"),
+    bottom = ("お", "お゛")
+)
+```
+
+### 書き出し
+
+書き出しのための関数が用意されています。
+
+```python
+#指定したpathにcustardファイルを書き出します
+custard.write(to = path)
+
+#resultディレクトリ内に指定した名前でcustardファイルを書き出します
+custard.write(name = path)
+
+#resultディレクトリ内に指定した名前で上書きを許可しながらcustardファイルを書き出します
+custard.write(name = path, allow_overwrite = True)
+```
+
+複数のCustardオブジェクトを1つのファイルとして書き出す場合は`CustardList`オブジェクトに包みます。書き出しはCustardオブジェクトと同様に行うことができます。
+
+```python
+custardList = CustardList([custard1, custard2, custard3])
+
+#指定したpathにcustardのリストのファイルを書き出します
+custardList.write(to = path)
+```
 
 ## 用例
 
