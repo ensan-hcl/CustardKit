@@ -8,8 +8,10 @@ from enum import Enum, unique
 
 class CustardJSONEncoder(json.JSONEncoder):
     def default(self, o):
-        if isinstance(o, Custard) or isinstance(o, CustardList):
+        if isinstance(o, Custard):
             return to_json(o)
+        if isinstance(o, CustardList):
+            return to_json(o.custards)
         # 他の型はdefaultのエンコード方式を使用
         return super(CustardJSONEncoder, self).default(o)
 
