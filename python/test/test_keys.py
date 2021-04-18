@@ -1,9 +1,9 @@
+from source.json import to_json
+from source.keys import *
 import unittest
 import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
-from source.keys import *
-from source.json import to_json
 
 
 class TestKeys(unittest.TestCase):
@@ -64,7 +64,7 @@ class TestKeys(unittest.TestCase):
         design = KeyDesign(TextLabel("花粉症"), KeyColor.selected)
         press_actions = [
             MoveTabAction(tab_type=TabType.custom,
-                            text="superstrongkeyboard"),
+                          text="superstrongkeyboard"),
         ]
         variation_design = VariationDesign(TextLabel("アレジオン"))
         variation = Variation(variation_design, [], LongpressAction())
@@ -149,17 +149,21 @@ class TestKeys(unittest.TestCase):
         flickSpace = CustomKey.flickSpace()
         self.assertEqual(flickSpace.design.label.text, "空白")
         self.assertEqual(flickSpace.design.color, KeyColor.special)
-        self.assertEqual(to_json(flickSpace.press_actions), [to_json(InputAction(" "))])
-        self.assertEqual(to_json(flickSpace.longpress_actions.start), [to_json(ToggleCursorBarAction())])
+        self.assertEqual(to_json(flickSpace.press_actions),
+                         [to_json(InputAction(" "))])
+        self.assertEqual(to_json(flickSpace.longpress_actions.start), [
+                         to_json(ToggleCursorBarAction())])
         self.assertEqual(flickSpace.longpress_actions.repeat, [])
         self.assertEqual(len(flickSpace.variations), 3)
 
         flickDelete = CustomKey.flickDelete()
         self.assertEqual(flickDelete.design.label.system_image, "delete.left")
         self.assertEqual(flickDelete.design.color, KeyColor.special)
-        self.assertEqual(to_json(flickDelete.press_actions), [to_json(DeleteAction(1))])
+        self.assertEqual(to_json(flickDelete.press_actions),
+                         [to_json(DeleteAction(1))])
         self.assertEqual(flickDelete.longpress_actions.start, [])
-        self.assertEqual(to_json(flickDelete.longpress_actions.repeat), [to_json(DeleteAction(1))])
+        self.assertEqual(to_json(flickDelete.longpress_actions.repeat), [
+                         to_json(DeleteAction(1))])
         self.assertEqual(len(flickDelete.variations), 1)
 
     def test_FlickSimpleInputs(self):
@@ -168,7 +172,8 @@ class TestKeys(unittest.TestCase):
         inputs = CustomKey.flickSimpleInputs("裁判", subs=["冤罪", "贖罪", "脅迫罪"])
         self.assertEqual(inputs.design.label.text, "裁判")
         self.assertEqual(inputs.design.color, KeyColor.normal)
-        self.assertEqual(to_json(inputs.press_actions), [to_json(InputAction("裁判"))])
+        self.assertEqual(to_json(inputs.press_actions),
+                         [to_json(InputAction("裁判"))])
         self.assertEqual(inputs.longpress_actions.start, [])
         self.assertEqual(inputs.longpress_actions.repeat, [])
 
@@ -176,20 +181,23 @@ class TestKeys(unittest.TestCase):
 
         self.assertEqual(inputs.variations[0].direction, FlickDirection.left)
         self.assertEqual(inputs.variations[0].key.design.label.text, "冤罪")
-        self.assertEqual(to_json(inputs.variations[0].key.press_actions), [to_json(InputAction("冤罪"))])
+        self.assertEqual(to_json(inputs.variations[0].key.press_actions), [
+                         to_json(InputAction("冤罪"))])
 
         self.assertEqual(inputs.variations[0].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[0].key.longpress_actions.repeat, [])
 
         self.assertEqual(inputs.variations[1].direction, FlickDirection.top)
         self.assertEqual(inputs.variations[1].key.design.label.text, "贖罪")
-        self.assertEqual(to_json(inputs.variations[1].key.press_actions), [to_json(InputAction("贖罪"))])
+        self.assertEqual(to_json(inputs.variations[1].key.press_actions), [
+                         to_json(InputAction("贖罪"))])
         self.assertEqual(inputs.variations[1].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[1].key.longpress_actions.repeat, [])
 
         self.assertEqual(inputs.variations[2].direction, FlickDirection.right)
         self.assertEqual(inputs.variations[2].key.design.label.text, "脅迫罪")
-        self.assertEqual(to_json(inputs.variations[2].key.press_actions), [to_json(InputAction("脅迫罪"))])
+        self.assertEqual(to_json(inputs.variations[2].key.press_actions), [
+                         to_json(InputAction("脅迫罪"))])
 
         self.assertEqual(inputs.variations[2].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[2].key.longpress_actions.repeat, [])
@@ -197,7 +205,43 @@ class TestKeys(unittest.TestCase):
         inputs = CustomKey.flickSimpleInputs(
             "iOS", subs=["Android", "macOS", "Windows", "chromeOS"], centerLabel="OS")
         self.assertEqual(inputs.design.label.text, "OS")
-        self.assertEqual(to_json(inputs.press_actions), [to_json(InputAction("iOS"))])
+        self.assertEqual(to_json(inputs.press_actions),
+                         [to_json(InputAction("iOS"))])
+
+        inputs = CustomKey.flickSimpleInputAndLabels(
+            center=("やゆよ", "や"),
+            top="ゆ",
+            right=("え", "𛀁"),
+            bottom="よ"
+        )
+        self.assertEqual(inputs.design.label.text, "やゆよ")
+        self.assertEqual(to_json(inputs.press_actions),
+                         [to_json(InputAction("や"))])
+        self.assertEqual(inputs.longpress_actions.start, [])
+        self.assertEqual(inputs.longpress_actions.repeat, [])
+
+        self.assertEqual(len(inputs.variations), 3)
+
+        self.assertEqual(inputs.variations[0].direction, FlickDirection.top)
+        self.assertEqual(inputs.variations[0].key.design.label.text, "ゆ")
+        self.assertEqual(to_json(inputs.variations[0].key.press_actions), [
+                         to_json(InputAction("ゆ"))])
+        self.assertEqual(inputs.variations[0].key.longpress_actions.start, [])
+        self.assertEqual(inputs.variations[0].key.longpress_actions.repeat, [])
+
+        self.assertEqual(inputs.variations[1].direction, FlickDirection.right)
+        self.assertEqual(inputs.variations[1].key.design.label.text, "え")
+        self.assertEqual(to_json(inputs.variations[1].key.press_actions), [
+                         to_json(InputAction("𛀁"))])
+        self.assertEqual(inputs.variations[1].key.longpress_actions.start, [])
+        self.assertEqual(inputs.variations[1].key.longpress_actions.repeat, [])
+
+        self.assertEqual(inputs.variations[2].direction, FlickDirection.bottom)
+        self.assertEqual(inputs.variations[2].key.design.label.text, "よ")
+        self.assertEqual(to_json(inputs.variations[2].key.press_actions), [
+                         to_json(InputAction("よ"))])
+        self.assertEqual(inputs.variations[2].key.longpress_actions.start, [])
+        self.assertEqual(inputs.variations[2].key.longpress_actions.repeat, [])
 
 
 if __name__ == "__main__":

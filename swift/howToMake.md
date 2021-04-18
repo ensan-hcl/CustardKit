@@ -324,7 +324,7 @@ let md_custard = Custard(
 
 ### 複数のカスタードファイルを1つにまとめる
 
-カスタードのデータを配列で指定することで、読み込み側が複数のファイルを一括でに読み込めます。
+カスタードのデータを配列で指定することで、読み込み側が複数のファイルを一括で読み込めます。
 
 ```
 [
@@ -334,9 +334,62 @@ let md_custard = Custard(
 ]
 ```
 
----
-
 以上でカスタードの記述の説明は終わりです。
+
+## ツール
+
+特定の状況でより簡単に記述するため、ユーティリティが用意されています。
+
+### キーの作成
+
+`CustomKey`には以下の2つの関数が用意されています。
+
+```Swift
+static func flickSimpleInputs(center: String, subs: [String], centerLabel: String? = nil) -> CustomKey
+
+static func flickSimpleInputs(center: SimpleInputArgument, left: SimpleInputArgument? = nil, top: SimpleInputArgument? = nil, right: SimpleInputArgument? = nil, bottom: SimpleInputArgument? = nil) -> CustomKey
+```
+
+以下のように用いることができます。
+
+`CustomKey.flickSimpleInputs`では、中心の文字とフリックで入力する文字を順番に指定することで`CustomKey`オブジェクトを作成します。以下のように用いることができます。
+
+```Swift
+let key: CustomKey = .flickSimpleInputs(center: "あ", subs: ["い", "う", "え", "お"], centerLabel: "あいう")
+let key: CustomKey = .flickSimpleInputs(
+    center: .init(label: "😸", input: ":smile_cat:"), 
+    left: .init(label: "😿", input: ":crying_cat_face:"),
+    right: .init(label: "😻", input: ":heart_eyes_cat:")
+)
+```
+
+この関数では、ラベルと入力が同じ場合に指定を省略することができます。
+
+```Swift
+let key: CustomKey = .flickSimpleInputAndLab(
+    center = .init(label: "あ", input: "あ゛"), 
+    left = .init(label: "い", input: "い゛"),
+    top = "ゔ",
+    right = .init(label: "え", input: "え゛"),
+    bottom = .init(label: "お", input: "お゛")
+)
+```
+
+### 書き出し
+
+書き出しのための関数が用意されています。
+
+```Swift
+//指定したpathにcustardファイルを書き出します
+custard.write(to: path)
+```
+
+複数のCustardオブジェクトを1つのファイルとして書き出す場合は`[Custard]`に対して同様に書き出し関数を呼び出します。
+
+```Swift
+//指定したpathにcustardのリストのファイルを書き出します
+custardList = [custard1, custard2, custard3].write(to: path)
+```
 
 ## 用例
 

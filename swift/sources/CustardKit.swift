@@ -630,6 +630,55 @@ public extension CustardInterfaceCustomKey {
         )
     }
 
+    /// Create simple input key using flick
+    /// - parameters:
+    ///  - center: if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - left: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - top: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - right: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - bottom: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    static func flickSimpleInputs(center: SimpleInputArgument, left: SimpleInputArgument? = nil, top: SimpleInputArgument? = nil, right: SimpleInputArgument? = nil, bottom: SimpleInputArgument? = nil) -> Self {
+        let variations: [CustardInterfaceVariation] = zip([left, top, right, bottom], [FlickDirection.left, .top, .right, .bottom]).compactMap{argument, direction in
+            if let argument = argument {
+               return .init(
+                    type: .flickVariation(direction),
+                    key: .init(
+                        design: .init(label: .text(argument.label)),
+                        press_actions: [.input(argument.input)],
+                        longpress_actions: .none
+                    )
+                )
+            }
+            return nil
+        }
+
+        return .init(
+            design: .init(label: .text(center.label), color: .normal),
+            press_actions: [.input(center.input)],
+            longpress_actions: .none,
+            variations: variations
+        )
+    }
+
+    struct SimpleInputArgument: Equatable, ExpressibleByStringLiteral {
+        let label: String
+        let input: String
+
+        public typealias StringLiteralType = String
+
+        public init(label: String, input: String) {
+            self.label = label
+            self.input = input
+        }
+        public init(stringLiteral: String){
+            self.init(stringLiteral)
+        }
+        public init(_ input: String){
+            self.label = input
+            self.input = input
+        }
+    }
+
     static func flickDelete() -> Self {
         .init(
             design: .init(label: .systemImage("delete.left"), color: .special),

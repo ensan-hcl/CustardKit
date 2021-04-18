@@ -4,6 +4,7 @@ from .design import *
 from .actions import *
 from .json import ignore_json, rename_json
 from enum import Enum, unique
+from typing import Union
 
 
 class Specifier(object):
@@ -73,6 +74,47 @@ class CustomKey(Key):
             design=KeyDesign(TextLabel(centerLabel), KeyColor.normal),
             press_actions=[
                 InputAction(center)
+            ],
+            variations=variations
+        )
+
+    #utility
+    @ignore_json
+    @staticmethod
+    def flickSimpleInputAndLabels(center: Union[tuple[str, str], str], left: Union[tuple[str, str], str, None] = None, top: Union[tuple[str, str], str, None] = None, right: Union[tuple[str, str], str, None] = None, bottom: Union[tuple[str, str], str, None] = None):
+        variations: [FlickVariationData] = []
+        for (argument, direction) in zip([left, top, right, bottom], [FlickDirection.left, FlickDirection.top, FlickDirection.right, FlickDirection.bottom]):
+            if type(argument) is tuple:
+                label = argument[0]
+                input = argument[1]
+            elif type(argument) is str:
+                label = argument
+                input = argument
+            else:
+                continue
+            variations.append(
+                FlickVariationData(
+                    direction=direction,
+                    key=Variation(
+                        design=VariationDesign(TextLabel(label)),
+                        press_actions=[
+                            InputAction(input)
+                        ]
+                    )
+                )
+            )
+
+        if type(center) is tuple:
+            label = center[0]
+            input = center[1]
+        elif type(center) is str:
+            label = center
+            input = center
+
+        return CustomKey(
+            design=KeyDesign(TextLabel(label), KeyColor.normal),
+            press_actions=[
+                InputAction(input)
             ],
             variations=variations
         )
