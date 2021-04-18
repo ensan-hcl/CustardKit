@@ -189,6 +189,9 @@ hiragana_replaceAction = ReplaceLastCharactersAction({
 
     "ん": chr(0xE086),
     chr(0xE086): "ん",
+
+    "ー": chr(0xE0DB),
+    chr(0xE0DB): "ー"
 })
 
 key_dakuten = CustomKey(
@@ -442,6 +445,9 @@ katakana_replaceAction = ReplaceLastCharactersAction({
 
     "ン": chr(0xE08B),
     chr(0xE08B): "ン",
+
+    "ー": chr(0xE0DB),
+    chr(0xE0DB): "ー"
 })
 
 key_dakuten = CustomKey(
