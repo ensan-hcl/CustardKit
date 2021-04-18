@@ -633,10 +633,10 @@ public extension CustardInterfaceCustomKey {
     /// Create simple input key using flick
     /// - parameters:
     ///  - center: if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
-    ///  - left: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`.otherwise use `.init(input: String, label: String)`.
-    ///  - top: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`.otherwise use `.init(input: String, label: String)`.
-    ///  - right: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`.otherwise use `.init(input: String, label: String)`.
-    ///  - bottom: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`.otherwise use `.init(input: String, label: String)`.
+    ///  - left: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - top: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - right: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
+    ///  - bottom: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
     static func flickSimpleInputs(center: SimpleInputArgument, left: SimpleInputArgument? = nil, top: SimpleInputArgument? = nil, right: SimpleInputArgument? = nil, bottom: SimpleInputArgument? = nil) -> Self {
         let variations: [CustardInterfaceVariation] = zip([left, top, right, bottom], [FlickDirection.left, .top, .right, .bottom]).compactMap{argument, direction in
             if let argument = argument {

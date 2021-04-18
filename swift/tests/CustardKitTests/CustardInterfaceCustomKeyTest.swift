@@ -105,21 +105,26 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
             XCTAssertEqual(target.press_actions, [.input("💛")])
         }
         do{
-            let target = CustardInterfaceCustomKey.flickSimpleInputs(center: .init(label: "やゆよ", input: "や"), top: "ゆ", bottom: .init("よ"))
+            let target = CustardInterfaceCustomKey.flickSimpleInputs(center: .init(label: "やゆよ", input: "や"), top: "ゆ", right: .init(label: "え", input: "𛀁"), bottom: "よ")
             XCTAssertEqual(target.design, .init(label: .text("やゆよ"), color: .normal))
             XCTAssertEqual(target.press_actions, [.input("や")])
             XCTAssertEqual(target.longpress_actions, .none)
-            XCTAssertEqual(target.variations.count, 2)
+            XCTAssertEqual(target.variations.count, 3)
 
             XCTAssertEqual(target.variations[0].type, .flickVariation(.top))
             XCTAssertEqual(target.variations[0].key.design, .init(label: .text("ゆ")))
             XCTAssertEqual(target.variations[0].key.press_actions, [.input("ゆ")])
             XCTAssertEqual(target.variations[0].key.longpress_actions, .none)
 
-            XCTAssertEqual(target.variations[1].type, .flickVariation(.bottom))
-            XCTAssertEqual(target.variations[1].key.design, .init(label: .text("よ")))
-            XCTAssertEqual(target.variations[1].key.press_actions, [.input("よ")])
+            XCTAssertEqual(target.variations[1].type, .flickVariation(.right))
+            XCTAssertEqual(target.variations[1].key.design, .init(label: .text("え")))
+            XCTAssertEqual(target.variations[1].key.press_actions, [.input("𛀁")])
             XCTAssertEqual(target.variations[1].key.longpress_actions, .none)
+
+            XCTAssertEqual(target.variations[2].type, .flickVariation(.bottom))
+            XCTAssertEqual(target.variations[2].key.design, .init(label: .text("よ")))
+            XCTAssertEqual(target.variations[2].key.press_actions, [.input("よ")])
+            XCTAssertEqual(target.variations[2].key.longpress_actions, .none)
         }
     }
 

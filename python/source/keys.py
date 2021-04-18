@@ -78,6 +78,9 @@ class CustomKey(Key):
             variations=variations
         )
 
+    #utility
+    @ignore_json
+    @staticmethod
     def flickSimpleInputAndLabels(center: Union[tuple[str, str], str], left: Union[tuple[str, str], str, None] = None, top: Union[tuple[str, str], str, None] = None, right: Union[tuple[str, str], str, None] = None, bottom: Union[tuple[str, str], str, None] = None):
         variations: [FlickVariationData] = []
         for (argument, direction) in zip([left, top, right, bottom], [FlickDirection.left, FlickDirection.top, FlickDirection.right, FlickDirection.bottom]):

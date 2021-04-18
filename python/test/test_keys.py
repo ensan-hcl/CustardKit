@@ -209,9 +209,10 @@ class TestKeys(unittest.TestCase):
                          [to_json(InputAction("iOS"))])
 
         inputs = CustomKey.flickSimpleInputAndLabels(
-            center = ("やゆよ", "や"), 
-            top = "ゆ",
-            bottom = "よ"    
+            center=("やゆよ", "や"),
+            top="ゆ",
+            right=("え", "𛀁"),
+            bottom="よ"
         )
         self.assertEqual(inputs.design.label.text, "やゆよ")
         self.assertEqual(to_json(inputs.press_actions),
@@ -219,22 +220,29 @@ class TestKeys(unittest.TestCase):
         self.assertEqual(inputs.longpress_actions.start, [])
         self.assertEqual(inputs.longpress_actions.repeat, [])
 
-        self.assertEqual(len(inputs.variations), 2)
+        self.assertEqual(len(inputs.variations), 3)
 
         self.assertEqual(inputs.variations[0].direction, FlickDirection.top)
         self.assertEqual(inputs.variations[0].key.design.label.text, "ゆ")
         self.assertEqual(to_json(inputs.variations[0].key.press_actions), [
                          to_json(InputAction("ゆ"))])
-
         self.assertEqual(inputs.variations[0].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[0].key.longpress_actions.repeat, [])
 
-        self.assertEqual(inputs.variations[1].direction, FlickDirection.bottom)
-        self.assertEqual(inputs.variations[1].key.design.label.text, "よ")
+        self.assertEqual(inputs.variations[1].direction, FlickDirection.right)
+        self.assertEqual(inputs.variations[1].key.design.label.text, "え")
         self.assertEqual(to_json(inputs.variations[1].key.press_actions), [
-                         to_json(InputAction("よ"))])
+                         to_json(InputAction("𛀁"))])
         self.assertEqual(inputs.variations[1].key.longpress_actions.start, [])
         self.assertEqual(inputs.variations[1].key.longpress_actions.repeat, [])
+
+        self.assertEqual(inputs.variations[2].direction, FlickDirection.bottom)
+        self.assertEqual(inputs.variations[2].key.design.label.text, "よ")
+        self.assertEqual(to_json(inputs.variations[2].key.press_actions), [
+                         to_json(InputAction("よ"))])
+        self.assertEqual(inputs.variations[2].key.longpress_actions.start, [])
+        self.assertEqual(inputs.variations[2].key.longpress_actions.repeat, [])
+
 
 if __name__ == "__main__":
     unittest.main()
