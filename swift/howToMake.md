@@ -49,6 +49,7 @@ design: .init(label: .text("@#/&_"), color: .normal)
 | .normal   | 通常の入力キーの色です。                 |
 | .special  | タブ移動キーや削除キーの色です。         |
 | .selected | 選択中のタブや押されているキーの色です。 |
+| .unimportant | 重要度の低いキーの色です。 |
 
 ### アクション
 
