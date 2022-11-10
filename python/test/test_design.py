@@ -1,9 +1,9 @@
+from source.json import to_json
+from source.design import *
 import unittest
 import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
-from source.design import *
-from source.json import to_json
 
 
 class TestDesign(unittest.TestCase):
@@ -21,6 +21,9 @@ class TestDesign(unittest.TestCase):
 
         actual = json.dumps(KeyColor.selected)
         self.assertEqual("\"selected\"", actual)
+
+        actual = json.dumps(KeyColor.unimportant)
+        self.assertEqual("\"unimportant\"", actual)
 
     def test_TextLabel(self):
         """test method for TextLabel

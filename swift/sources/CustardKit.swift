@@ -431,6 +431,7 @@ public struct CustardKeyDesign: Codable, Equatable {
         case normal
         case special
         case selected
+        case unimportant
     }
 }
 
