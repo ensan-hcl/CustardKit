@@ -32,7 +32,7 @@ def _make_json(dict, instance):
         if value in _ignore_objects: continue
         if key.startswith('_'): continue
         if callable(value): continue
-        if isinstance(value, collections.Hashable) and value in _rename_objects:
+        if isinstance(value, collections.abc.Hashable) and value in _rename_objects:
             json[_rename_objects[value]] = _to_json(value, instance)
         else:
             json[key] = _to_json(value, instance)
