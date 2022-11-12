@@ -59,15 +59,25 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertEqual(CodableActionData.moveTab(.system(.flick_numbersymbols)).quickEncodeDecode(), .moveTab(.system(.flick_numbersymbols)))
     }
 
+    func testEncodeSetActions() {
+        XCTAssertEqual(CodableActionData.setCursorBar(.toggle).quickEncodeDecode(), .setCursorBar(.toggle))
+        XCTAssertEqual(CodableActionData.setCapsLockState(.off).quickEncodeDecode(), .setCapsLockState(.off))
+        XCTAssertEqual(CodableActionData.setTabBar(.on).quickEncodeDecode(), .setTabBar(.on))
+    }
+
     func testEncodeNoArgumentActions() {
         XCTAssertEqual(CodableActionData.replaceDefault.quickEncodeDecode(), .replaceDefault)
         XCTAssertEqual(CodableActionData.smartDeleteDefault.quickEncodeDecode(), .smartDeleteDefault)
         XCTAssertEqual(CodableActionData.complete.quickEncodeDecode(), .complete)
         XCTAssertEqual(CodableActionData.enableResizingMode.quickEncodeDecode(), .enableResizingMode)
-        XCTAssertEqual(CodableActionData.toggleCursorBar.quickEncodeDecode(), .toggleCursorBar)
-        XCTAssertEqual(CodableActionData.toggleTabBar.quickEncodeDecode(), .toggleTabBar)
-        XCTAssertEqual(CodableActionData.toggleCapsLockState.quickEncodeDecode(), .toggleCapsLockState)
         XCTAssertEqual(CodableActionData.dismissKeyboard.quickEncodeDecode(), .dismissKeyboard)
+    }
+
+    func testEncodeDeprecatedActions() {
+        // Replaced to alternatives
+        XCTAssertEqual(CodableActionData.toggleCursorBar.quickEncodeDecode(), .setCursorBar(.toggle))
+        XCTAssertEqual(CodableActionData.toggleTabBar.quickEncodeDecode(), .setTabBar(.toggle))
+        XCTAssertEqual(CodableActionData.toggleCapsLockState.quickEncodeDecode(), .setCapsLockState(.toggle))
     }
 
     static var allTests = [

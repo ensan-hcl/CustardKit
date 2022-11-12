@@ -49,7 +49,7 @@ class CustomKey(Key):
         self.longpress_actions = longpress_actions
         self.variations = variations
 
-    #utility
+    # utility
     @ignore_json
     @staticmethod
     def flickSimpleInputs(center: str, subs: list[str], centerLabel: str = None):
@@ -78,7 +78,7 @@ class CustomKey(Key):
             variations=variations
         )
 
-    #utility
+    # utility
     @ignore_json
     @staticmethod
     def flickSimpleInputAndLabels(center: Union[tuple[str, str], str], left: Union[tuple[str, str], str, None] = None, top: Union[tuple[str, str], str, None] = None, right: Union[tuple[str, str], str, None] = None, bottom: Union[tuple[str, str], str, None] = None):
@@ -119,7 +119,7 @@ class CustomKey(Key):
             variations=variations
         )
 
-    #utility
+    # utility
     @ignore_json
     @staticmethod
     def flickDelete():
@@ -139,7 +139,7 @@ class CustomKey(Key):
             ]
         )
 
-    #utility
+    # utility
     @ignore_json
     @staticmethod
     def flickSpace():
@@ -147,7 +147,7 @@ class CustomKey(Key):
             design=KeyDesign(TextLabel("空白"), KeyColor.special),
             press_actions=[InputAction(" ")],
             longpress_actions=LongpressAction(
-                start=[ToggleCursorBarAction()]),
+                start=[SetCursorBarAction(BoolOperation.toggle)]),
             variations=[
                 FlickVariationData(
                     FlickDirection.left,

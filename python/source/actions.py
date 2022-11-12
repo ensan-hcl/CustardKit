@@ -1,5 +1,6 @@
 from enum import Enum, unique
 from typing import Literal
+import warnings
 
 
 class ActionDefaultArguments:
@@ -10,6 +11,13 @@ class ActionDefaultArguments:
 class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
+
+
+@unique
+class BoolOperation(str, Enum):
+    on = "on"
+    off = "off"
+    toggle = "toggle"
 
 
 class Action:
@@ -185,25 +193,79 @@ class EnableResizingModeAction(metaclass=ActionMeta):
     type = "enable_resizing_mode"
 
 
+class SetCursorBarAction(metaclass=ActionMeta):
+    """
+    タブバーの表示状態をsetするアクション
+    """
+    type = "set_cursor_bar"
+
+    def __init__(self, operation: BoolOperation):
+        self.operation = operation
+
+
 class ToggleCursorBarAction(metaclass=ActionMeta):
     """
-    カーソルバーの表示状態をtoggleするアクション
+    [非推奨] カーソルバーの表示状態をtoggleするアクション。
+    `SetCursorBarAction(BoolOperation.toggle)`の利用を推奨。
     """
-    type = "toggle_cursor_bar"
+    type = "set_cursor_bar"
+
+    def __init__(self):
+        self.operation = "toggle"
+        warnings.warn(
+            DeprecationWarning(
+                "This action is deprecated. Use SetCursorBarAction(BoolOperation.toggle) instead.")
+        )
+
+
+class SetTabBarAction(metaclass=ActionMeta):
+    """
+    タブバーの表示状態をsetするアクション
+    """
+    type = "set_tab_bar"
+
+    def __init__(self, operation: BoolOperation):
+        self.operation = operation
 
 
 class ToggleTabBarAction(metaclass=ActionMeta):
     """
-    タブバーの表示状態をtoggleするアクション
+    [非推奨] タブバーの表示状態をtoggleするアクション。
+    `SetTabBarAction(BoolOperation.toggle)`の利用を推奨。
     """
-    type = "toggle_tab_bar"
+    type = "set_tab_bar"
+
+    def __init__(self):
+        self.operation = "toggle"
+        warnings.warn(
+            DeprecationWarning(
+                "This action is deprecated. Use SetTabBarAction(BoolOperation.toggle) instead.")
+        )
+
+
+class SetCapsLockStateAction(metaclass=ActionMeta):
+    """
+    タブバーの表示状態をsetするアクション
+    """
+    type = "set_caps_lock_state"
+
+    def __init__(self, operation: BoolOperation):
+        self.operation = operation
 
 
 class ToggleCapsLockStateAction(metaclass=ActionMeta):
     """
-    Caps lockの状態をtoggleするアクション
+    [非推奨] Caps lockの状態をtoggleするアクション。
+    `SetCapsLockStateAction(BoolOperation.toggle)`の利用を推奨。
     """
-    type = "toggle_caps_lock_state"
+    type = "set_caps_lock_state"
+
+    def __init__(self):
+        self.operation = "toggle"
+        warnings.warn(
+            DeprecationWarning(
+                "This action is deprecated. Use SetCapsLockStateAction(BoolOperation.toggle) instead.")
+        )
 
 
 class DismissKeyboardAction(metaclass=ActionMeta):

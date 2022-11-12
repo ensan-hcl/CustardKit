@@ -87,9 +87,9 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | SmartDeleteDefaultAction    | なし                                             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
 | SmartMoveCursorAction       | direction: ScanDirection<br />target: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
 | EnableResizingModeAction    | なし                                             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
-| ToggleCursorBarAction       | なし                                             | カーソルバーの表示をtoggleします。                           |
-| ToggleTabBarAction          | なし                                             | タブバーの表示をtoggleします。                               |
-| ToggleCapsLockStateAction  | なし                                             | caps lockをtoggleします。                                    |
+| SetCursorBarAction          | operation: BoolOperation                         | カーソルバーの表示をon/off/toggleします。                           |
+| SetTabBarAction             | operation: BoolOperation                         | タブバーの表示をon/off/toggleします。                               |
+| SetCapsLockStateAction      | operation: BoolOperation                         | caps lockをon/off/toggleします。                                    |
 | DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
 | LaunchApplicationAction      | scheme_type: Literal['azooKey', 'shortcuts']<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
@@ -435,7 +435,7 @@ hieroglyphs_keys = [
                 color = KeyColor.special
             ),
             press_actions = [
-                ToggleTabBarAction()
+              SetTabBarAction(BoolOperation.toggle)
             ],
             longpress_actions = LongpressAction(),
             variations = []

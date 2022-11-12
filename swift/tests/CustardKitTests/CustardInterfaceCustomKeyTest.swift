@@ -52,7 +52,7 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
             let target = CustardInterfaceCustomKey.flickSpace()
             XCTAssertEqual(target.design, .init(label: .text("空白"), color: .special))
             XCTAssertEqual(target.press_actions, [.input(" ")])
-            XCTAssertEqual(target.longpress_actions, .init(start: [.toggleCursorBar]))
+            XCTAssertEqual(target.longpress_actions, .init(start: [.setCursorBar(.toggle)]))
             XCTAssertEqual(target.variations.count, 3)
         }
         do{

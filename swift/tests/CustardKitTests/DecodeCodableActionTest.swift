@@ -180,6 +180,38 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
+    func testDecodeSetActions() {
+        do{
+            let target = """
+            {
+                "type": "set_cursor_bar",
+                "operation": "on",
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .setCursorBar(.on))
+        }
+        do{
+            let target = """
+            {
+                "type": "set_tab_bar",
+                "operation": "off",
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .setTabBar(.off))
+        }
+        do{
+            let target = """
+            {
+                "type": "set_caps_lock_state",
+                "operation": "toggle",
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .setCapsLockState(.toggle))
+        }
+    }
 
     func testDecodeNoArgumentActions() {
         do{
@@ -212,31 +244,34 @@ final class DecodeCodableActionTest: XCTestCase {
         }
         do{
             let target = """
+            {"type": "dismiss_keyboard"}
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .dismissKeyboard)
+        }
+    }
+
+    func decodeDeprecatedActions() {
+        do{
+            let target = """
             {"type": "toggle_cursor_bar"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
-            XCTAssertEqual(decoded, .toggleCursorBar)
+            XCTAssertEqual(decoded, .setCursorBar(.toggle))
         }
         do{
             let target = """
             {"type": "toggle_tab_bar"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
-            XCTAssertEqual(decoded, .toggleTabBar)
+            XCTAssertEqual(decoded, .setTabBar(.toggle))
         }
         do{
             let target = """
             {"type": "toggle_caps_lock_state"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
-            XCTAssertEqual(decoded, .toggleCapsLockState)
-        }
-        do{
-            let target = """
-            {"type": "dismiss_keyboard"}
-            """
-            let decoded = CodableActionData.quickDecode(target: target)
-            XCTAssertEqual(decoded, .dismissKeyboard)
+            XCTAssertEqual(decoded, .setCapsLockState(.toggle))
         }
     }
 

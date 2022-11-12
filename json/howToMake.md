@@ -98,9 +98,9 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | smart_delete_default    | なし                               | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
 | smart_move_cursor       | direction: str<br />targets: [str] | directionに`"forward"`または`"backward"`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`"direction": "backward", "target": [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
 | enable_resizing_mode    | なし                               | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
-| toggle_cursor_bar       | なし                               | カーソルバーの表示をtoggleします。                           |
-| toggle_tab_bar          | なし                               | タブバーの表示をtoggleします。                               |
-| toggle_caps_lock_state  | なし                               | caps lockをtoggleします。                                    |
+| set_cursor_bar          | operation: str                    | operationに`"on"`, `"off"`, `"toggle"`のいずれかを指定します。 |
+| set_tab_bar             | operation: str                    | operationに`"on"`, `"off"`, `"toggle"`のいずれかを指定します。 |
+| set_caps_lock_state     | operation: str                    | operationに`"on"`, `"off"`, `"toggle"`のいずれかを指定します。 |
 | dismiss_keyboard        | なし                               | キーボードを閉じます。                                       |
 | launch_application      | scheme_type: str<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
@@ -437,7 +437,7 @@ var hieroglyphs_keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
     .gridScroll(3): .custom(
         .init(
             design: .init(label: .systemImage("list.bullet"), color: .special),
-            press_actions: [.toggleTabBar],
+            press_actions: [.setTabBar(.toggle)],
             longpress_actions: .none,
             variations: []
         )

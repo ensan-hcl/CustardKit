@@ -146,19 +146,22 @@ class TestActions(unittest.TestCase):
 
         actual = to_json(ToggleCursorBarAction())
         expected_json = {
-            "type": "toggle_cursor_bar",
+            "type": "set_cursor_bar",
+            "operation": "toggle"
         }
         self.assertEqual(expected_json, actual)
 
         actual = to_json(ToggleTabBarAction())
         expected_json = {
-            "type": "toggle_tab_bar",
+            "type": "set_tab_bar",
+            "operation": "toggle"
         }
         self.assertEqual(expected_json, actual)
 
         actual = to_json(ToggleCapsLockStateAction())
         expected_json = {
-            "type": "toggle_caps_lock_state",
+            "type": "set_caps_lock_state",
+            "operation": "toggle"
         }
         self.assertEqual(expected_json, actual)
 

@@ -1,9 +1,9 @@
 from source.custard import *
 
-#ヒエログリフの文字のリストを取得
+# ヒエログリフの文字のリストを取得
 hieroglyphs = list(map(lambda x: chr(x), range(0x13000, 0x133FF+1)))
 
-#キーのリストを作成
+# キーのリストを作成
 hieroglyphs_keys = [
     KeyData(
         specifier=GridScrollSpecifier(index=0),
@@ -53,7 +53,7 @@ hieroglyphs_keys = [
                 color=KeyColor.special
             ),
             press_actions=[
-                ToggleTabBarAction()
+                SetTabBarAction(BoolOperation.toggle)
             ],
             longpress_actions=LongpressAction(),
             variations=[]
@@ -74,7 +74,7 @@ hieroglyphs_keys = [
                     MoveCursorAction(1)
                 ]
             ),
-           	variations=[]
+            variations=[]
         )
     ),
 ]
@@ -97,7 +97,7 @@ for glyph in hieroglyphs:
     )
     hieroglyphs_keys.append(keydata)
 
-#カスタードオブジェクトを作成
+# カスタードオブジェクトを作成
 hieroglyphs_custard = Custard(
     identifier="Hieroglyphs",
     language=Language.none,
