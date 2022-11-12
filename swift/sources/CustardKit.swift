@@ -702,7 +702,7 @@ public extension CustardInterfaceCustomKey {
         .init(
             design: .init(label: .text("空白"), color: .special),
             press_actions: [.input(" ")],
-            longpress_actions: .init(start: [.toggleCursorBar]),
+            longpress_actions: .init(start: [.setCursorBar(.toggle)]),
             variations: [
                 .init(
                     type: .flickVariation(.left),
@@ -893,6 +893,12 @@ public struct LaunchItem: Hashable {
     }
 }
 
+public enum BoolOperation: String, Codable, Hashable {
+    case on
+    case off
+    case toggle
+}
+
 /// - アクション
 /// - actions done in key pressing
 public enum CodableActionData: Codable, Hashable {
@@ -931,13 +937,25 @@ public enum CodableActionData: Codable, Hashable {
     /// - enable keyboard resizing mode
     case enableResizingMode
 
+    /// - set on / off / toggle for cursor move bar
+    case setCursorBar(BoolOperation)
+
     /// - toggle show or not show the cursor move bar
+    @available(*, deprecated, message: "This action is deprecated. Use .setCursorBar(.toggle) instead.")
     case toggleCursorBar
 
+    /// - set on / off / toggle for capslock state
+    case setCapsLockState(BoolOperation)
+
     /// - toggle capslock or not
+    @available(*, deprecated, message: "This action is deprecated. Use .setCapsLockState(.toggle) instead.")
     case toggleCapsLockState
 
+    /// - set on / off / toggle for tab bar
+    case setTabBar(BoolOperation)
+
     /// - toggle show or not show the tab bar
+    @available(*, deprecated, message: "This action is deprecated. Use .setTabBar(.toggle) instead.")
     case toggleTabBar
 
     /// - dismiss keyboard
@@ -958,6 +976,7 @@ public extension CodableActionData{
         case tab_type, identifier
         case direction, targets
         case scheme_type, target
+        case operation
     }
 
     private enum ValueType: String, Codable{
@@ -972,8 +991,11 @@ public extension CodableActionData{
         case smart_move_cursor
         case move_tab
         case enable_resizing_mode
+        case set_cursor_bar
         case toggle_cursor_bar
+        case set_tab_bar
         case toggle_tab_bar
+        case set_caps_lock_state
         case toggle_caps_lock_state
         case dismiss_keyboard
         case launch_application
@@ -990,13 +1012,17 @@ public extension CodableActionData{
         case .moveTab: return .move_tab
         case .replaceDefault: return .replace_default
         case .replaceLastCharacters: return .replace_last_characters
+        case .setCapsLockState: return .set_caps_lock_state
+        case .setCursorBar: return .set_cursor_bar
+        case .setTabBar: return .set_tab_bar
         case .smartDelete: return .smart_delete
         case .smartDeleteDefault: return .smart_delete_default
         case .smartMoveCursor: return .smart_move_cursor
         case .enableResizingMode: return .enable_resizing_mode
-        case .toggleCapsLockState: return .toggle_caps_lock_state
-        case .toggleCursorBar: return .toggle_cursor_bar
-        case .toggleTabBar: return .toggle_tab_bar
+        // These actions are silently encoded to recommended action.
+        case .toggleCapsLockState: return .set_caps_lock_state
+        case .toggleCursorBar: return .set_cursor_bar
+        case .toggleTabBar: return .set_tab_bar
         }
     }
 
@@ -1053,9 +1079,13 @@ public extension CodableActionData{
         case let .launchApplication(value):
             try container.encode(value.scheme, forKey: .scheme_type)
             try container.encode(value.target, forKey: .target)
+        case let .setCapsLockState(value), let .setCursorBar(value), let .setTabBar(value):
+            try container.encode(value, forKey: .operation)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
-        case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault: break
+        case .toggleTabBar, .toggleCursorBar, .toggleCapsLockState:
+            try container.encode(BoolOperation.toggle, forKey: .operation)
+        case .dismissKeyboard, .enableResizingMode, .complete, .smartDeleteDefault, .replaceDefault: break
         }
     }
 
@@ -1094,12 +1124,21 @@ public extension CodableActionData{
             self = .moveTab(value)
         case .enable_resizing_mode:
             self = .enableResizingMode
+        case .set_cursor_bar:
+            let operation = try container.decode(BoolOperation.self, forKey: .operation)
+            self = .setCursorBar(operation)
         case .toggle_cursor_bar:
-            self = .toggleCursorBar
+            self = .setCursorBar(.toggle)
+        case .set_caps_lock_state:
+            let operation = try container.decode(BoolOperation.self, forKey: .operation)
+            self = .setCapsLockState(operation)
         case .toggle_caps_lock_state:
-            self = .toggleCapsLockState
+            self = .setCapsLockState(.toggle)
+        case .set_tab_bar:
+            let operation = try container.decode(BoolOperation.self, forKey: .operation)
+            self = .setTabBar(operation)
         case .toggle_tab_bar:
-            self = .toggleTabBar
+            self = .setTabBar(.toggle)
         case .dismiss_keyboard:
             self = .dismissKeyboard
         case .launch_application:

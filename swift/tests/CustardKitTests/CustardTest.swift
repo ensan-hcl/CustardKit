@@ -75,7 +75,7 @@ final class CustardTest: XCTestCase {
                 .gridScroll(3): .custom(
                     .init(
                         design: .init(label: .systemImage("list.bullet"), color: .special),
-                        press_actions: [.toggleTabBar],
+                        press_actions: [.setTabBar(.toggle)],
                         longpress_actions: .none,
                         variations: []
                     )

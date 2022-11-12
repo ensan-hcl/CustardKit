@@ -41,7 +41,7 @@ keys.append(KeyData(
             color=KeyColor.special
         ),
         press_actions=[
-            ToggleTabBarAction()
+            SetTabBarAction(BoolOperation.toggle)
         ],
         longpress_actions=LongpressAction(),
         variations=[]
@@ -84,7 +84,7 @@ keys.append(KeyData(
         ],
         longpress_actions=LongpressAction(
             start=[
-                ToggleTabBarAction()
+                SetTabBarAction(BoolOperation.toggle)
             ]
         ),
         variations=[]
@@ -96,7 +96,7 @@ keys.append(KeyData(
     key=SystemKey(SystemKeyType.enter)
 ))
 
-#カスタードオブジェクトを作成
+# カスタードオブジェクトを作成
 hieroglyphs_custard = Custard(
     identifier="number_font",
     language=Language.none,

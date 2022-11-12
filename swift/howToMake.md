@@ -79,9 +79,9 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .smartDeleteDefault    | なし             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
 | .smartMoveCursor       | ScanItem         | 引数で指定した方向に、指定した文字を見つけるまで移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、方向が`.backward`かつ文字の指定が` [","]`であった場合、この操作の実行後に`"Yes,| it is"`まで移動します。 |
 | .enableResizingMode    | なし             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、.disableResizingModeは用意されていません。 |
-| .toggleCursorBar       | なし             | カーソルバーの表示をtoggleします。                           |
-| .toggleTabBar          | なし             | タブバーの表示をtoggleします。                               |
-| .toggleCapsLockState   | なし             | caps lockをtoggleします。                                    |
+| .setCursorBar          | BoolOperation    | カーソルバーの表示をon/off/toggleします。                           |
+| .setTabBar             | BoolOperation    | タブバーの表示をon/off/toggleします。                               |
+| .setCapsLockState      | BoolOperation    | caps lockをon/off/toggleします。                                    |
 | .dismissKeyboard       | なし             | キーボードを閉じます。                                       |
 | .launchApplication     | LaunchItem       | 引数で指定されたアプリケーションを開きます。 |
 

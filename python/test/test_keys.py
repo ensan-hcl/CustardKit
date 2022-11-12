@@ -152,7 +152,7 @@ class TestKeys(unittest.TestCase):
         self.assertEqual(to_json(flickSpace.press_actions),
                          [to_json(InputAction(" "))])
         self.assertEqual(to_json(flickSpace.longpress_actions.start), [
-                         to_json(ToggleCursorBarAction())])
+                         to_json(SetCursorBarAction(BoolOperation.toggle))])
         self.assertEqual(flickSpace.longpress_actions.repeat, [])
         self.assertEqual(len(flickSpace.variations), 3)
 
