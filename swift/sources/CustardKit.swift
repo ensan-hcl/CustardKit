@@ -418,7 +418,7 @@ public extension CustardInterface {
 
 /// - キーのデザイン
 /// - design information of key
-public struct CustardKeyDesign: Codable, Equatable {
+public struct CustardKeyDesign: Codable, Equatable, Hashable {
     public init(label: CustardKeyLabelStyle, color: CustardKeyDesign.ColorType) {
         self.label = label
         self.color = color
@@ -437,7 +437,7 @@ public struct CustardKeyDesign: Codable, Equatable {
 
 /// - バリエーションのキーのデザイン
 /// - design information of key
-public struct CustardVariationKeyDesign: Codable, Equatable {
+public struct CustardVariationKeyDesign: Codable, Equatable, Hashable {
     public init(label: CustardKeyLabelStyle) {
         self.label = label
     }
@@ -447,13 +447,13 @@ public struct CustardVariationKeyDesign: Codable, Equatable {
 
 /// - キーに指定するラベル
 /// - labels on the key
-public enum CustardKeyLabelStyle: Codable, Equatable {
+public enum CustardKeyLabelStyle: Codable, Equatable, Hashable {
     case text(String)
     case systemImage(String)
 }
 
-public extension CustardKeyLabelStyle{
-    private enum CodingKeys: CodingKey{
+public extension CustardKeyLabelStyle {
+    private enum CodingKeys: CodingKey {
         case text
         case system_image
     }
@@ -502,13 +502,13 @@ public extension CustardKeyLabelStyle{
 }
 
 /// - key's data in interface
-public enum CustardInterfaceKey: Equatable {
+public enum CustardInterfaceKey: Equatable, Hashable {
     case system(CustardInterfaceSystemKey)
     case custom(CustardInterfaceCustomKey)
 }
 
 /// - keys prepared in default
-public enum CustardInterfaceSystemKey: Codable, Equatable {
+public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable {
     /// - the globe key
     case changeKeyboard
 
@@ -583,7 +583,7 @@ public extension CustardInterfaceSystemKey{
 }
 
 /// - keys you can defined
-public struct CustardInterfaceCustomKey: Codable, Equatable {
+public struct CustardInterfaceCustomKey: Codable, Equatable, Hashable {
     public init(design: CustardKeyDesign, press_actions: [CodableActionData], longpress_actions: CodableLongpressActionData, variations: [CustardInterfaceVariation]) {
         self.design = design
         self.press_actions = press_actions
@@ -734,7 +734,7 @@ public extension CustardInterfaceCustomKey {
 }
 
 /// - variation of key, includes flick keys and selectable variations in pc style keyboard.
-public struct CustardInterfaceVariation: Codable, Equatable {
+public struct CustardInterfaceVariation: Codable, Equatable, Hashable {
     public init(type: VariationType, key: CustardInterfaceVariationKey) {
         self.type = type
         self.key = key
@@ -748,7 +748,7 @@ public struct CustardInterfaceVariation: Codable, Equatable {
 
     /// - キーの変種の種類
     /// - type of key variation
-    public enum VariationType: Equatable {
+    public enum VariationType: Equatable, Hashable {
         /// - variation of flick
         /// - warning: when you use pc style, this type of variation would be ignored.
         case flickVariation(FlickDirection)
@@ -805,7 +805,7 @@ public extension CustardInterfaceVariation {
 }
 
 /// - data of variation key
-public struct CustardInterfaceVariationKey: Codable, Equatable {
+public struct CustardInterfaceVariationKey: Codable, Equatable, Hashable {
     public init(design: CustardVariationKeyDesign, press_actions: [CodableActionData], longpress_actions: CodableLongpressActionData) {
         self.design = design
         self.press_actions = press_actions
@@ -1111,7 +1111,7 @@ public extension CodableActionData{
 }
 
 
-public struct CodableLongpressActionData: Codable, Equatable {
+public struct CodableLongpressActionData: Codable, Equatable, Hashable {
     public static let none = CodableLongpressActionData()
     public init(start: [CodableActionData] = [], repeat: [CodableActionData] = []) {
         self.start = start
