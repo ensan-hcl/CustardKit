@@ -884,8 +884,8 @@ public struct LaunchItem: Hashable {
         self.target = target
     }
 
-    let scheme: LaunchableApplication
-    let target: String
+    public let scheme: LaunchableApplication
+    public let target: String
 
     public enum LaunchableApplication: String, Codable {
         case azooKey
