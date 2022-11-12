@@ -91,6 +91,7 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | ToggleTabBarAction          | なし                                             | タブバーの表示をtoggleします。                               |
 | ToggleCapsLockStateAction  | なし                                             | caps lockをtoggleします。                                    |
 | DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
+| LaunchApplicationAction      | scheme_type: Literal['azooKey', 'shortcuts']<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
 

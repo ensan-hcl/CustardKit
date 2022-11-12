@@ -877,6 +877,22 @@ public struct ScanItem: Hashable {
         case backward
     }
 }
+
+public struct LaunchItem: Hashable {
+    public init(scheme: LaunchableApplication, target: String) {
+        self.scheme = scheme
+        self.target = target
+    }
+
+    let scheme: LaunchableApplication
+    let target: String
+
+    public enum LaunchableApplication: String, Codable {
+        case azooKey
+        case shortcuts
+    }
+}
+
 /// - アクション
 /// - actions done in key pressing
 public enum CodableActionData: Codable, Hashable {
@@ -927,6 +943,9 @@ public enum CodableActionData: Codable, Hashable {
     /// - dismiss keyboard
     case dismissKeyboard
 
+    /// - launch apps
+    case launchApplication(LaunchItem)
+
     public static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
 }
 
@@ -938,6 +957,7 @@ public extension CodableActionData{
         case table
         case tab_type, identifier
         case direction, targets
+        case scheme_type, target
     }
 
     private enum ValueType: String, Codable{
@@ -956,6 +976,7 @@ public extension CodableActionData{
         case toggle_tab_bar
         case toggle_caps_lock_state
         case dismiss_keyboard
+        case launch_application
     }
 
     private var key: ValueType {
@@ -964,6 +985,7 @@ public extension CodableActionData{
         case .delete: return .delete
         case .dismissKeyboard: return .dismiss_keyboard
         case .input: return .input
+        case .launchApplication: return .launch_application
         case .moveCursor: return .move_cursor
         case .moveTab: return .move_tab
         case .replaceDefault: return .replace_default
@@ -977,6 +999,7 @@ public extension CodableActionData{
         case .toggleTabBar: return .toggle_tab_bar
         }
     }
+
     private struct CodableTabArgument{
         internal init(tab: TabData) {
             self.tab = tab
@@ -1027,6 +1050,9 @@ public extension CodableActionData{
         case let .smartDelete(value), let .smartMoveCursor(value):
             try container.encode(value.direction, forKey: .direction)
             try container.encode(value.targets, forKey: .targets)
+        case let .launchApplication(value):
+            try container.encode(value.scheme, forKey: .scheme_type)
+            try container.encode(value.target, forKey: .target)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
         case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault: break
@@ -1076,6 +1102,10 @@ public extension CodableActionData{
             self = .toggleTabBar
         case .dismiss_keyboard:
             self = .dismissKeyboard
+        case .launch_application:
+            let scheme = try container.decode(LaunchItem.LaunchableApplication.self, forKey: .scheme_type)
+            let target = try container.decode(String.self, forKey: .target)
+            self = .launchApplication(.init(scheme: scheme, target: target))
         }
     }
 }

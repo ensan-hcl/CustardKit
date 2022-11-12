@@ -1,7 +1,5 @@
-import json
-from .json import to_json
 from enum import Enum, unique
-from abc import ABCMeta, abstractmethod
+from typing import Literal
 
 
 class ActionDefaultArguments:
@@ -13,12 +11,14 @@ class ScanDirection(str, Enum):
     forward = "forward"
     backward = "backward"
 
+
 class Action:
     """
     全てのActionの継承元となるクラス。
     metaclassによって、自動的に割り当てられる。
     """
     pass
+
 
 class ActionMeta(type):
     """
@@ -32,8 +32,10 @@ class ActionMeta(type):
             raise TypeError("Action has no type!")
         return type.__new__(meta, name, bases, attributes)
 
+
 class InputAction(metaclass=ActionMeta):
     type = "input"
+
     def __init__(self, text: str):
         """
         文字を入力するアクション
@@ -44,8 +46,10 @@ class InputAction(metaclass=ActionMeta):
         """
         self.text = text
 
+
 class ReplaceLastCharactersAction(metaclass=ActionMeta):
     type = "replace_last_characters"
+
     def __init__(self, table: dict[str, str]):
         """
         最後の文字を置換するアクション
@@ -56,19 +60,23 @@ class ReplaceLastCharactersAction(metaclass=ActionMeta):
         """
         self.table = table
 
+
 class ReplaceDefaultAction(metaclass=ActionMeta):
     """
     azooKeyデフォルトの置換アクション
     """
     type = "replace_default"
 
+
 @unique
 class TabType(str, Enum):
     system = "system"
     custom = "custom"
 
+
 class MoveTabAction(metaclass=ActionMeta):
     type = "move_tab"
+
     def __init__(self, tab_type: TabType, text: str):
         """
         タブを移動するアクション
@@ -82,8 +90,10 @@ class MoveTabAction(metaclass=ActionMeta):
         self.tab_type = tab_type
         self.identifier = text
 
+
 class MoveCursorAction(metaclass=ActionMeta):
     type = "move_cursor"
+
     def __init__(self, count: int):
         """
         カーソルを移動するアクション
@@ -94,8 +104,10 @@ class MoveCursorAction(metaclass=ActionMeta):
         """
         self.count = count
 
+
 class SmartMoveCursorAction(metaclass=ActionMeta):
     type = "smart_move_cursor"
+
     def __init__(self, direction: ScanDirection, targets: list[str]):
         """
         指定した文字の隣までカーソルを移動するアクション
@@ -109,8 +121,28 @@ class SmartMoveCursorAction(metaclass=ActionMeta):
         self.direction = direction
         self.targets = targets
 
+
+class LaunchApplicationAction(metaclass=ActionMeta):
+    type = "launch_application"
+
+    def __init__(self, scheme_type: Literal['azooKey', 'shortcuts'], target: str):
+        """
+        アプリケーションを起動するアクション。
+        schemeとしてazooKeyを選んだ場合、'azooKey://' + targetを開く。
+        schemeとしてshortcutsを選んだ場合、'shortcuts://' + targetを開く。
+        target = run-shortcut?name=<ショートカット名>とすることで、任意のショートカットを開くことができる。
+        Parameters
+        ----------
+        scheme_type: Literal['azooKey', 'shortcuts']
+        target: str
+        """
+        self.scheme_type = scheme_type
+        self.target = target
+
+
 class DeleteAction(metaclass=ActionMeta):
     type = "delete"
+
     def __init__(self, count: int):
         """
         文字を削除するアクション
@@ -121,8 +153,10 @@ class DeleteAction(metaclass=ActionMeta):
         """
         self.count = count
 
+
 class SmartDeleteAction(metaclass=ActionMeta):
     type = "smart_delete"
+
     def __init__(self, direction: ScanDirection, targets: list[str]):
         """
         指定した文字の隣まで文字を削除するアクション
@@ -136,11 +170,13 @@ class SmartDeleteAction(metaclass=ActionMeta):
         self.direction = direction
         self.targets = targets
 
+
 class SmartDeleteDefaultAction(metaclass=ActionMeta):
     """
     azooKeyデフォルトの文頭まで削除アクション
     """
     type = "smart_delete_default"
+
 
 class EnableResizingModeAction(metaclass=ActionMeta):
     """
@@ -148,11 +184,13 @@ class EnableResizingModeAction(metaclass=ActionMeta):
     """
     type = "enable_resizing_mode"
 
+
 class ToggleCursorBarAction(metaclass=ActionMeta):
     """
     カーソルバーの表示状態をtoggleするアクション
     """
     type = "toggle_cursor_bar"
+
 
 class ToggleTabBarAction(metaclass=ActionMeta):
     """
@@ -160,17 +198,20 @@ class ToggleTabBarAction(metaclass=ActionMeta):
     """
     type = "toggle_tab_bar"
 
+
 class ToggleCapsLockStateAction(metaclass=ActionMeta):
     """
     Caps lockの状態をtoggleするアクション
     """
     type = "toggle_caps_lock_state"
 
+
 class DismissKeyboardAction(metaclass=ActionMeta):
     """
     キーボードを閉じるアクション
     """
     type = "dismiss_keyboard"
+
 
 class LongpressAction(object):
     def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
