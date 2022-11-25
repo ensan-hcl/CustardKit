@@ -77,13 +77,13 @@ public struct CustardMetadata: Codable, Equatable {
 }
 
 public struct Custard: Codable, Equatable {
-    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetadata, interface: CustardInterface, logics: CustardLogics = CustardLogics(initialValues: [])) {
+    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetadata, logics: CustardLogics = CustardLogics(initialValues: []), interface: CustardInterface) {
         self.identifier = identifier
         self.language = language
         self.input_style = input_style
         self.metadata = metadata
-        self.interface = interface
         self.logics = logics
+        self.interface = interface
     }
 
     ///identifier
