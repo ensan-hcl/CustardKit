@@ -1,9 +1,9 @@
+from source.json import to_json
+from source.custard import *
 import unittest
 import sys
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
-from source.custard import *
-from source.json import to_json
 
 
 class TestCustard(unittest.TestCase):
@@ -35,6 +35,22 @@ class TestCustard(unittest.TestCase):
             "display_name": "アインシュタインロンポウ",
         }
         self.assertEqual(expected_json, to_json(metadata))
+
+    def test_Logics(self):
+        """test method for Logics
+        """
+        logics = Logics(initial_values=[StateDeclaration(
+            "key_label", type="bool", value=True)])
+        expected_json = {
+            "initial_values": [
+                {
+                    "name": "key_label",
+                    "type": "bool",
+                    "value": True
+                }
+            ]
+        }
+        self.assertEqual(expected_json, to_json(logics))
 
     def test_Language(self):
         """test method for Language
