@@ -77,11 +77,12 @@ public struct CustardMetadata: Codable, Equatable {
 }
 
 public struct Custard: Codable, Equatable {
-    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetadata, interface: CustardInterface) {
+    public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetadata, logics: CustardLogics = CustardLogics(initialValues: []), interface: CustardInterface) {
         self.identifier = identifier
         self.language = language
         self.input_style = input_style
         self.metadata = metadata
+        self.logics = logics
         self.interface = interface
     }
 
@@ -101,9 +102,37 @@ public struct Custard: Codable, Equatable {
     ///interface
     public var interface: CustardInterface
 
+    /// logics
+    public var logics: CustardLogics
+
     public func write(to url: URL) throws {
         let encoded_data = try JSONEncoder().encode(self)
         try encoded_data.write(to: url)
+    }
+}
+
+extension Custard {
+    private enum CodingKeys: CodingKey {
+        case identifier
+        case language
+        case input_style
+        case metadata
+        case interface
+        case logics
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.identifier = try container.decode(String.self, forKey: .identifier)
+        self.language = try container.decode(CustardLanguage.self, forKey: .language)
+        self.input_style = try container.decode(CustardInputStyle.self, forKey: .input_style)
+        self.metadata = try container.decode(CustardMetadata.self, forKey: .metadata)
+        self.interface = try container.decode(CustardInterface.self, forKey: .interface)
+        if container.contains(.logics) {
+            self.logics = try container.decode(CustardLogics.self, forKey: .logics)
+        } else {
+            self.logics = CustardLogics(initialValues: [])
+        }
     }
 }
 
@@ -113,6 +142,68 @@ extension Array where Element == Custard {
         try encoded_data.write(to: url)
     }
 }
+
+public struct CustardStateValue: Codable, Equatable {
+    public enum Value: Codable, Equatable {
+        case string(String)
+        case bool(Bool)
+    }
+
+    public init(name: String, value: Value) {
+        self.name = name
+        self.value = value
+    }
+
+    public var value: Value
+    public var name: String
+}
+
+public extension CustardStateValue {
+    private enum CodingKeys: CodingKey {
+        case name
+        case type
+        case value
+    }
+    private enum ValueType: String, Codable {
+        case string
+        case bool
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.name, forKey: .name)
+        switch self.value {
+        case let .bool(value):
+            try container.encode(ValueType.bool, forKey: .type)
+            try container.encode(value, forKey: .value)
+        case let .string(value):
+            try container.encode(ValueType.string, forKey: .type)
+            try container.encode(value, forKey: .value)
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(ValueType.self, forKey: .type)
+        let name = try container.decode(String.self, forKey: .name)
+        switch type {
+        case .bool:
+            let value = try container.decode(Bool.self, forKey: .value)
+            self = CustardStateValue(name: name, value: .bool(value))
+        case .string:
+            let value = try container.decode(String.self, forKey: .value)
+            self = CustardStateValue(name: name, value: .string(value))
+        }
+    }
+}
+
+public struct CustardLogics: Codable, Equatable {
+    public init(initialValues: [CustardStateValue]) {
+        self.initial_values = initialValues
+    }
+    public var initial_values: [CustardStateValue]
+}
+
 
 /// - インターフェースのキーのスタイルです
 /// - style of keys
@@ -901,7 +992,7 @@ public enum BoolOperation: String, Codable, Hashable {
 
 /// - アクション
 /// - actions done in key pressing
-public enum CodableActionData: Codable, Hashable {
+public indirect enum CodableActionData: Codable, Hashable {
     /// - input action specified character
     case input(String)
 
@@ -964,6 +1055,17 @@ public enum CodableActionData: Codable, Hashable {
     /// - launch apps
     case launchApplication(LaunchItem)
 
+    /// - set boolean value for state
+    ///  - state: name of state
+    ///  - value: bool expression like "not((state_a == 'normal') and state_b)"
+    case setBoolState(state: String, value: String)
+
+    /// - conditional operation based on boolean value
+    ///  - String: bool expression like "not((state_a == 'normal') and state_b)"
+    ///  - trueActions: actions to be executed when condition is true
+    ///  - falseActions: actions to be executed when condition is false
+    case boolSwitch(condition: String, trueActions: [CodableActionData], falseActions: [CodableActionData])
+
     public static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
 }
 
@@ -977,6 +1079,9 @@ public extension CodableActionData{
         case direction, targets
         case scheme_type, target
         case operation
+        case state_name
+        case bool_expression
+        case true_actions, false_actions
     }
 
     private enum ValueType: String, Codable{
@@ -999,6 +1104,8 @@ public extension CodableActionData{
         case toggle_caps_lock_state
         case dismiss_keyboard
         case launch_application
+        case set_bool_state
+        case bool_switch
     }
 
     private var key: ValueType {
@@ -1023,6 +1130,8 @@ public extension CodableActionData{
         case .toggleCapsLockState: return .set_caps_lock_state
         case .toggleCursorBar: return .set_cursor_bar
         case .toggleTabBar: return .set_tab_bar
+        case .setBoolState: return .set_bool_state
+        case .boolSwitch: return .bool_switch
         }
     }
 
@@ -1083,6 +1192,13 @@ public extension CodableActionData{
             try container.encode(value, forKey: .operation)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
+        case let .setBoolState(stateName, expression):
+            try container.encode(stateName, forKey: .state_name)
+            try container.encode(expression, forKey: .bool_expression)
+        case let .boolSwitch(expression, trueActions, falseActions):
+            try container.encode(expression, forKey: .bool_expression)
+            try container.encode(trueActions, forKey: .true_actions)
+            try container.encode(falseActions, forKey: .false_actions)
         case .toggleTabBar, .toggleCursorBar, .toggleCapsLockState:
             try container.encode(BoolOperation.toggle, forKey: .operation)
         case .dismissKeyboard, .enableResizingMode, .complete, .smartDeleteDefault, .replaceDefault: break
@@ -1145,6 +1261,15 @@ public extension CodableActionData{
             let scheme = try container.decode(LaunchItem.LaunchableApplication.self, forKey: .scheme_type)
             let target = try container.decode(String.self, forKey: .target)
             self = .launchApplication(.init(scheme: scheme, target: target))
+        case .set_bool_state:
+            let state = try container.decode(String.self, forKey: .state_name)
+            let expression = try container.decode(String.self, forKey: .bool_expression)
+            self = .setBoolState(state: state, value: expression)
+        case .bool_switch:
+            let expression = try container.decode(String.self, forKey: .bool_expression)
+            let trueActions = try container.decode([CodableActionData].self, forKey: .true_actions)
+            let falseActions = try container.decode([CodableActionData].self, forKey: .false_actions)
+            self = .boolSwitch(condition: expression, trueActions: trueActions, falseActions: falseActions)
         }
     }
 }

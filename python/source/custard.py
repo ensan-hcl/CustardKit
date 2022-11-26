@@ -50,6 +50,18 @@ class Metadata(object):
         self.display_name = display_name
 
 
+class StateDeclaration(object):
+    def __init__(self, name: str, type: str, value):
+        self.name = name
+        self.type = type
+        self.value = value
+
+
+class Logics(object):
+    def __init__(self, initial_values: list[StateDeclaration]):
+        self.initial_values = initial_values
+
+
 class Custard(object):
     def __init__(self, identifier: str, language: Language, input_style: InputStyle, metadata: Metadata, interface: Interface):
         self.identifier = identifier

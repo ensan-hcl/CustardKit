@@ -1,6 +1,7 @@
 from enum import Enum, unique
 from typing import Literal
 import warnings
+# TODO: implement State API for python
 
 
 class ActionDefaultArguments:
@@ -266,6 +267,29 @@ class ToggleCapsLockStateAction(metaclass=ActionMeta):
             DeprecationWarning(
                 "This action is deprecated. Use SetCapsLockStateAction(BoolOperation.toggle) instead.")
         )
+
+
+class SetBoolStateAction(metaclass=ActionMeta):
+    """
+    カスタムステートの値をsetするアクション
+    """
+    type = "set_bool_state"
+
+    def __init__(self, state_name: str, bool_expression: str):
+        self.state_name = state_name
+        self.bool_expression = bool_expression
+
+
+class BoolSwitchAction(metaclass=ActionMeta):
+    """
+    条件に基づいて処理を分岐するアクション
+    """
+    type = "bool_switch"
+
+    def __init__(self, bool_expression: str, true_actions: list[Action] = [], false_actions: list[Action] = []):
+        self.bool_expression = bool_expression
+        self.true_actions = true_actions
+        self.false_actions = false_actions
 
 
 class DismissKeyboardAction(metaclass=ActionMeta):

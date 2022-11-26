@@ -82,8 +82,10 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .setCursorBar          | BoolOperation    | カーソルバーの表示をon/off/toggleします。                           |
 | .setTabBar             | BoolOperation    | タブバーの表示をon/off/toggleします。                               |
 | .setCapsLockState      | BoolOperation    | caps lockをon/off/toggleします。                                    |
+| .setBoolState          | String, String(BoolExpression)    | 任意のカスタムステートに値をセットします。               |
 | .dismissKeyboard       | なし             | キーボードを閉じます。                                       |
 | .launchApplication     | LaunchItem       | 引数で指定されたアプリケーションを開きます。 |
+| .boolSwitch            | String(BoolExpression), \[Action\], \[Action\]  | 条件に応じて2つ目か3つ目のアクション列を実行します。 |
 
 続く引数の`longpress_actions`は`CodableLongpressActionData`型の値です。定義は以下の通りで、`start`と`repeat`にそれぞれ行うべき動作を指定します。
 
@@ -137,7 +139,7 @@ enum CodableTabData{
 | .qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
 | .last_tab            | このタブの前のタブ<br />もしも履歴がない場合、現在のタブの指定になります |
 
-### ScanItem
+#### ScanItem
 
 以下で定義される構造体です。
 
@@ -152,6 +154,20 @@ struct ScanItem{
     }
 }
 ```
+
+#### カスタムステートとBoolExpression
+
+CustardKitでカスタムステートを宣言することができます。カスタムステートは後述の方法で初期化した上で、`boolSwitch`アクションによって処理を分岐させるために使ったり、`setBoolState`アクションによって値を変更したりできます。
+
+`boolSwitch`アクションや`setBoolState`アクションは`BoolExpression`という値を取ります。BoolExpressionは単なるString型の値ですが、カスタムステートを組み合わせた条件式を記述します。`"true"`や`"false"`は有効なBoolExpressionです。カスタムステート`state_x`がある場合、`"not(state_x)"`や`"state_x and state_y"`も有効な条件式になります。以下のような演算をサポートしています。
+
+* `not(bool_value)`: 入力の`bool`値の論理否定を返します
+* `bool_value1 or bool_value2`: 2つの`bool`値の論理和を返します
+* `bool_value1 and bool_value2`: 2つの`bool`値の論理積を返します
+* `bool_value1 xor bool_value2`: 2つの`bool`値の排他的論理和を返します。`(not(bool_value1) and bool_value2) or (bool_value1 and not(bool_value2))`と同じ意味です
+* `bool_value1 == bool_value2`: 2つの`bool`値が等しいかどうか判定します
+* `bool_value1 != bool_value2`: 2つの`bool`値が異なるか判定します
+
 
 ### バリエーション
 
@@ -294,6 +310,7 @@ let md_custard = Custard(
     language: .ja_JP,
     input_style: .direct,
     metadata: .init(custard_version: .v1_0, display_name: "私のフリック"),
+    logics: .init(initialValues: [.init(name: "state_x", value: .bool(true))]),
     inteface: {インターフェースの記述}
 )
 ```
@@ -321,6 +338,8 @@ let md_custard = Custard(
 
 * `custard_version`は規格のバージョン情報です。この資料に基づいて作成する場合`.v1_0`を指定してください。
 * `display_name`はタブバーなどでデフォルトで用いられる名称です。
+
+`logics`は`CustardLogics`型の値で、カスタムステートの初期値を格納します。`initialValues`にステート名と初期値の配列を指定します。
 
 `interface`には上で記述したとおりのインターフェースの記述を行います。
 
@@ -458,6 +477,7 @@ let hieroglyphs_custard = Custard(
     language: .none,
     input_style: .direct,
     metadata: .init(custard_version: .v1_0, display_name: "ヒエログリフ"),
+    logics: .init(initialValues: []),
     interface: .init(
         keyStyle: .tenkeyStyle,
         keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),

@@ -90,8 +90,10 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | SetCursorBarAction          | operation: BoolOperation                         | カーソルバーの表示をon/off/toggleします。                           |
 | SetTabBarAction             | operation: BoolOperation                         | タブバーの表示をon/off/toggleします。                               |
 | SetCapsLockStateAction      | operation: BoolOperation                         | caps lockをon/off/toggleします。                                    |
+| SetBoolStateAction          | state_name: str, bool_expression: str            | 任意のカスタムステートに値をセットします。               |
 | DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
 | LaunchApplicationAction      | scheme_type: Literal['azooKey', 'shortcuts']<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
+| BoolSwitchAction            | bool_expression: str, true_actions: list[Action], false_actions: list[Action]  | 条件に応じて`true_actions`か`false_actions`を実行します。 |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
 
@@ -120,6 +122,19 @@ class LongpressAction(object):
 | qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
 | qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
 | last_tab            | このタブの前のタブ<br />もしも履歴がない場合、現在のタブの指定になります |
+
+#### カスタムステートとBoolExpression
+
+CustardKitでカスタムステートを宣言することができます。カスタムステートは後述の方法で初期化した上で、`BoolSwitchAction`によって処理を分岐させるために使ったり、`SetBoolStateAction`によって値を変更したりできます。
+
+`BoolSwitchAction`や`SetBoolStateAction`は`bool_expression`という値を取ります。BoolExpressionは単なるString型の値ですが、カスタムステートを組み合わせた条件式を記述します。`"true"`や`"false"`は有効なBoolExpressionです。カスタムステート`state_x`がある場合、`"not(state_x)"`や`"state_x and state_y"`も有効な条件式になります。以下のような演算をサポートしています。
+
+* `not(bool_value)`: 入力の`bool`値の論理否定を返します
+* `bool_value1 or bool_value2`: 2つの`bool`値の論理和を返します
+* `bool_value1 and bool_value2`: 2つの`bool`値の論理積を返します
+* `bool_value1 xor bool_value2`: 2つの`bool`値の排他的論理和を返します。`(not(bool_value1) and bool_value2) or (bool_value1 and not(bool_value2))`と同じ意味です
+* `bool_value1 == bool_value2`: 2つの`bool`値が等しいかどうか判定します
+* `bool_value1 != bool_value2`: 2つの`bool`値が異なるか判定します
 
 ### バリエーション
 
@@ -266,6 +281,7 @@ Custard(
   language = Language.ja_JP,
   input_style = InputStyle.direct,
   metadata = MetaData(custard_version = "1.0", display_name = "私のフリック"),
+  logics = Logics(initial_values = [StateDeclaration("state_x", type="bool", value=True)]),
   interface = {インターフェースの記述}
 )
 ```
@@ -293,6 +309,8 @@ Custard(
 
 * `custard_version`は規格のバージョン情報です。この資料に基づいて作成する場合`"1.0"`を指定してください。
 * `display_name`はタブバーなどでデフォルトで用いられる名称です。
+
+`logics`は`Logics`型の値で、カスタムステートの初期値を格納します。`initialValues`に`list[StateDeclaration]`を指定します。
 
 `interface`には上で記述したとおりのインターフェースの記述を行います。
 
@@ -488,6 +506,7 @@ hieroglyphs_custard = Custard(
         custard_version = "1.0",
         display_name = "ヒエログリフ",
     ),
+    logics = Logics(initial_values = []),
     interface = Interface(
         key_style = KeyStyle.tenkey_style,
         key_layout = GridScrollLayout(direction = ScrollDirection.vertical, row_count = 8, column_count = 4.2),

@@ -123,6 +123,63 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
+    def test_SetBoolStateAction(self):
+        """test method for SetBoolStateAction
+        """
+        actual = to_json(SetBoolStateAction(
+            "is_enabled", "is_enabled_x and is_enabled_y"))
+        expected_json = {
+            "type": "set_bool_state",
+            "state_name": "is_enabled",
+            "bool_expression": "is_enabled_x and is_enabled_y"
+        }
+        self.assertEqual(expected_json, actual)
+
+    def test_BoolSwitchAction(self):
+        """test method for BoolSwitchAction
+        """
+        actual = to_json(BoolSwitchAction(
+            "is_enabled_x and is_enabled_y",
+            true_actions=[
+                BoolSwitchAction(
+                    "is_enabled",
+                    true_actions=[
+                        SmartDeleteDefaultAction()
+                    ],
+                    false_actions=[]
+                )
+            ],
+            false_actions=[
+                ReplaceDefaultAction(),
+                SmartDeleteDefaultAction()
+            ]
+        ))
+        expected_json = {
+            "type": "bool_switch",
+            "bool_expression": "is_enabled_x and is_enabled_y",
+            "true_actions": [
+                {
+                    "type": "bool_switch",
+                    "bool_expression": "is_enabled",
+                    "true_actions": [
+                        {
+                            "type": "smart_delete_default",
+                        }
+                    ],
+                    "false_actions": []
+                }
+            ],
+            "false_actions": [
+                {
+                    "type": "replace_default",
+                },
+                {
+                    "type": "smart_delete_default",
+                }
+            ]
+        }
+        self.assertEqual(expected_json, actual)
+
     def test_NoArgumentsAction(self):
         """test method for actions without arguments
         """
@@ -181,7 +238,7 @@ class TestActions(unittest.TestCase):
             ScanDirection.backward, targets=["0"])
         dismiss_keyboard = DismissKeyboardAction()
         action = LongpressAction(start=[input, delete], repeat=[
-                                 smart_move_cursor, dismiss_keyboard])
+            smart_move_cursor, dismiss_keyboard])
 
         expected_json = {
             "start": [to_json(input), to_json(delete)],
