@@ -211,6 +211,66 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .setCapsLockState(.toggle))
         }
+        do {
+            let target = """
+            {
+                "type": "set_bool_state",
+                "state_name": "state_x",
+                "bool_expression": "true",
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .setBoolState(state: "state_x", value: "true"))
+        }
+    }
+
+    func testDecodeBoolSwitchAction() {
+        do{
+            let target = """
+            {
+                "type": "bool_switch",
+                "bool_expression": "not(is_pressed)",
+                "true_actions": [
+                    {
+                        "type": "set_bool_state",
+                        "state_name": "is_pressed",
+                        "bool_expression": "true",
+                    }
+                ],
+                "false_actions": [
+                    {
+                        "type": "move_tab",
+                        "tab_type": "custom",
+                        "identifier": "flick_greek"
+                    },
+                    {
+                        "type": "bool_switch",
+                        "bool_expression": "not(is_pressed2)",
+                        "true_actions": [
+                            {
+                                "type": "input",
+                                "text": "hi",
+                            }
+                        ],
+                        "false_actions": []
+                    }
+                ]
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .boolSwitch(
+                condition: "not(is_pressed)",
+                trueActions: [.setBoolState(state: "is_pressed", value: "true")],
+                falseActions: [
+                    .moveTab(CustardKit.TabData.custom("flick_greek")),
+                    .boolSwitch(
+                        condition: "not(is_pressed2)",
+                        trueActions: [.input("hi")],
+                        falseActions: []
+                    )
+                ]
+            ))
+        }
     }
 
     func testDecodeNoArgumentActions() {

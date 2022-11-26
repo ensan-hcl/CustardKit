@@ -103,7 +103,6 @@ public struct Custard: Codable, Equatable {
     public var interface: CustardInterface
 
     /// logics
-    // TODO: Add test for this member
     public var logics: CustardLogics
 
     public func write(to url: URL) throws {
@@ -200,9 +199,9 @@ public extension CustardStateValue {
 
 public struct CustardLogics: Codable, Equatable {
     public init(initialValues: [CustardStateValue]) {
-        self.initialValues = initialValues
+        self.initial_values = initialValues
     }
-    public var initialValues: [CustardStateValue]
+    public var initial_values: [CustardStateValue]
 }
 
 
@@ -1059,14 +1058,12 @@ public indirect enum CodableActionData: Codable, Hashable {
     /// - set boolean value for state
     ///  - state: name of state
     ///  - value: bool expression like "not((state_a == 'normal') and state_b)"
-    // TODO: add test cases for this action
     // TODO: add documents for this action
     case setBoolState(state: String, value: String)
 
     /// - conditional operation based on boolean value
     ///  - String: bool expression like "not((state_a == 'normal') and state_b)"
     ///  - trueActions: actions
-    // TODO: add test cases for this action
     // TODO: add documents for this action
     case boolSwitch(condition: String, trueActions: [CodableActionData], falseActions: [CodableActionData])
 

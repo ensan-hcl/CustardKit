@@ -63,6 +63,32 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertEqual(CodableActionData.setCursorBar(.toggle).quickEncodeDecode(), .setCursorBar(.toggle))
         XCTAssertEqual(CodableActionData.setCapsLockState(.off).quickEncodeDecode(), .setCapsLockState(.off))
         XCTAssertEqual(CodableActionData.setTabBar(.on).quickEncodeDecode(), .setTabBar(.on))
+        XCTAssertEqual(CodableActionData.setBoolState(state: "snabo", value: "not(false)").quickEncodeDecode(), .setBoolState(state: "snabo", value: "not(false)"))
+    }
+
+    func testEncodeBoolSwitchAction() {
+        do{
+            let target = CodableActionData.boolSwitch(
+                condition: "not(is_pressed_x and is_pressed_y) and (state_z == 'normal')",
+                trueActions: [
+                    .input("「」"),
+                    .moveCursor(-1)
+                ],
+                falseActions: [
+                    .boolSwitch(
+                        condition: "is_caps_locked",
+                        trueActions: [
+                            .input("A"),
+                        ],
+                        falseActions: [
+                            .delete(1),
+                            .complete
+                        ]
+                    )
+                ]
+            )
+            XCTAssertEqual(target.quickEncodeDecode(), target)
+        }
     }
 
     func testEncodeNoArgumentActions() {

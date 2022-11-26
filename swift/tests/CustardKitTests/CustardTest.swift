@@ -13,6 +13,58 @@ final class CustardTest: XCTestCase {
                     "custard_version": "1.0",
                     "display_name": "翡翠のまち"
                 },
+                "logics": {
+                    "initial_values": []
+                },
+                "interface": {
+                    "key_layout": {
+                        "type": "grid_fit",
+                        "row_count": 1,
+                        "column_count": 1,
+                    },
+                    "key_style": "tenkey_style",
+                    "keys": [
+                        {
+                            "specifier_type": "grid_fit",
+                            "specifier": {
+                                "x": 0,
+                                "y": 0,
+                                "width": 1,
+                                "height": 1
+                            },
+                            "key_type": "system",
+                            "key": {
+                                "type": "enter",
+                        }
+                        }
+                    ]
+                }
+            }
+            """
+            XCTAssertEqual(
+                Custard.quickDecode(target: target),
+                .init(
+                    identifier: "Hisui no machi",
+                    language: .ja_JP,
+                    input_style: .direct,
+                    metadata: .init(custard_version: .v1_0, display_name: "翡翠のまち"),
+                    interface: .init(keyStyle: .tenkeyStyle, keyLayout: .gridFit(.init(rowCount: 1, columnCount: 1)), keys: [.gridFit(.init(x: 0, y: 0)): .system(.enter)])
+                )
+            )
+        }
+    }
+
+    func testNullLogicsDecode() {
+        do{
+            let target = """
+            {
+                "identifier": "Hisui no machi",
+                "language": "ja_JP",
+                "input_style": "direct",
+                "metadata": {
+                    "custard_version": "1.0",
+                    "display_name": "翡翠のまち"
+                },
                 "interface": {
                     "key_layout": {
                         "type": "grid_fit",
