@@ -1058,13 +1058,12 @@ public indirect enum CodableActionData: Codable, Hashable {
     /// - set boolean value for state
     ///  - state: name of state
     ///  - value: bool expression like "not((state_a == 'normal') and state_b)"
-    // TODO: add documents for this action
     case setBoolState(state: String, value: String)
 
     /// - conditional operation based on boolean value
     ///  - String: bool expression like "not((state_a == 'normal') and state_b)"
-    ///  - trueActions: actions
-    // TODO: add documents for this action
+    ///  - trueActions: actions to be executed when condition is true
+    ///  - falseActions: actions to be executed when condition is false
     case boolSwitch(condition: String, trueActions: [CodableActionData], falseActions: [CodableActionData])
 
     public static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
