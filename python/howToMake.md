@@ -93,7 +93,7 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | SetBoolStateAction          | state_name: str, bool_expression: str            | 任意のカスタムステートに値をセットします。               |
 | DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
 | LaunchApplicationAction      | scheme_type: Literal['azooKey', 'shortcuts']<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
-| BoolSwitchAction            | bool_expression: str, true_actions: list[Action], false_actions: [Action]  | 条件に応じて`true_actions`か`false_actions`を実行します。 |
+| BoolSwitchAction            | bool_expression: str, true_actions: list[Action], false_actions: list[Action]  | 条件に応じて`true_actions`か`false_actions`を実行します。 |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
 
@@ -307,10 +307,10 @@ Custard(
 
 `metadata`は`Metadata`型の値で、キーボードの動作とは無関係な情報を格納します。現在は以下の2つの値を指定してください。
 
-`logics`は`Logics`型の値で、カスタムステートの初期値を格納します。`initialValues`に`list[StateDeclaration]`を指定します。
-
 * `custard_version`は規格のバージョン情報です。この資料に基づいて作成する場合`"1.0"`を指定してください。
 * `display_name`はタブバーなどでデフォルトで用いられる名称です。
+
+`logics`は`Logics`型の値で、カスタムステートの初期値を格納します。`initialValues`に`list[StateDeclaration]`を指定します。
 
 `interface`には上で記述したとおりのインターフェースの記述を行います。
 
