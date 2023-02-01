@@ -69,11 +69,11 @@ public struct CustardMetadata: Codable, Equatable {
     }
 
     ///version
-    var custard_version: CustardVersion
+    public var custard_version: CustardVersion
 
     ///display name
     /// - used in tab bar
-    let display_name: String
+    public var display_name: String
 }
 
 public struct Custard: Codable, Equatable {
@@ -87,19 +87,19 @@ public struct Custard: Codable, Equatable {
 
     ///identifier
     /// - must be unique
-    let identifier: String
+    public var identifier: String
 
     ///language to convert
-    let language: CustardLanguage
+    public var language: CustardLanguage
 
     ///input style
-    let input_style: CustardInputStyle
+    public var input_style: CustardInputStyle
 
     ///metadata
-    let metadata: CustardMetadata
+    public var metadata: CustardMetadata
 
     ///interface
-    let interface: CustardInterface
+    public var interface: CustardInterface
 
     public func write(to url: URL) throws {
         let encoded_data = try JSONEncoder().encode(self)
@@ -187,10 +187,10 @@ public struct CustardInterfaceLayoutGridValue: Equatable {
 
     /// - 横方向に配置するキーの数
     /// - number of keys placed horizontally
-    let rowCount: Int
+    public var rowCount: Int
     /// - 縦方向に配置するキーの数
     /// - number of keys placed vertically
-    let columnCount: Int
+    public var columnCount: Int
 }
 
 public struct CustardInterfaceLayoutScrollValue: Equatable {
@@ -202,15 +202,15 @@ public struct CustardInterfaceLayoutScrollValue: Equatable {
 
     /// - スクロールの方向
     /// - direction of scroll
-    let direction: ScrollDirection
+    public var direction: ScrollDirection
 
     /// - 一列に配置するキーの数
     /// - number of keys in scroll normal direction
-    let rowCount: Double
+    public var rowCount: Double
 
     /// - 画面内に収まるスクロール方向のキーの数
     /// - number of keys in screen in scroll direction
-    let columnCount: Double
+    public var columnCount: Double
 
     /// - direction of scroll
     public enum ScrollDirection: String, Codable{
@@ -243,14 +243,14 @@ public struct GridFitPositionSpecifier: Codable, Hashable {
 
     /// - 横方向の位置(左をゼロとする)
     /// - horizontal position (leading edge is zero)
-    let x: Int
+    public var x: Int
 
     /// - 縦方向の位置(上をゼロとする)
     /// - vertical positon (top edge is zero)
-    let y: Int
+    public var y: Int
 
-    let width: Int
-    let height: Int
+    public var width: Int
+    public var height: Int
 
     private enum CodingKeys: CodingKey{
         case x, y, width, height
@@ -271,7 +271,7 @@ public struct GridFitPositionSpecifier: Codable, Hashable {
 public struct GridScrollPositionSpecifier: Codable, Hashable, ExpressibleByIntegerLiteral {
     /// - 通し番号
     /// - index
-    let index: Int
+    public var index: Int
 
     public init(_ index: Int){
         self.index = index
@@ -300,16 +300,16 @@ public struct CustardInterface: Codable, Equatable {
     /// - キーのスタイル
     /// - style of keys
     /// - warning: Currently when you use gird scroll. layout, key style would be ignored.
-    let keyStyle: CustardInterfaceStyle
+    public var keyStyle: CustardInterfaceStyle
 
     /// - キーのレイアウト
     /// - layout of keys
-    let keyLayout: CustardInterfaceLayout
+    public var keyLayout: CustardInterfaceLayout
 
     /// - キーの辞書
     /// - dictionary of keys
     /// - warning: You must use specifiers consistent with key layout. When you use inconsistent one, it would be ignored.
-    let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]
+    public var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]
 }
 
 public extension CustardInterface {
@@ -424,8 +424,8 @@ public struct CustardKeyDesign: Codable, Equatable {
         self.color = color
     }
 
-    let label: CustardKeyLabelStyle
-    let color: ColorType
+    public var label: CustardKeyLabelStyle
+    public var color: ColorType
 
     public enum ColorType: String, Codable {
         case normal
@@ -442,7 +442,7 @@ public struct CustardVariationKeyDesign: Codable, Equatable {
         self.label = label
     }
 
-    let label: CustardKeyLabelStyle
+    public var label: CustardKeyLabelStyle
 }
 
 /// - キーに指定するラベル
@@ -592,16 +592,16 @@ public struct CustardInterfaceCustomKey: Codable, Equatable {
     }
 
     /// - design of this key
-    let design: CustardKeyDesign
+    public var design: CustardKeyDesign
 
     /// - actions done when this key is pressed. actions are done in order.
-    let press_actions: [CodableActionData]
+    public var press_actions: [CodableActionData]
 
     /// - actions done when this key is longpressed. actions are done in order.
-    let longpress_actions: CodableLongpressActionData
+    public var longpress_actions: CodableLongpressActionData
 
     /// - variations available when user flick or longpress this key
-    let variations: [CustardInterfaceVariation]
+    public var variations: [CustardInterfaceVariation]
 }
 
 
@@ -662,8 +662,8 @@ public extension CustardInterfaceCustomKey {
     }
 
     struct SimpleInputArgument: Equatable, ExpressibleByStringLiteral {
-        let label: String
-        let input: String
+        public var label: String
+        public var input: String
 
         public typealias StringLiteralType = String
 
@@ -741,10 +741,10 @@ public struct CustardInterfaceVariation: Codable, Equatable {
     }
 
     /// - type of the variation
-    let type: VariationType
+    public var type: VariationType
 
     /// - data of variation
-    let key: CustardInterfaceVariationKey
+    public var key: CustardInterfaceVariationKey
 
     /// - キーの変種の種類
     /// - type of key variation
@@ -813,13 +813,13 @@ public struct CustardInterfaceVariationKey: Codable, Equatable {
     }
 
     /// - label on this variation
-    let design: CustardVariationKeyDesign
+    public var design: CustardVariationKeyDesign
 
     /// - actions done when you select this variation. actions are done in order..
-    let press_actions: [CodableActionData]
+    public var press_actions: [CodableActionData]
 
     /// - actions done when you 'long select' this variation, like long-flick. actions are done in order.
-    let longpress_actions: CodableLongpressActionData
+    public var longpress_actions: CodableLongpressActionData
 }
 
 /// - Tab specifier
@@ -869,8 +869,8 @@ public struct ScanItem: Hashable {
         self.direction = direction
     }
 
-    let targets: [String]
-    let direction: Direction
+    public var targets: [String]
+    public var direction: Direction
 
     public enum Direction: String, Codable {
         case forward
@@ -884,8 +884,8 @@ public struct LaunchItem: Hashable {
         self.target = target
     }
 
-    let scheme: LaunchableApplication
-    let target: String
+    public var scheme: LaunchableApplication
+    public var target: String
 
     public enum LaunchableApplication: String, Codable {
         case azooKey
@@ -1118,6 +1118,6 @@ public struct CodableLongpressActionData: Codable, Equatable {
         self.repeat = `repeat`
     }
 
-    var start: [CodableActionData]
-    var `repeat`: [CodableActionData]
+    public var start: [CodableActionData]
+    public var `repeat`: [CodableActionData]
 }
