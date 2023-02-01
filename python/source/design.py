@@ -7,6 +7,7 @@ class KeyColor(str, Enum):
     normal = "normal"
     special = "special"
     selected = "selected"
+    unimportant = "unimportant"
 
 
 class KeyLabel(object):

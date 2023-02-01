@@ -11,6 +11,12 @@ final class CustardKeyDesignTest: XCTestCase {
         }
         do{
             let target = """
+            {"label":{"text": "義務"},"color": "unimportant"}
+            """
+            XCTAssertEqual(CustardKeyDesign.quickDecode(target: target), .init(label: .text("義務"), color: .unimportant))
+        }
+        do{
+            let target = """
             {"label":{"system_image": "kyomukyomupurin"},"color": "selected"}
             """
             XCTAssertEqual(CustardKeyDesign.quickDecode(target: target), .init(label: .systemImage("kyomukyomupurin"), color: .selected))
