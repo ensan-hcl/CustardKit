@@ -49,6 +49,7 @@ design: .init(label: .text("@#/&_"), color: .normal)
 | .normal   | 通常の入力キーの色です。                 |
 | .special  | タブ移動キーや削除キーの色です。         |
 | .selected | 選択中のタブや押されているキーの色です。 |
+| .unimportant | 重要度の低いキーの色です。 |
 
 ### アクション
 
@@ -82,6 +83,7 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .toggleTabBar          | なし             | タブバーの表示をtoggleします。                               |
 | .toggleCapsLockState   | なし             | caps lockをtoggleします。                                    |
 | .dismissKeyboard       | なし             | キーボードを閉じます。                                       |
+| .launchApplication     | LaunchItem       | 引数で指定されたアプリケーションを開きます。 |
 
 続く引数の`longpress_actions`は`CodableLongpressActionData`型の値です。定義は以下の通りで、`start`と`repeat`にそれぞれ行うべき動作を指定します。
 

@@ -1,9 +1,10 @@
+from source.json import to_json
+from source.actions import *
 import unittest
 import sys
+import json
 from pathlib import Path
 sys.path.append(str(Path('__file__').resolve().parent))
-from source.actions import *
-from source.json import to_json
 
 
 class TestActions(unittest.TestCase):
@@ -23,7 +24,8 @@ class TestActions(unittest.TestCase):
     def test_ReplaceLastCharactersAction(self):
         """test method for ReplaceLastCharactersAction
         """
-        actual = to_json(ReplaceLastCharactersAction({"あ": "ぁ", "か": "が", "😆": "😭"}))
+        actual = to_json(ReplaceLastCharactersAction(
+            {"あ": "ぁ", "か": "が", "😆": "😭"}))
         expected_json = {
             "type": "replace_last_characters",
             "table": {"あ": "ぁ", "か": "が", "😆": "😭"}
@@ -33,7 +35,8 @@ class TestActions(unittest.TestCase):
     def test_MoveTabAction(self):
         """test method for MoveTabAction
         """
-        actual = to_json(MoveTabAction(tab_type=TabType.custom, text="flick_greek"))
+        actual = to_json(MoveTabAction(
+            tab_type=TabType.custom, text="flick_greek"))
         expected_json = {
             "type": "move_tab",
             "tab_type": TabType.custom,
@@ -41,7 +44,8 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-        actual = to_json(MoveTabAction(tab_type=TabType.system, text="flick_kutoten"))
+        actual = to_json(MoveTabAction(
+            tab_type=TabType.system, text="flick_kutoten"))
         expected_json = {
             "type": "move_tab",
             "tab_type": TabType.system,
@@ -66,11 +70,23 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
+    def test_LaunchApplicationAction(self):
+        """test method for LaunchApplicationAction
+        """
+        actual = to_json(LaunchApplicationAction(
+            "shortcuts", "run_shortcut?name=take_picture"))
+        expected_json = {
+            "type": "launch_application",
+            "scheme_type": "shortcuts",
+            "target": "run_shortcut?name=take_picture"
+        }
+        self.assertEqual(expected_json, actual)
+
     def test_SmartMoveCursorAction(self):
         """test method for SmartMoveCursorAction
         """
         actual = to_json(SmartMoveCursorAction(ScanDirection.forward, targets=[
-                                          "!", "?", ".", ",", ":", ";"]))
+            "!", "?", ".", ",", ":", ";"]))
         expected_json = {
             "type": "smart_move_cursor",
             "direction": ScanDirection.forward,
@@ -99,7 +115,7 @@ class TestActions(unittest.TestCase):
         """test method for SmartDeleteAction
         """
         actual = to_json(SmartDeleteAction(ScanDirection.forward, targets=[
-                                     "!", "?", ".", ",", ":", ";"]))
+            "!", "?", ".", ",", ":", ";"]))
         expected_json = {
             "type": "smart_delete",
             "direction": ScanDirection.forward,

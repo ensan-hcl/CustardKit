@@ -67,6 +67,7 @@
 | normal   | 通常の入力キーの色です。                 |
 | special  | タブ移動キーや削除キーの色です。         |
 | selected | 選択中のタブや押されているキーの色です。 |
+| unimportant | 重要度の低いキーの色です。 |
 
 ### アクション
 
@@ -101,6 +102,7 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | toggle_tab_bar          | なし                               | タブバーの表示をtoggleします。                               |
 | toggle_caps_lock_state  | なし                               | caps lockをtoggleします。                                    |
 | dismiss_keyboard        | なし                               | キーボードを閉じます。                                       |
+| launch_application      | scheme_type: str<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
 続く`"longpress_actions"`はほぼ`"press_actions"`と同じです。
 
