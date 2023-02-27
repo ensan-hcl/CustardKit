@@ -1,3 +1,4 @@
+from __future__ import annotations
 import json
 from .variations import *
 from .design import *
