@@ -860,6 +860,9 @@ public enum TabData: Hashable{
 
         ///the last tab
         case last_tab
+
+        /// clipboard history tab
+        case clipboard_history_tab
     }
 }
 
