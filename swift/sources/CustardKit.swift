@@ -860,6 +860,10 @@ public enum TabData: Hashable{
 
         ///the last tab
         case last_tab
+
+        /// clipboard history tab
+        /// - note: WIP. This tab can be removed at any time.
+        case __clipboard_history_tab
     }
 }
 
@@ -898,6 +902,10 @@ public struct LaunchItem: Hashable {
 public enum CodableActionData: Codable, Hashable {
     /// - input action specified character
     case input(String)
+
+    /// - input action specified character
+    /// - note: WIP. This action can be removed at any time.
+    case __paste
 
     /// - exchange character "あ→ぁ", "は→ば", "a→A"
     case replaceDefault
@@ -962,6 +970,7 @@ public extension CodableActionData{
 
     private enum ValueType: String, Codable{
         case input
+        case __paste
         case replace_default
         case replace_last_characters
         case delete
@@ -997,6 +1006,7 @@ public extension CodableActionData{
         case .toggleCapsLockState: return .toggle_caps_lock_state
         case .toggleCursorBar: return .toggle_cursor_bar
         case .toggleTabBar: return .toggle_tab_bar
+        case .__paste: return .__paste
         }
     }
 
@@ -1056,6 +1066,7 @@ public extension CodableActionData{
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
         case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault: break
+        case .__paste: break
         }
     }
 
@@ -1106,6 +1117,8 @@ public extension CodableActionData{
             let scheme = try container.decode(LaunchItem.LaunchableApplication.self, forKey: .scheme_type)
             let target = try container.decode(String.self, forKey: .target)
             self = .launchApplication(.init(scheme: scheme, target: target))
+        case .__paste:
+            self = .__paste
         }
     }
 }
