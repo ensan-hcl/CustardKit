@@ -450,33 +450,71 @@ public struct CustardVariationKeyDesign: Codable, Equatable, Hashable {
 public enum CustardKeyLabelStyle: Codable, Equatable, Hashable {
     case text(String)
     case systemImage(String)
+    case mainAndVariations(String, String)
 }
 
 public extension CustardKeyLabelStyle {
     private enum CodingKeys: CodingKey {
         case text
         case system_image
+        case type
+        case main
+        case variations
     }
 
-    private var key: CodingKeys {
-        switch self{
-        case .text: return .text
-        case .systemImage: return .system_image
-        }
+    private enum ValueType: String, Codable {
+        case text
+        case system_image
+        case main_and_variations
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .text(value),
-             let .systemImage(value):
-            try container.encode(value, forKey: key)
+        case let .text(value):
+            try container.encode(value, forKey: .text)
+        case let .systemImage(value):
+            try container.encode(value, forKey: .system_image)
+        case let .mainAndVariations(main, variations):
+            try container.encode(ValueType.main_and_variations, forKey: .type)
+            try container.encode(main, forKey: .main)
+            try container.encode(variations, forKey: .variations)
         }
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        guard let key = container.allKeys.first else{
+        // "type"が見つかった場合
+        if let type = try? container.decode(ValueType.self, forKey: .type) {
+            switch type {
+            case .text:
+                let value = try container.decode(
+                    String.self,
+                    forKey: .text
+                )
+                self = .text(value)
+            case .system_image:
+                let value = try container.decode(
+                    String.self,
+                    forKey: .system_image
+                )
+                self = .systemImage(value)
+            case .main_and_variations:
+                let main = try container.decode(
+                    String.self,
+                    forKey: .main
+                )
+                let variations = try container.decode(
+                    String.self,
+                    forKey: .variations
+                )
+                self = .mainAndVariations(main, variations)
+            }
+            return
+        }
+
+        // それ以外の場合(old cases)
+        guard container.allKeys.count == 1, let key = container.allKeys.first else {
             throw DecodingError.dataCorrupted(
                 DecodingError.Context(
                     codingPath: container.codingPath,
@@ -497,6 +535,13 @@ public extension CustardKeyLabelStyle {
                 forKey: .system_image
             )
             self = .systemImage(value)
+        default:
+            throw DecodingError.dataCorrupted(
+                DecodingError.Context(
+                    codingPath: container.codingPath,
+                    debugDescription: "Unabled to decode CustardKeyLabelStyle."
+                )
+            )
         }
     }
 }
