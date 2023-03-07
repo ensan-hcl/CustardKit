@@ -450,7 +450,7 @@ public struct CustardVariationKeyDesign: Codable, Equatable, Hashable {
 public enum CustardKeyLabelStyle: Codable, Equatable, Hashable {
     case text(String)
     case systemImage(String)
-    case mainAndVariations(String, String)
+    case mainAndSub(String, String)
 }
 
 public extension CustardKeyLabelStyle {
@@ -459,13 +459,13 @@ public extension CustardKeyLabelStyle {
         case system_image
         case type
         case main
-        case variations
+        case sub
     }
 
     private enum ValueType: String, Codable {
         case text
         case system_image
-        case main_and_variations
+        case main_and_sub
     }
 
     func encode(to encoder: Encoder) throws {
@@ -475,10 +475,10 @@ public extension CustardKeyLabelStyle {
             try container.encode(value, forKey: .text)
         case let .systemImage(value):
             try container.encode(value, forKey: .system_image)
-        case let .mainAndVariations(main, variations):
-            try container.encode(ValueType.main_and_variations, forKey: .type)
+        case let .mainAndSub(main, sub):
+            try container.encode(ValueType.main_and_sub, forKey: .type)
             try container.encode(main, forKey: .main)
-            try container.encode(variations, forKey: .variations)
+            try container.encode(sub, forKey: .sub)
         }
     }
 
@@ -499,16 +499,16 @@ public extension CustardKeyLabelStyle {
                     forKey: .system_image
                 )
                 self = .systemImage(value)
-            case .main_and_variations:
+            case .main_and_sub:
                 let main = try container.decode(
                     String.self,
                     forKey: .main
                 )
-                let variations = try container.decode(
+                let sub = try container.decode(
                     String.self,
-                    forKey: .variations
+                    forKey: .sub
                 )
-                self = .mainAndVariations(main, variations)
+                self = .mainAndSub(main, sub)
             }
             return
         }

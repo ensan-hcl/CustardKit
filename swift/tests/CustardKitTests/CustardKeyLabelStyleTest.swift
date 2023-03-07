@@ -23,7 +23,7 @@ final class CustardKeyLabelStyleTest: XCTestCase {
         }
         do {
             let target = """
-            {"main_and_variations": "1"}
+            {"main_and_sub": "1"}
             """
             XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), nil)
         }
@@ -41,9 +41,9 @@ final class CustardKeyLabelStyleTest: XCTestCase {
         }
         do {
             let target = """
-            {"type": "main_and_variations", "main": "1", "variations": "☆♡◇"}
+            {"type": "main_and_sub", "main": "1", "sub": "☆♡◇"}
             """
-            XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .mainAndVariations("1", "☆♡◇"))
+            XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .mainAndSub("1", "☆♡◇"))
         }
     }
 
@@ -57,7 +57,7 @@ final class CustardKeyLabelStyleTest: XCTestCase {
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
         do{
-            let target = CustardKeyLabelStyle.mainAndVariations("金", "money")
+            let target = CustardKeyLabelStyle.mainAndSub("金", "money")
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
     }
