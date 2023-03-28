@@ -13,7 +13,7 @@ extension Encodable{
     }
 }
 
-public enum FlickDirection: String, Codable {
+public enum FlickDirection: String, Codable, Sendable {
     case left
     case top
     case right
@@ -22,7 +22,7 @@ public enum FlickDirection: String, Codable {
 
 /// - 変換対象の言語を指定します。
 /// - specify language to convert
-public enum CustardLanguage: String, Codable {
+public enum CustardLanguage: String, Codable, Sendable {
     /// - 英語(アメリカ)に変換します
     /// - convert to American English
     case en_US
@@ -46,7 +46,7 @@ public enum CustardLanguage: String, Codable {
 
 /// - 入力方式を指定します。
 /// - specify input style
-public enum CustardInputStyle: String, Codable {
+public enum CustardInputStyle: String, Codable, Sendable {
     /// - 入力された文字をそのまま用います
     /// - use inputted characters directly
     case direct
@@ -58,11 +58,11 @@ public enum CustardInputStyle: String, Codable {
 
 /// - カスタードのバージョンを指定します。
 /// - specify custard version
-public enum CustardVersion: String, Codable {
+public enum CustardVersion: String, Codable, Sendable {
     case v1_0 = "1.0"
 }
 
-public struct CustardMetadata: Codable, Equatable {
+public struct CustardMetadata: Codable, Equatable, Sendable {
     public init(custard_version: CustardVersion, display_name: String) {
         self.custard_version = custard_version
         self.display_name = display_name
@@ -76,7 +76,7 @@ public struct CustardMetadata: Codable, Equatable {
     public var display_name: String
 }
 
-public struct Custard: Codable, Equatable {
+public struct Custard: Codable, Equatable, Sendable {
     public init(identifier: String, language: CustardLanguage, input_style: CustardInputStyle, metadata: CustardMetadata, interface: CustardInterface) {
         self.identifier = identifier
         self.language = language
@@ -116,7 +116,7 @@ extension Array where Element == Custard {
 
 /// - インターフェースのキーのスタイルです
 /// - style of keys
-public enum CustardInterfaceStyle: String, Codable {
+public enum CustardInterfaceStyle: String, Codable, Sendable {
     /// - フリック可能なキー
     /// - flickable keys
     case tenkeyStyle = "tenkey_style"
@@ -128,7 +128,7 @@ public enum CustardInterfaceStyle: String, Codable {
 
 /// - インターフェースのレイアウトのスタイルです
 /// - style of layout
-public enum CustardInterfaceLayout: Codable, Equatable {
+public enum CustardInterfaceLayout: Codable, Equatable, Sendable {
     /// - 画面いっぱいにマス目状で均等に配置されます
     /// - keys are evenly layouted in a grid pattern fitting to the screen
     case gridFit(CustardInterfaceLayoutGridValue)
@@ -179,7 +179,7 @@ public extension CustardInterfaceLayout{
     }
 }
 
-public struct CustardInterfaceLayoutGridValue: Equatable {
+public struct CustardInterfaceLayoutGridValue: Equatable, Sendable {
     public init(rowCount: Int, columnCount: Int) {
         self.rowCount = rowCount
         self.columnCount = columnCount
@@ -193,7 +193,7 @@ public struct CustardInterfaceLayoutGridValue: Equatable {
     public var columnCount: Int
 }
 
-public struct CustardInterfaceLayoutScrollValue: Equatable {
+public struct CustardInterfaceLayoutScrollValue: Equatable, Sendable {
     public init(direction: ScrollDirection, rowCount: Double, columnCount: Double) {
         self.direction = direction
         self.rowCount = rowCount
@@ -213,7 +213,7 @@ public struct CustardInterfaceLayoutScrollValue: Equatable {
     public var columnCount: Double
 
     /// - direction of scroll
-    public enum ScrollDirection: String, Codable{
+    public enum ScrollDirection: String, Codable, Sendable {
         case vertical
         case horizontal
     }
@@ -221,7 +221,7 @@ public struct CustardInterfaceLayoutScrollValue: Equatable {
 
 /// - 画面内でのキーの位置を決める指定子
 /// - the specifier of key's position in screen
-public enum CustardKeyPositionSpecifier: Hashable {
+public enum CustardKeyPositionSpecifier: Hashable, Sendable {
     /// - gridFitのレイアウトを利用した際のキーの位置指定子
     /// - position specifier when you use grid fit layout
     case gridFit(GridFitPositionSpecifier)
@@ -233,7 +233,7 @@ public enum CustardKeyPositionSpecifier: Hashable {
 
 /// - gridFitのレイアウトを利用した際のキーの位置指定子に与える値
 /// - values in position specifier when you use grid fit layout
-public struct GridFitPositionSpecifier: Codable, Hashable {
+public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
     public init(x: Int, y: Int, width: Int = 1, height: Int = 1) {
         self.x = x
         self.y = y
@@ -268,7 +268,7 @@ public struct GridFitPositionSpecifier: Codable, Hashable {
 
 /// - gridScrollのレイアウトを利用した際のキーの位置指定子に与える値
 /// - values in position specifier when you use grid scroll layout
-public struct GridScrollPositionSpecifier: Codable, Hashable, ExpressibleByIntegerLiteral {
+public struct GridScrollPositionSpecifier: Codable, Hashable, ExpressibleByIntegerLiteral, Sendable {
     /// - 通し番号
     /// - index
     public var index: Int
@@ -290,7 +290,7 @@ public extension GridScrollPositionSpecifier {
 
 /// - インターフェース
 /// - interface
-public struct CustardInterface: Codable, Equatable {
+public struct CustardInterface: Codable, Equatable, Sendable {
     public init(keyStyle: CustardInterfaceStyle, keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier : CustardInterfaceKey]) {
         self.keyStyle = keyStyle
         self.keyLayout = keyLayout
@@ -418,7 +418,7 @@ public extension CustardInterface {
 
 /// - キーのデザイン
 /// - design information of key
-public struct CustardKeyDesign: Codable, Equatable, Hashable {
+public struct CustardKeyDesign: Codable, Equatable, Hashable, Sendable {
     public init(label: CustardKeyLabelStyle, color: CustardKeyDesign.ColorType) {
         self.label = label
         self.color = color
@@ -427,7 +427,7 @@ public struct CustardKeyDesign: Codable, Equatable, Hashable {
     public var label: CustardKeyLabelStyle
     public var color: ColorType
 
-    public enum ColorType: String, Codable {
+    public enum ColorType: String, Codable, Sendable {
         case normal
         case special
         case selected
@@ -437,7 +437,7 @@ public struct CustardKeyDesign: Codable, Equatable, Hashable {
 
 /// - バリエーションのキーのデザイン
 /// - design information of key
-public struct CustardVariationKeyDesign: Codable, Equatable, Hashable {
+public struct CustardVariationKeyDesign: Codable, Equatable, Hashable, Sendable {
     public init(label: CustardKeyLabelStyle) {
         self.label = label
     }
@@ -447,7 +447,7 @@ public struct CustardVariationKeyDesign: Codable, Equatable, Hashable {
 
 /// - キーに指定するラベル
 /// - labels on the key
-public enum CustardKeyLabelStyle: Codable, Equatable, Hashable {
+public enum CustardKeyLabelStyle: Codable, Equatable, Hashable, Sendable {
     case text(String)
     case systemImage(String)
     case mainAndSub(String, String)
@@ -547,13 +547,13 @@ public extension CustardKeyLabelStyle {
 }
 
 /// - key's data in interface
-public enum CustardInterfaceKey: Equatable, Hashable {
+public enum CustardInterfaceKey: Equatable, Hashable, Sendable {
     case system(CustardInterfaceSystemKey)
     case custom(CustardInterfaceCustomKey)
 }
 
 /// - keys prepared in default
-public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable {
+public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable, Sendable {
     /// - the globe key
     case changeKeyboard
 
@@ -628,7 +628,7 @@ public extension CustardInterfaceSystemKey{
 }
 
 /// - keys you can defined
-public struct CustardInterfaceCustomKey: Codable, Equatable, Hashable {
+public struct CustardInterfaceCustomKey: Codable, Equatable, Hashable, Sendable {
     public init(design: CustardKeyDesign, press_actions: [CodableActionData], longpress_actions: CodableLongpressActionData, variations: [CustardInterfaceVariation]) {
         self.design = design
         self.press_actions = press_actions
@@ -706,7 +706,7 @@ public extension CustardInterfaceCustomKey {
         )
     }
 
-    struct SimpleInputArgument: Equatable, ExpressibleByStringLiteral {
+    struct SimpleInputArgument: Equatable, ExpressibleByStringLiteral, Sendable {
         public var label: String
         public var input: String
 
@@ -779,7 +779,7 @@ public extension CustardInterfaceCustomKey {
 }
 
 /// - variation of key, includes flick keys and selectable variations in pc style keyboard.
-public struct CustardInterfaceVariation: Codable, Equatable, Hashable {
+public struct CustardInterfaceVariation: Codable, Equatable, Hashable, Sendable {
     public init(type: VariationType, key: CustardInterfaceVariationKey) {
         self.type = type
         self.key = key
@@ -793,7 +793,7 @@ public struct CustardInterfaceVariation: Codable, Equatable, Hashable {
 
     /// - キーの変種の種類
     /// - type of key variation
-    public enum VariationType: Equatable, Hashable {
+    public enum VariationType: Equatable, Hashable, Sendable {
         /// - variation of flick
         /// - warning: when you use pc style, this type of variation would be ignored.
         case flickVariation(FlickDirection)
@@ -850,7 +850,7 @@ public extension CustardInterfaceVariation {
 }
 
 /// - data of variation key
-public struct CustardInterfaceVariationKey: Codable, Equatable, Hashable {
+public struct CustardInterfaceVariationKey: Codable, Equatable, Hashable, Sendable {
     public init(design: CustardVariationKeyDesign, press_actions: [CodableActionData], longpress_actions: CodableLongpressActionData) {
         self.design = design
         self.press_actions = press_actions
@@ -868,14 +868,14 @@ public struct CustardInterfaceVariationKey: Codable, Equatable, Hashable {
 }
 
 /// - Tab specifier
-public enum TabData: Hashable{
+public enum TabData: Hashable, Sendable {
     /// - tabs prepared by default
     case system(SystemTab)
     /// - tabs made as custom tabs.
     case custom(String)
 
     /// - system tabs
-    public enum SystemTab: String, Codable, Hashable{
+    public enum SystemTab: String, Codable, Hashable, Sendable {
         ///japanese input tab. the layout and input style depends on user's setting
         case user_japanese
 
@@ -912,7 +912,7 @@ public enum TabData: Hashable{
     }
 }
 
-public struct ScanItem: Hashable {
+public struct ScanItem: Hashable, Sendable {
     public init(targets: [String], direction: ScanItem.Direction) {
         self.targets = targets
         self.direction = direction
@@ -921,13 +921,13 @@ public struct ScanItem: Hashable {
     public var targets: [String]
     public var direction: Direction
 
-    public enum Direction: String, Codable {
+    public enum Direction: String, Codable, Sendable {
         case forward
         case backward
     }
 }
 
-public struct LaunchItem: Hashable {
+public struct LaunchItem: Hashable, Sendable {
     public init(scheme: LaunchableApplication, target: String) {
         self.scheme = scheme
         self.target = target
@@ -936,7 +936,7 @@ public struct LaunchItem: Hashable {
     public var scheme: LaunchableApplication
     public var target: String
 
-    public enum LaunchableApplication: String, Codable {
+    public enum LaunchableApplication: String, Codable, Sendable {
         case azooKey
         case shortcuts
     }
@@ -944,7 +944,7 @@ public struct LaunchItem: Hashable {
 
 /// - アクション
 /// - actions done in key pressing
-public enum CodableActionData: Codable, Hashable {
+public enum CodableActionData: Codable, Hashable, Sendable {
     /// - input action specified character
     case input(String)
 
@@ -1169,7 +1169,7 @@ public extension CodableActionData{
 }
 
 
-public struct CodableLongpressActionData: Codable, Equatable, Hashable {
+public struct CodableLongpressActionData: Codable, Equatable, Hashable, Sendable {
     public static let none = CodableLongpressActionData()
     public init(start: [CodableActionData] = [], repeat: [CodableActionData] = []) {
         self.start = start
