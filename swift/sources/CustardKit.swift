@@ -909,6 +909,10 @@ public enum TabData: Hashable, Sendable {
         /// clipboard history tab
         /// - note: WIP. This tab can be removed at any time.
         case __clipboard_history_tab
+
+        /// emoji tab
+        /// - note: WIP. This tab can be removed at any time.
+        case __emoji_tab
     }
 }
 
