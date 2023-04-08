@@ -60,6 +60,8 @@ public enum CustardInputStyle: String, Codable, Sendable {
 /// - specify custard version
 public enum CustardVersion: String, Codable, Sendable {
     case v1_0 = "1.0"
+    case v1_1 = "1.1"
+    case v1_2 = "1.2"
 }
 
 public struct CustardMetadata: Codable, Equatable, Sendable {
