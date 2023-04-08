@@ -23,6 +23,12 @@ class SystemImageLabel(KeyLabel):
     def __init__(self, identifier: str):
         self.system_image = identifier
 
+class MainAndSubLabel(KeyLabel):
+    def __init__(self, main: str, sub: str):
+        self.type = "main_and_sub"
+        self.main = main
+        self.sub = sub
+
 
 class KeyDesign:
     def __init__(self, label: KeyLabel, color: KeyColor):

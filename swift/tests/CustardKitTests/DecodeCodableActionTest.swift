@@ -238,6 +238,34 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .dismissKeyboard)
         }
+        do {
+            let target = """
+            {"type": "paste"}
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .paste)
+        }
+    }
+    func testDecodeDebugBuildCompatibility() {
+        // Debug build compatibility
+        do {
+            let target = """
+            {"type": "__paste"}
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .paste)
+        }
+        do {
+            let target = """
+            {
+                "type": "move_tab",
+                "tab_type": "system",
+                "identifier": "__emoji_tab"
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .moveTab(.system(.emoji_tab)))
+        }
     }
 
     static var allTests = [

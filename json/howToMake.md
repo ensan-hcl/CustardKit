@@ -45,6 +45,7 @@
 ```json
 "design": {
   "label": {
+    "type": "text",
     "text": "@#/&_"
   },
   "color": "normal"
@@ -53,10 +54,11 @@
 
 `"label"`はキーに表示されるラベルです。ラベルに指定できる値は次の通りです。
 
-| 項目              | 説明                                                         |
+| type              | 説明                                                         |
 | ----------------- | ------------------------------------------------------------ |
-| text: str         | 指定した文字をラベルとして表示します。                       |
-| system_image: str | 指定した画像をラベルとして表示します。指定できる値は以下の通りです。<br />この画像はSFSymbolsから取得されます。 |
+| text              | `"text"`に指定した文字をラベルとして表示します。                       |
+| main_and_sub      | `"main"`に指定した1文字を1行目に大きめに、`"sub"`に指定した文字列を2行目に小さめに表示します。 |
+| system_image      | `"system_image"`に指定した画像をラベルとして表示します。指定できる値は以下の通りです。<br />この画像はSFSymbolsから取得されます。 |
 
 <img src="../resource/symbols.png" style="zoom:15%;" />
 
@@ -102,6 +104,7 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | toggle_tab_bar          | なし                               | タブバーの表示をtoggleします。                               |
 | toggle_caps_lock_state  | なし                               | caps lockをtoggleします。                                    |
 | dismiss_keyboard        | なし                               | キーボードを閉じます。                                       |
+| paste                   | なし                               | コピーしている文字列をペーストします。フルアクセスがない場合動作しません。  |
 | launch_application      | scheme_type: str<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
 続く`"longpress_actions"`はほぼ`"press_actions"`と同じです。
@@ -128,6 +131,8 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | qwerty_english[^2]  | ローマ字入力の英語タブ                                       |
 | qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
 | qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
+| emoji_tab           | 絵文字タブ                                                |
+| clipboard_history_tab | クリップボードの履歴タブ(フルアクセスが必要です)               |
 | last_tab            | このタブの前のタブ<br />もしも履歴がない場合、現在のタブの指定になります |
 
 ### バリエーション

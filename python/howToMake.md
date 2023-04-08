@@ -46,6 +46,7 @@ design = KeyDesign(
 | オブジェクト     | 初期化の引数    | 説明                                                         |
 | ---------------- | --------------- | ------------------------------------------------------------ |
 | TextLabel        | text: str       | 指定した文字をラベルとして表示します。                       |
+| MainAndSubLabel | main: str, sub: str | `main`に指定した1文字を1行目に大きめに、`sub`に指定した文字を2行目に小さめに表示します。 |
 | SystemImageLabel | identifier: str | 指定した名前の画像をラベルとして表示します。指定できる値は以下の通りです。<br />この画像はSFSymbolsから取得されます。 |
 
 <img src="../resource/symbols.png" style="zoom:15%;" />
@@ -91,6 +92,7 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | ToggleTabBarAction          | なし                                             | タブバーの表示をtoggleします。                               |
 | ToggleCapsLockStateAction  | なし                                             | caps lockをtoggleします。                                    |
 | DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
+| PasteKeyboardAction        | なし                                             | コピーしている文字列をペーストします。フルアクセスがない場合動作しません。                                       |
 | LaunchApplicationAction      | scheme_type: Literal['azooKey', 'shortcuts']<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
@@ -119,6 +121,8 @@ class LongpressAction(object):
 | qwerty_english[^2]  | ローマ字入力の英語タブ                                       |
 | qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
 | qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
+| emoji_tab           | 絵文字タブ                                                |
+| clipboard_history_tab | クリップボードの履歴タブ(フルアクセスが必要です)               |
 | last_tab            | このタブの前のタブ<br />もしも履歴がない場合、現在のタブの指定になります |
 
 ### バリエーション
