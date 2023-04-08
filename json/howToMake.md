@@ -102,6 +102,7 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | toggle_tab_bar          | なし                               | タブバーの表示をtoggleします。                               |
 | toggle_caps_lock_state  | なし                               | caps lockをtoggleします。                                    |
 | dismiss_keyboard        | なし                               | キーボードを閉じます。                                       |
+| paste                   | なし                               | コピーしている文字列をペーストします。フルアクセスがない場合動作しません。  |
 | launch_application      | scheme_type: str<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
 続く`"longpress_actions"`はほぼ`"press_actions"`と同じです。
@@ -128,6 +129,8 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | qwerty_english[^2]  | ローマ字入力の英語タブ                                       |
 | qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
 | qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
+| emoji_tab           | 絵文字タブ                                                |
+| clipboard_history_tab | クリップボードの履歴タブ(フルアクセスが必要です)               |
 | last_tab            | このタブの前のタブ<br />もしも履歴がない場合、現在のタブの指定になります |
 
 ### バリエーション

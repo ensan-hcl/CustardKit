@@ -168,6 +168,12 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
+        actual = to_json(PasteAction())
+        expected_json = {
+            "type": "paste",
+        }
+        self.assertEqual(expected_json, actual)
+
     def test_LongpressAction(self):
         """test method for LongpressAction
         """

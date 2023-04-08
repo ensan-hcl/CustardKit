@@ -83,6 +83,7 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .toggleTabBar          | なし             | タブバーの表示をtoggleします。                               |
 | .toggleCapsLockState   | なし             | caps lockをtoggleします。                                    |
 | .dismissKeyboard       | なし             | キーボードを閉じます。                                       |
+| .paste                 | なし             | コピーしている文字列をペーストします。フルアクセスがない場合動作しません。  |
 | .launchApplication     | LaunchItem       | 引数で指定されたアプリケーションを開きます。 |
 
 続く引数の`longpress_actions`は`CodableLongpressActionData`型の値です。定義は以下の通りで、`start`と`repeat`にそれぞれ行うべき動作を指定します。
@@ -135,6 +136,8 @@ enum CodableTabData{
 | .qwerty_english[^2]  | ローマ字入力の英語タブ                                       |
 | .qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
 | .qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
+| .emoji_tab           | 絵文字タブ                                                |
+| .clipboard_history_tab | クリップボードの履歴タブ(フルアクセスが必要です)               |
 | .last_tab            | このタブの前のタブ<br />もしも履歴がない場合、現在のタブの指定になります |
 
 ### ScanItem

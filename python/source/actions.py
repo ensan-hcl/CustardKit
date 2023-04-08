@@ -213,6 +213,11 @@ class DismissKeyboardAction(metaclass=ActionMeta):
     """
     type = "dismiss_keyboard"
 
+class PasteAction(metaclass=ActionMeta):
+    """
+    ペーストを実行するアクション
+    """
+    type = "paste"
 
 class LongpressAction(object):
     def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
