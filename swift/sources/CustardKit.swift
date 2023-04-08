@@ -907,12 +907,25 @@ public enum TabData: Hashable, Sendable {
         case last_tab
 
         /// clipboard history tab
-        /// - note: WIP. This tab can be removed at any time.
-        case __clipboard_history_tab
+        case clipboard_history_tab
 
         /// emoji tab
-        /// - note: WIP. This tab can be removed at any time.
-        case __emoji_tab
+        case emoji_tab
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let rawValue = try container.decode(String.self)
+            var key = rawValue[...]
+            // For debug build compatibility
+            if key.hasPrefix("__") {
+                key = key.dropFirst(2)
+            }
+            if let value = Self(rawValue: String(key)) {
+                self = value
+                return
+            }
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "unknown system tab: \(rawValue)")
+        }
     }
 }
 
@@ -954,7 +967,7 @@ public enum CodableActionData: Codable, Hashable, Sendable {
 
     /// - input action specified character
     /// - note: WIP. This action can be removed at any time.
-    case __paste
+    case paste
 
     /// - exchange character "あ→ぁ", "は→ば", "a→A"
     case replaceDefault
@@ -1019,7 +1032,7 @@ public extension CodableActionData{
 
     private enum ValueType: String, Codable{
         case input
-        case __paste
+        case paste
         case replace_default
         case replace_last_characters
         case delete
@@ -1035,6 +1048,8 @@ public extension CodableActionData{
         case toggle_caps_lock_state
         case dismiss_keyboard
         case launch_application
+        // This case is left for debug build compatibility.
+        case __paste
     }
 
     private var key: ValueType {
@@ -1055,7 +1070,7 @@ public extension CodableActionData{
         case .toggleCapsLockState: return .toggle_caps_lock_state
         case .toggleCursorBar: return .toggle_cursor_bar
         case .toggleTabBar: return .toggle_tab_bar
-        case .__paste: return .__paste
+        case .paste: return .paste
         }
     }
 
@@ -1114,8 +1129,7 @@ public extension CodableActionData{
             try container.encode(value.target, forKey: .target)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
-        case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault: break
-        case .__paste: break
+        case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault, .paste: break
         }
     }
 
@@ -1166,8 +1180,8 @@ public extension CodableActionData{
             let scheme = try container.decode(LaunchItem.LaunchableApplication.self, forKey: .scheme_type)
             let target = try container.decode(String.self, forKey: .target)
             self = .launchApplication(.init(scheme: scheme, target: target))
-        case .__paste:
-            self = .__paste
+        case .__paste, .paste:
+            self = .paste
         }
     }
 }
