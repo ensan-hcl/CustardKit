@@ -43,6 +43,17 @@ class TestDesign(unittest.TestCase):
         }
         self.assertEqual(expected_json, to_json(label))
 
+    def test_MainAndSubLabel(self):
+        """test method for SystemImageLabel
+        """
+        label = MainAndSubLabel(main="A", sub="BC")
+        expected_json = {
+            "type": "main_and_sub",
+            "main": "A",
+            "sub": "BC"
+        }
+        self.assertEqual(expected_json, to_json(label))
+
     def test_KeyDesign(self):
         """test method for KeyDesign
         """

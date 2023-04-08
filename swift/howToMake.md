@@ -38,6 +38,7 @@ design: .init(label: .text("@#/&_"), color: .normal)
 | 項目                 | 説明                                                         |
 | -------------------- | ------------------------------------------------------------ |
 | .text(String)        | 指定した文字をラベルとして表示します。                       |
+| .mainAndSub(String, String) | 1つ目に指定した1文字を1行目に大きめに、2つ目に指定した文字を2行目に小さめに表示します。 |
 | .systemImage(String) | 指定した名前の画像をラベルとして表示します。指定できる値は以下の通りです。<br />この画像はSFSymbolsから取得されます。 |
 
 <img src="../resource/symbols.png" style="zoom:15%;" />
