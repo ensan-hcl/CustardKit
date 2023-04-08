@@ -151,7 +151,7 @@ public extension CustardInterfaceLayout{
         case grid_scroll
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case let .gridFit(value):
@@ -166,7 +166,7 @@ public extension CustardInterfaceLayout{
         }
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ValueType.self, forKey: .type)
         let rowCount = try container.decode(Double.self, forKey: .row_count)
@@ -258,7 +258,7 @@ public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
         case x, y, width, height
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.x = try container.decode(Int.self, forKey: .x)
         self.y = try container.decode(Int.self, forKey: .y)
@@ -359,7 +359,7 @@ public extension CustardInterface {
             case key
         }
 
-        func encode(to encoder: Encoder) throws {
+        func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(specifierType, forKey: .specifier_type)
             switch self.specifier{
@@ -375,7 +375,7 @@ public extension CustardInterface {
             }
         }
 
-        init(from decoder: Decoder) throws {
+        init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let specifierType = try container.decode(SpecifierType.self, forKey: .specifier_type)
             switch specifierType{
@@ -399,7 +399,7 @@ public extension CustardInterface {
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(keyStyle, forKey: .key_style)
         try container.encode(keyLayout, forKey: .key_layout)
@@ -407,7 +407,7 @@ public extension CustardInterface {
         try container.encode(elements, forKey: .keys)
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.keyStyle = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
         self.keyLayout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
@@ -470,7 +470,7 @@ public extension CustardKeyLabelStyle {
         case main_and_sub
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case let .text(value):
@@ -484,7 +484,7 @@ public extension CustardKeyLabelStyle {
         }
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // "type"が見つかった場合
         if let type = try? container.decode(ValueType.self, forKey: .type) {
@@ -602,12 +602,12 @@ public extension CustardInterfaceSystemKey{
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.valueType, forKey: .type)
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ValueType.self, forKey: .type)
         switch type {
@@ -825,7 +825,7 @@ public extension CustardInterfaceVariation {
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.key, forKey: .key)
         try container.encode(self.valueType, forKey: .type)
@@ -837,7 +837,7 @@ public extension CustardInterfaceVariation {
         }
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.key = try container.decode(CustardInterfaceVariationKey.self, forKey: .key)
         let valueType = try container.decode(ValueType.self, forKey: .type)
@@ -914,7 +914,7 @@ public enum TabData: Hashable, Sendable {
         /// emoji tab
         case emoji_tab
 
-        public init(from decoder: Decoder) throws {
+        public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
             let rawValue = try container.decode(String.self)
             var key = rawValue[...]
@@ -1113,7 +1113,7 @@ public extension CodableActionData{
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.key, forKey: .type)
         switch self {
@@ -1135,7 +1135,7 @@ public extension CodableActionData{
         }
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let valueType = try container.decode(ValueType.self, forKey: .type)
         switch valueType {
