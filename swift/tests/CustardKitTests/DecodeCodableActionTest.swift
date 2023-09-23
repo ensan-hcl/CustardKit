@@ -180,6 +180,29 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
+    func testDecodeSelectCandidate() throws {
+        do{
+            let target = """
+            {
+                "type": "select_candidate",
+                "selection": { "type": "first" }
+            }
+            """
+            let decoded: CodableActionData = try CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .selectCandidate(.first))
+        }
+        do{
+            let target = """
+            {
+                "selection": { "type": "offset", "value": -1 },
+                "type": "select_candidate"
+            }
+            """
+            let decoded: CodableActionData = try CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .selectCandidate(.offset(-1)))
+        }
+    }
+
 
     func testDecodeNoArgumentActions() {
         do{
