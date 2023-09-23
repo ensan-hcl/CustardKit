@@ -562,6 +562,9 @@ public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable, Sendable {
     /// - the enter key that changes its label in condition
     case enter
 
+    /// - the upper_lower toggle key
+    case upperLower
+
     ///custom keys.
     /// - flick 小ﾞﾟkey
     case flickKogaki
@@ -583,6 +586,7 @@ public extension CustardInterfaceSystemKey{
     private enum ValueType: String, Codable {
         case change_keyboard
         case enter
+        case upper_lower
         case flick_kogaki
         case flick_kutoten
         case flick_hira_tab
@@ -594,6 +598,7 @@ public extension CustardInterfaceSystemKey{
         switch self{
         case .changeKeyboard: return .change_keyboard
         case .enter: return .enter
+        case .upperLower: return .upper_lower
         case .flickKogaki: return .flick_kogaki
         case .flickKutoten: return .flick_kutoten
         case .flickHiraTab: return .flick_hira_tab
@@ -615,6 +620,8 @@ public extension CustardInterfaceSystemKey{
             self = .enter
         case .change_keyboard:
             self = .changeKeyboard
+        case .upper_lower:
+            self = .upperLower
         case .flick_kogaki:
             self = .flickKogaki
         case .flick_kutoten:
