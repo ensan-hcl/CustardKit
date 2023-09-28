@@ -141,6 +141,22 @@ class LaunchApplicationAction(metaclass=ActionMeta):
         self.target = target
 
 
+class SelectCandidateAction(metaclass=ActionMeta):
+    type = "select_candidate"
+
+    def __init__(self, selection_type: Literal['first', 'last', 'exact', 'offset'], value: int = None):
+        """
+        候補を選択するアクション。
+        Parameters
+        ----------
+        selection_type: Literal['first', 'last', 'exact', 'offset']
+        value: int, selection_typeとして'exact'と'offset'を選んだ場合、valueの引数をあわせて指定する
+        """
+        if value is not None:
+            self.selection = { "type": selection_type, "value": value }
+        else:
+            self.selection = { "type": selection_type }
+
 class DeleteAction(metaclass=ActionMeta):
     type = "delete"
 
@@ -212,6 +228,12 @@ class DismissKeyboardAction(metaclass=ActionMeta):
     キーボードを閉じるアクション
     """
     type = "dismiss_keyboard"
+
+class CompleteAction(metaclass=ActionMeta):
+    """
+    確定するアクション
+    """
+    type = "complete"
 
 class PasteAction(metaclass=ActionMeta):
     """

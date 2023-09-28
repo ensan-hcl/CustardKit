@@ -74,6 +74,8 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .delete                | Int              | 引数の分だけ文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
 | .moveCursor            | Int              | 引数の分だけカーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
 | .moveTab               | CodableTabData   | 引数で指定したタブに移動します。                             |
+| .selectCandidate       | CandidateSelection | 引数で指定した候補を選択状態にします                       |
+| .complete              | なし              | 変換を確定します                                          |
 | .replaceLastCharacters | [String: String] | カーソル文頭方向の文字列を引数に基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
 | .replaceDefault        | なし             | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
 | .smartDelete           | ScanItem         | 引数で指定した方向に、指定した文字を見つけるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、方向が`.backward`かつ文字の指定が` [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
