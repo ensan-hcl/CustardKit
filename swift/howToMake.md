@@ -269,6 +269,7 @@ enum CustardInterfaceSystemKey{
     case change_keyboard
     case enter
     case upper_lower
+    case next_candidate
     case flick_kogaki
     case flick_kutoten
     case flick_hira_tab
@@ -284,6 +285,7 @@ enum CustardInterfaceSystemKey{
 | .change_keyboard   | 地球儀キー(キーボード切り替えキー)。ホームボタンがない端末ではカーソルバーの表示キーに切り替わります。 |
 | .enter             | 改行・確定キー。                                             |
 | .upper_lower       | 大文字・小文字キー。                                          |
+| .next_candidate    | 入力状態に応じて「空白」と「次候補」が切り替わるキー。               |
 | .flick_kogaki      | ユーザがカスタムしている可能性のあるフリックの「小ﾞﾟ」キー。gridFitのtenkeyStyle以外での利用は非推奨。 |
 | .flick_kutoten     | ユーザがカスタムしている可能性のあるフリックの「､｡?!」キー。gridFitのtenkeyStyle以外での利用は非推奨。 |
 | .flick_hira_tab    | ユーザがカスタムしている可能性のあるフリックの「あいう」キー。gridFitのtenkeyStyle以外での利用は非推奨。 |
