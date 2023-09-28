@@ -565,6 +565,9 @@ public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable, Sendable {
     /// - the upper_lower toggle key
     case upperLower
 
+    /// - the "next candidate" key
+    case nextCandidate
+
     ///custom keys.
     /// - flick 小ﾞﾟkey
     case flickKogaki
@@ -587,6 +590,7 @@ public extension CustardInterfaceSystemKey{
         case change_keyboard
         case enter
         case upper_lower
+        case next_candidate
         case flick_kogaki
         case flick_kutoten
         case flick_hira_tab
@@ -599,6 +603,7 @@ public extension CustardInterfaceSystemKey{
         case .changeKeyboard: return .change_keyboard
         case .enter: return .enter
         case .upperLower: return .upper_lower
+        case .nextCandidate: return .next_candidate
         case .flickKogaki: return .flick_kogaki
         case .flickKutoten: return .flick_kutoten
         case .flickHiraTab: return .flick_hira_tab
@@ -622,6 +627,8 @@ public extension CustardInterfaceSystemKey{
             self = .changeKeyboard
         case .upper_lower:
             self = .upperLower
+        case .next_candidate:
+            self = .nextCandidate
         case .flick_kogaki:
             self = .flickKogaki
         case .flick_kutoten:
@@ -968,6 +975,61 @@ public struct LaunchItem: Hashable, Sendable {
     }
 }
 
+public enum CandidateSelection: Codable, Hashable, Sendable {
+    case first
+    case last
+    case offset(Int)
+    case exact(Int)
+}
+
+public extension CandidateSelection {
+    private enum CodingKeys: CodingKey {
+        case type, value
+    }
+
+    private enum ValueType: String, Codable {
+        case first, last, offset, exact
+    }
+
+    private var valueType: ValueType {
+        switch self {
+        case .first: .first
+        case .last: .last
+        case .offset: .offset
+        case .exact: .exact
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.valueType, forKey: .type)
+        switch self {
+        case .first, .last:
+            break
+        case let .exact(value), let .offset(value):
+            try container.encode(value, forKey: .value)
+
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let valueType = try container.decode(ValueType.self, forKey: .type)
+        switch valueType {
+        case .first:
+            self = .first
+        case .last:
+            self = .last
+        case .offset:
+            let value = try container.decode(Int.self, forKey: .value)
+            self = .offset(value)
+        case .exact:
+            let value = try container.decode(Int.self, forKey: .value)
+            self = .exact(value)
+        }
+    }
+}
+
 /// - アクション
 /// - actions done in key pressing
 public enum CodableActionData: Codable, Hashable, Sendable {
@@ -993,6 +1055,9 @@ public enum CodableActionData: Codable, Hashable, Sendable {
     /// - delete to the ` direction` until `target` appears in the direction of travel..
     /// - if `target` is `[".", ","]`, `direction` is `.backward`, and current text is `I love this. But |she likes`, after the action, the text become `I love this.|she likes`.
     case smartDelete(ScanItem = .init(targets: Self.scanTargets, direction: .forward))
+
+    /// - select candidate to complete
+    case selectCandidate(CandidateSelection)
 
     /// - complete current inputting words
     case complete
@@ -1037,6 +1102,7 @@ public extension CodableActionData{
         case tab_type, identifier
         case direction, targets
         case scheme_type, target
+        case selection
     }
 
     private enum ValueType: String, Codable{
@@ -1047,6 +1113,7 @@ public extension CodableActionData{
         case delete
         case smart_delete
         case smart_delete_default
+        case select_candidate
         case complete
         case move_cursor
         case smart_move_cursor
@@ -1063,6 +1130,7 @@ public extension CodableActionData{
 
     private var key: ValueType {
         switch self {
+        case .selectCandidate: return .select_candidate
         case .complete: return .complete
         case .delete: return .delete
         case .dismissKeyboard: return .dismiss_keyboard
@@ -1136,6 +1204,8 @@ public extension CodableActionData{
         case let .launchApplication(value):
             try container.encode(value.scheme, forKey: .scheme_type)
             try container.encode(value.target, forKey: .target)
+        case let .selectCandidate(value):
+            try container.encode(value, forKey: .selection)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
         case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault, .paste: break
@@ -1163,6 +1233,9 @@ public extension CodableActionData{
             let direction = try container.decode(ScanItem.Direction.self, forKey: .direction)
             let targets = try container.decode([String].self, forKey: .targets)
             self = .smartDelete(.init(targets: targets, direction: direction))
+        case .select_candidate:
+            let selection = try container.decode(CandidateSelection.self, forKey: .selection)
+            self = .selectCandidate(selection)
         case .complete:
             self = .complete
         case .move_cursor:

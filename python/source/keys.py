@@ -182,6 +182,7 @@ class SystemKeyType(str, Enum):
     change_keyboard = "change_keyboard"
     enter = "enter"
     upper_lower = "upper_lower"
+    next_candidate = "next_candidate"
     flick_kogaki = "flick_kogaki"
     flick_kutoten = "flick_kutoten"
     flick_hira_tab = "flick_hira_tab"

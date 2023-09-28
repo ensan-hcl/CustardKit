@@ -74,6 +74,8 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 | .delete                | Int              | 引数の分だけ文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
 | .moveCursor            | Int              | 引数の分だけカーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
 | .moveTab               | CodableTabData   | 引数で指定したタブに移動します。                             |
+| .selectCandidate       | CandidateSelection | 引数で指定した候補を選択状態にします                       |
+| .complete              | なし              | 変換を確定します                                          |
 | .replaceLastCharacters | [String: String] | カーソル文頭方向の文字列を引数に基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
 | .replaceDefault        | なし             | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
 | .smartDelete           | ScanItem         | 引数で指定した方向に、指定した文字を見つけるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、方向が`.backward`かつ文字の指定が` [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
@@ -267,6 +269,7 @@ enum CustardInterfaceSystemKey{
     case change_keyboard
     case enter
     case upper_lower
+    case next_candidate
     case flick_kogaki
     case flick_kutoten
     case flick_hira_tab
@@ -282,6 +285,7 @@ enum CustardInterfaceSystemKey{
 | .change_keyboard   | 地球儀キー(キーボード切り替えキー)。ホームボタンがない端末ではカーソルバーの表示キーに切り替わります。 |
 | .enter             | 改行・確定キー。                                             |
 | .upper_lower       | 大文字・小文字キー。                                          |
+| .next_candidate    | 入力状態に応じて「空白」と「次候補」が切り替わるキー。               |
 | .flick_kogaki      | ユーザがカスタムしている可能性のあるフリックの「小ﾞﾟ」キー。gridFitのtenkeyStyle以外での利用は非推奨。 |
 | .flick_kutoten     | ユーザがカスタムしている可能性のあるフリックの「､｡?!」キー。gridFitのtenkeyStyle以外での利用は非推奨。 |
 | .flick_hira_tab    | ユーザがカスタムしている可能性のあるフリックの「あいう」キー。gridFitのtenkeyStyle以外での利用は非推奨。 |

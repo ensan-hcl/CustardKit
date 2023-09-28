@@ -94,6 +94,22 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
+    def test_SelectCandidateAction(self):
+        """test method for SelectCandidateAction
+        """
+        actual = to_json(SelectCandidateAction("first"))
+        expected_json = {
+            "type": "select_candidate",
+            "selection": {"type": "first"}
+        }
+        self.assertEqual(expected_json, actual)
+        actual = to_json(SelectCandidateAction("exact", 5))
+        expected_json = {
+            "type": "select_candidate",
+            "selection": {"type": "exact", "value": 5}
+        }
+        self.assertEqual(expected_json, actual)
+
     def test_DeleteAction(self):
         """test method for DeleteAction
         """
