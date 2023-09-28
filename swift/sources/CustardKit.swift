@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Encodable{
+extension Encodable {
     func containerEncode<CodingKeys: CodingKey>(container: inout KeyedEncodingContainer<CodingKeys>, key: CodingKeys) throws {
         try container.encode(self, forKey: key)
     }
@@ -70,10 +70,10 @@ public struct CustardMetadata: Codable, Equatable, Sendable {
         self.display_name = display_name
     }
 
-    ///version
+    /// version
     public var custard_version: CustardVersion
 
-    ///display name
+    /// display name
     /// - used in tab bar
     public var display_name: String
 }
@@ -87,20 +87,20 @@ public struct Custard: Codable, Equatable, Sendable {
         self.interface = interface
     }
 
-    ///identifier
+    /// identifier
     /// - must be unique
     public var identifier: String
 
-    ///language to convert
+    /// language to convert
     public var language: CustardLanguage
 
-    ///input style
+    /// input style
     public var input_style: CustardInputStyle
 
-    ///metadata
+    /// metadata
     public var metadata: CustardMetadata
 
-    ///interface
+    /// interface
     public var interface: CustardInterface
 
     public func write(to url: URL) throws {
@@ -140,13 +140,13 @@ public enum CustardInterfaceLayout: Codable, Equatable, Sendable {
     case gridScroll(CustardInterfaceLayoutScrollValue)
 }
 
-public extension CustardInterfaceLayout{
+public extension CustardInterfaceLayout {
     private enum CodingKeys: CodingKey {
         case type
         case row_count, column_count
         case direction
     }
-    private enum ValueType: String, Codable{
+    private enum ValueType: String, Codable {
         case grid_fit
         case grid_scroll
     }
@@ -254,7 +254,7 @@ public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
     public var width: Int
     public var height: Int
 
-    private enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey {
         case x, y, width, height
     }
 
@@ -275,7 +275,7 @@ public struct GridScrollPositionSpecifier: Codable, Hashable, ExpressibleByInteg
     /// - index
     public var index: Int
 
-    public init(_ index: Int){
+    public init(_ index: Int) {
         self.index = index
     }
 }
@@ -293,7 +293,7 @@ public extension GridScrollPositionSpecifier {
 /// - インターフェース
 /// - interface
 public struct CustardInterface: Codable, Equatable, Sendable {
-    public init(keyStyle: CustardInterfaceStyle, keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier : CustardInterfaceKey]) {
+    public init(keyStyle: CustardInterfaceStyle, keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]) {
         self.keyStyle = keyStyle
         self.keyLayout = keyLayout
         self.keys = keys
@@ -315,7 +315,7 @@ public struct CustardInterface: Codable, Equatable, Sendable {
 }
 
 public extension CustardInterface {
-    private enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey {
         case key_style
         case key_layout
         case keys
@@ -329,7 +329,7 @@ public extension CustardInterface {
         case grid_fit, grid_scroll
     }
 
-    private struct Element: Codable{
+    private struct Element: Codable {
         init(specifier: CustardKeyPositionSpecifier, key: CustardInterfaceKey) {
             self.specifier = specifier
             self.key = key
@@ -339,14 +339,14 @@ public extension CustardInterface {
         let key: CustardInterfaceKey
 
         private var specifierType: SpecifierType {
-            switch self.specifier{
+            switch self.specifier {
             case .gridFit: return .grid_fit
             case .gridScroll: return .grid_scroll
             }
         }
 
         private var keyType: KeyType {
-            switch self.key{
+            switch self.key {
             case .system: return .system
             case .custom: return .custom
             }
@@ -362,13 +362,13 @@ public extension CustardInterface {
         func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(specifierType, forKey: .specifier_type)
-            switch self.specifier{
+            switch self.specifier {
             case let .gridFit(value as Encodable),
                  let .gridScroll(value as Encodable):
                 try value.containerEncode(container: &container, key: CodingKeys.specifier)
             }
             try container.encode(keyType, forKey: .key_type)
-            switch self.key{
+            switch self.key {
             case let .system(value as Encodable),
                  let .custom(value as Encodable):
                 try value.containerEncode(container: &container, key: CodingKeys.key)
@@ -378,7 +378,7 @@ public extension CustardInterface {
         init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let specifierType = try container.decode(SpecifierType.self, forKey: .specifier_type)
-            switch specifierType{
+            switch specifierType {
             case .grid_fit:
                 let specifier = try container.decode(GridFitPositionSpecifier.self, forKey: .specifier)
                 self.specifier = .gridFit(specifier)
@@ -388,7 +388,7 @@ public extension CustardInterface {
             }
 
             let keyType = try container.decode(KeyType.self, forKey: .key_type)
-            switch keyType{
+            switch keyType {
             case .system:
                 let key = try container.decode(CustardInterfaceSystemKey.self, forKey: .key)
                 self.key = .system(key)
@@ -403,7 +403,7 @@ public extension CustardInterface {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(keyStyle, forKey: .key_style)
         try container.encode(keyLayout, forKey: .key_layout)
-        let elements = self.keys.map{Element(specifier: $0.key, key: $0.value)}
+        let elements = self.keys.map {Element(specifier: $0.key, key: $0.value)}
         try container.encode(elements, forKey: .keys)
     }
 
@@ -412,7 +412,7 @@ public extension CustardInterface {
         self.keyStyle = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
         self.keyLayout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
         let elements = try container.decode([Element].self, forKey: .keys)
-        self.keys = elements.reduce(into: [:]){dictionary, element in
+        self.keys = elements.reduce(into: [:]) {dictionary, element in
             dictionary[element.specifier] = element.key
         }
     }
@@ -568,7 +568,7 @@ public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable, Sendable {
     /// - the "next candidate" key
     case nextCandidate
 
-    ///custom keys.
+    /// custom keys.
     /// - flick 小ﾞﾟkey
     case flickKogaki
     /// - flick ､｡!? key
@@ -581,7 +581,7 @@ public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable, Sendable {
     case flickStar123Tab
 }
 
-public extension CustardInterfaceSystemKey{
+public extension CustardInterfaceSystemKey {
     private enum CodingKeys: CodingKey {
         case type
     }
@@ -599,7 +599,7 @@ public extension CustardInterfaceSystemKey{
     }
 
     private var valueType: ValueType {
-        switch self{
+        switch self {
         case .changeKeyboard: return .change_keyboard
         case .enter: return .enter
         case .upperLower: return .upper_lower
@@ -665,7 +665,6 @@ public struct CustardInterfaceCustomKey: Codable, Equatable, Hashable, Sendable 
     public var variations: [CustardInterfaceVariation]
 }
 
-
 public extension CustardInterfaceCustomKey {
     /// Create simple input key using flick
     /// - parameters:
@@ -673,7 +672,7 @@ public extension CustardInterfaceCustomKey {
     ///  - subs: set string inputed when flick the key up to four letters. letters are stucked in order left -> top -> right -> bottom
     ///  - centerLabel: (optional) if needed, set label of center. without specification `center` is set as label
     static func flickSimpleInputs(center: String, subs: [String], centerLabel: String? = nil) -> Self {
-        let variations: [CustardInterfaceVariation] = zip(subs, [FlickDirection.left, .top, .right, .bottom]).map{letter, direction in
+        let variations: [CustardInterfaceVariation] = zip(subs, [FlickDirection.left, .top, .right, .bottom]).map {letter, direction in
             .init(
                 type: .flickVariation(direction),
                 key: .init(
@@ -700,9 +699,9 @@ public extension CustardInterfaceCustomKey {
     ///  - right: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
     ///  - bottom: optional. if label and input are the same value, simply set the literal or explicitly `.init(string)`. otherwise use `.init(input: String, label: String)`.
     static func flickSimpleInputs(center: SimpleInputArgument, left: SimpleInputArgument? = nil, top: SimpleInputArgument? = nil, right: SimpleInputArgument? = nil, bottom: SimpleInputArgument? = nil) -> Self {
-        let variations: [CustardInterfaceVariation] = zip([left, top, right, bottom], [FlickDirection.left, .top, .right, .bottom]).compactMap{argument, direction in
+        let variations: [CustardInterfaceVariation] = zip([left, top, right, bottom], [FlickDirection.left, .top, .right, .bottom]).compactMap {argument, direction in
             if let argument = argument {
-               return .init(
+                return .init(
                     type: .flickVariation(direction),
                     key: .init(
                         design: .init(label: .text(argument.label)),
@@ -732,10 +731,10 @@ public extension CustardInterfaceCustomKey {
             self.label = label
             self.input = input
         }
-        public init(stringLiteral: String){
+        public init(stringLiteral: String) {
             self.init(stringLiteral)
         }
-        public init(_ input: String){
+        public init(_ input: String) {
             self.label = input
             self.input = input
         }
@@ -754,7 +753,7 @@ public extension CustardInterfaceCustomKey {
                         press_actions: [.smartDeleteDefault],
                         longpress_actions: .none
                     )
-                ),
+                )
             ]
         )
     }
@@ -821,7 +820,7 @@ public struct CustardInterfaceVariation: Codable, Equatable, Hashable, Sendable 
 }
 
 public extension CustardInterfaceVariation {
-    private enum CodingKeys: CodingKey{
+    private enum CodingKeys: CodingKey {
         case type
         case direction
         case key
@@ -833,7 +832,7 @@ public extension CustardInterfaceVariation {
     }
 
     private var valueType: ValueType {
-        switch self.type{
+        switch self.type {
         case .flickVariation: return .flick_variation
         case .longpressVariation: return .longpress_variation
         }
@@ -843,7 +842,7 @@ public extension CustardInterfaceVariation {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.key, forKey: .key)
         try container.encode(self.valueType, forKey: .type)
-        switch self.type{
+        switch self.type {
         case let .flickVariation(value):
             try container.encode(value, forKey: .direction)
         case .longpressVariation:
@@ -855,7 +854,7 @@ public extension CustardInterfaceVariation {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.key = try container.decode(CustardInterfaceVariationKey.self, forKey: .key)
         let valueType = try container.decode(ValueType.self, forKey: .type)
-        switch valueType{
+        switch valueType {
         case .flick_variation:
             let direction = try container.decode(FlickDirection.self, forKey: .direction)
             self.type = .flickVariation(direction)
@@ -892,34 +891,34 @@ public enum TabData: Hashable, Sendable {
 
     /// - system tabs
     public enum SystemTab: String, Codable, Hashable, Sendable {
-        ///japanese input tab. the layout and input style depends on user's setting
+        /// japanese input tab. the layout and input style depends on user's setting
         case user_japanese
 
-        ///english input tab. the layout and input style depends on user's setting
+        /// english input tab. the layout and input style depends on user's setting
         case user_english
 
-        ///flick japanese input tab
+        /// flick japanese input tab
         case flick_japanese
 
-        ///flick enlgish input tab
+        /// flick enlgish input tab
         case flick_english
 
-        ///flick number and symbols input tab
+        /// flick number and symbols input tab
         case flick_numbersymbols
 
-        ///qwerty japanese input tab
+        /// qwerty japanese input tab
         case qwerty_japanese
 
-        ///qwerty english input tab
+        /// qwerty english input tab
         case qwerty_english
 
-        ///qwerty number input tab
+        /// qwerty number input tab
         case qwerty_numbers
 
-        ///qwerty symbols input tab
+        /// qwerty symbols input tab
         case qwerty_symbols
 
-        ///the last tab
+        /// the last tab
         case last_tab
 
         /// clipboard history tab
@@ -1090,10 +1089,10 @@ public enum CodableActionData: Codable, Hashable, Sendable {
     /// - launch apps
     case launchApplication(LaunchItem)
 
-    public static let scanTargets = ["、","。","！","？",".",",","．","，", "\n"]
+    public static let scanTargets = ["、", "。", "！", "？", ".", ",", "．", "，", "\n"]
 }
 
-public extension CodableActionData{
+public extension CodableActionData {
     private enum CodingKeys: CodingKey {
         case type
         case text
@@ -1105,7 +1104,7 @@ public extension CodableActionData{
         case selection
     }
 
-    private enum ValueType: String, Codable{
+    private enum ValueType: String, Codable {
         case input
         case paste
         case replace_default
@@ -1151,18 +1150,18 @@ public extension CodableActionData{
         }
     }
 
-    private struct CodableTabArgument{
+    private struct CodableTabArgument {
         internal init(tab: TabData) {
             self.tab = tab
         }
         private var tab: TabData
 
-        private enum TabType: String, Codable{
+        private enum TabType: String, Codable {
             case custom, system
         }
 
         func containerEncode(container: inout KeyedEncodingContainer<CodingKeys>) throws {
-            switch tab{
+            switch tab {
             case .system:
                 try container.encode(TabType.system, forKey: .tab_type)
             case .custom:
@@ -1267,7 +1266,6 @@ public extension CodableActionData{
         }
     }
 }
-
 
 public struct CodableLongpressActionData: Codable, Equatable, Hashable, Sendable {
     public static let none = CodableLongpressActionData()

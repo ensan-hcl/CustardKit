@@ -36,11 +36,11 @@ let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             longpress_actions: .init(repeat: [.delete(1)]),
             variations: []
         )
-    ),
+    )
 ]
 
 var hieroglyphs_keys = keys
-hieroglyphs.indices.forEach{
+hieroglyphs.indices.forEach {
     hieroglyphs_keys[.gridScroll(GridScrollPositionSpecifier(hieroglyphs_keys.count))] = .custom(
         .init(
             design: .init(label: .text(hieroglyphs[$0]), color: .normal),

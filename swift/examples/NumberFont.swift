@@ -18,8 +18,8 @@ let numbers = [
     Array("𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝟎")
 ]
 
-for i in numbers.indices{
-    for j in numbers[i].indices{
+for i in numbers.indices {
+    for j in numbers[i].indices {
         let (x, y) = (j, i)
         numberkeys[.gridFit(.init(x: x, y: y))] = .custom(pcStyleInputKeys(String(numbers[i][j])))
     }
@@ -52,7 +52,6 @@ numberkeys[.gridFit(.init(x: 3, y: 4, width: 4, height: 1))] = .custom(
     )
 )
 numberkeys[.gridFit(.init(x: 7, y: 4, width: 3, height: 1))] = .system(.enter)
-
 
 let number_font = Custard(
     identifier: "number_font",

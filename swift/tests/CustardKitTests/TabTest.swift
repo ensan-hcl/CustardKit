@@ -1,7 +1,6 @@
 import XCTest
 @testable import CustardKit
 
-
 final class TabDataTest: XCTestCase {
     func testSystemTab() {
         XCTAssertEqual(TabData.SystemTab.flick_english.rawValue, "flick_english")
@@ -10,6 +9,6 @@ final class TabDataTest: XCTestCase {
     }
 
     static var allTests = [
-        ("testSystemTab", testSystemTab),
+        ("testSystemTab", testSystemTab)
     ]
 }

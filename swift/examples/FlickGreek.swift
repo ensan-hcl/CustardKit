@@ -57,20 +57,20 @@ let flick_greek = Custard(
                             key: .init(
                                 design: .init(label: .text("´")),
                                 press_actions: [.input("´"), .replaceLastCharacters([
-                                    "ε´":"έ",
-                                    "υ´":"ύ",
-                                    "ι´":"ί",
-                                    "ο´":"ό",
-                                    "α´":"ά",
-                                    "η´":"ή",
-                                    "ω´":"ώ",
-                                    "Ε´":"Έ",
-                                    "Υ´":"Ύ",
-                                    "Ι´":"Ί",
-                                    "Ο´":"Ό",
-                                    "Α´":"Ά",
-                                    "Η´":"Ή",
-                                    "Ω´":"Ώ"
+                                    "ε´": "έ",
+                                    "υ´": "ύ",
+                                    "ι´": "ί",
+                                    "ο´": "ό",
+                                    "α´": "ά",
+                                    "η´": "ή",
+                                    "ω´": "ώ",
+                                    "Ε´": "Έ",
+                                    "Υ´": "Ύ",
+                                    "Ι´": "Ί",
+                                    "Ο´": "Ό",
+                                    "Α´": "Ά",
+                                    "Η´": "Ή",
+                                    "Ω´": "Ώ"
                                 ])],
                                 longpress_actions: .none
                             )
@@ -82,7 +82,7 @@ let flick_greek = Custard(
                                 press_actions: [.toggleCapsLockState],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -90,7 +90,7 @@ let flick_greek = Custard(
             .gridFit(.init(x: 3, y: 3)): .custom(.flickSimpleInputs(center: ".", subs: [",", ";", "!"], centerLabel: ".,;!")),
             .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete()),
             .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace()),
-            .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
+            .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter)
         ]
     )
 )

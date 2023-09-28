@@ -3,19 +3,19 @@ import XCTest
 
 final class CustardKeyLabelStyleTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {"text": "HaTa"}
             """
             XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .text("HaTa"))
         }
-        do{
+        do {
             let target = """
             {"system_image": "aris_to_teles"}
             """
             XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .systemImage("aris_to_teles"))
         }
-        do{
+        do {
             let target = """
             {"systemimage": "aris_to_teles"}
             """
@@ -48,15 +48,15 @@ final class CustardKeyLabelStyleTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardKeyLabelStyle.text("omiya")
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardKeyLabelStyle.systemImage("kitanitatuya")
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardKeyLabelStyle.mainAndSub("金", "money")
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }

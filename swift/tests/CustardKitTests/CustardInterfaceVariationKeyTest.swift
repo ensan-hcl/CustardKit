@@ -3,7 +3,7 @@ import XCTest
 
 final class CustardInterfaceVariationKeyTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {
                 "design": {"label":{"text": "笹川真生"}},
@@ -28,11 +28,11 @@ final class CustardInterfaceVariationKeyTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardInterfaceVariationKey.init(design: .init(label: .systemImage("que")), press_actions: [.dismissKeyboard, .complete, .replaceDefault], longpress_actions: .none)
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardInterfaceVariationKey.init(design: .init(label: .text("∫")), press_actions: [.input("√")], longpress_actions: .init(start: [.input("≈")]))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }

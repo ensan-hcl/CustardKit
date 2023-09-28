@@ -10,7 +10,7 @@ let package = Package(
         .library(
             name: "CustardKit",
             targets: ["CustardKit"]
-        ),
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -28,6 +28,6 @@ let package = Package(
             name: "CustardKitTests",
             dependencies: ["CustardKit"],
             path: "swift/tests/CustardKitTests"
-        ),
+        )
     ]
 )

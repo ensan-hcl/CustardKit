@@ -3,7 +3,7 @@ import XCTest
 
 final class CustardTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {
                 "identifier": "Hisui no machi",
@@ -52,7 +52,7 @@ final class CustardTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let cuneiforms = Array(String.UnicodeScalarView((UInt32(0x12480)...UInt32(0x12543)).compactMap(UnicodeScalar.init))).map(String.init)
             let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
                 .gridScroll(0): .system(.changeKeyboard),
@@ -87,11 +87,11 @@ final class CustardTest: XCTestCase {
                         longpress_actions: .init(repeat: [.delete(1)]),
                         variations: []
                     )
-                ),
+                )
             ]
 
             var cuneiforms_keys = keys
-            cuneiforms.indices.forEach{
+            cuneiforms.indices.forEach {
                 cuneiforms_keys[.gridScroll(GridScrollPositionSpecifier(cuneiforms_keys.count))] = .custom(
                     .init(
                         design: .init(label: .text(cuneiforms[$0]), color: .normal),
@@ -119,6 +119,6 @@ final class CustardTest: XCTestCase {
 
     static var allTests = [
         ("testDecode", testDecode),
-        ("testEncode", testEncode),
+        ("testEncode", testEncode)
     ]
 }

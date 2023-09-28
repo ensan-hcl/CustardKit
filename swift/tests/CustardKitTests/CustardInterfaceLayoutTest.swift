@@ -3,7 +3,7 @@ import XCTest
 
 final class CustardInterfaceLayoutTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {
                 "type": "grid_fit",
@@ -13,7 +13,7 @@ final class CustardInterfaceLayoutTest: XCTestCase {
             """
             XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridFit(.init(rowCount: 5, columnCount: 4)))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "grid_scroll",
@@ -24,7 +24,7 @@ final class CustardInterfaceLayoutTest: XCTestCase {
             """
             XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.9)))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "grid_fit",
@@ -38,15 +38,15 @@ final class CustardInterfaceLayoutTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardInterfaceLayout.gridFit(.init(rowCount: 3, columnCount: 5))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardInterfaceLayout.gridScroll(.init(direction: .horizontal, rowCount: 3.1, columnCount: 2.9))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardInterfaceLayout.gridScroll(.init(direction: .vertical, rowCount: 10, columnCount: 1))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }

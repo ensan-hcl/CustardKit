@@ -70,7 +70,7 @@ let md_custard = Custard(
                                 press_actions: [.input("``"), .moveCursor(-1)],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -111,7 +111,7 @@ let md_custard = Custard(
                                 press_actions: [.input("-")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -152,7 +152,7 @@ let md_custard = Custard(
                                 press_actions: [.input("##### ")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
 
                     ]
                 )
@@ -182,7 +182,7 @@ let md_custard = Custard(
             ),
             .gridFit(.init(x: 5, y: 0)): .custom(.flickDelete()),
             .gridFit(.init(x: 5, y: 1)): .custom(.flickSpace()),
-            .gridFit(.init(x: 5, y: 2, width: 1, height: 2)): .system(.enter),
+            .gridFit(.init(x: 5, y: 2, width: 1, height: 2)): .system(.enter)
         ]
     )
 )

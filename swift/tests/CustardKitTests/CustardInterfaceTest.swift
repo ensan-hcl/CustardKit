@@ -3,7 +3,7 @@ import XCTest
 
 final class CustardInterfaceTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {
             "key_layout": {
@@ -43,7 +43,7 @@ final class CustardInterfaceTest: XCTestCase {
                 )
             )
         }
-        do{
+        do {
             let target = """
             {"key_layout": {
                 "type": "grid_scroll",
@@ -78,7 +78,7 @@ final class CustardInterfaceTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardInterface.init(keyStyle: .pcStyle, keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 3, columnCount: 8)), keys: [.gridScroll(0): .custom(.flickDelete()), .gridScroll(1): .custom(.flickSpace())])
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
@@ -86,6 +86,6 @@ final class CustardInterfaceTest: XCTestCase {
 
     static var allTests = [
         ("testDecode", testDecode),
-        ("testEncode", testEncode),
+        ("testEncode", testEncode)
     ]
 }

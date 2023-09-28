@@ -1,9 +1,8 @@
 import XCTest
 @testable import CustardKit
 
-
-///Test class for encoding of `CodableActionData`
-///Make sure that decoding of `CodablaActionData` is successfuly working
+/// Test class for encoding of `CodableActionData`
+/// Make sure that decoding of `CodablaActionData` is successfuly working
 final class EncodeCodableActionTest: XCTestCase {
     func testEncodeInput() {
         XCTAssertEqual(CodableActionData.input("😆").quickEncodeDecode(), .input("😆"))
@@ -28,11 +27,11 @@ final class EncodeCodableActionTest: XCTestCase {
     }
 
     func testEncodeSmartDelete() {
-        do{
+        do {
             let target = CodableActionData.smartDelete(.init(targets: ["_"], direction: .backward))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CodableActionData.smartDelete()
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
@@ -44,11 +43,11 @@ final class EncodeCodableActionTest: XCTestCase {
     }
 
     func testEncodeSmartMoveCursor() {
-        do{
+        do {
             let target = CodableActionData.smartDelete(.init(targets: ["…"], direction: .backward))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CodableActionData.smartDelete()
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }

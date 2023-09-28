@@ -1,7 +1,6 @@
 import XCTest
 @testable import CustardKit
 
-
 final class CodableLongpressActionTest: XCTestCase {
     func testDecodeLongpressAction() {
         let target = """
