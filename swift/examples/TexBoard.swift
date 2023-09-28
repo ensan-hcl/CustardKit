@@ -110,7 +110,7 @@ let tex_tab = Custard(
                                 press_actions: [.input("|")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -152,7 +152,7 @@ let tex_tab = Custard(
                                 press_actions: [.input("\\div ")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -193,7 +193,7 @@ let tex_tab = Custard(
                                 press_actions: [.input("\\left\\{\\right\\}"), .moveCursor(-8)],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -275,7 +275,7 @@ let tex_tab = Custard(
                                 press_actions: [.input("\\sqrt[]{}"), .moveCursor(-3)],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -316,7 +316,7 @@ let tex_tab = Custard(
                                 press_actions: [.input("\\equiv ")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -341,7 +341,7 @@ let tex_tab = Custard(
                                 press_actions: [.input("\\mathbb ")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
@@ -366,14 +366,14 @@ let tex_tab = Custard(
                                 press_actions: [.input("\\empty ")],
                                 longpress_actions: .none
                             )
-                        ),
+                        )
                     ]
                 )
             ),
             .gridFit(.init(x: 3, y: 3)): .custom(.flickSimpleInputs(center: ".", subs: [",", "!", "?"], centerLabel: ".,!?")),
             .gridFit(.init(x: 4, y: 0)): .custom(.flickDelete()),
             .gridFit(.init(x: 4, y: 1)): .custom(.flickSpace()),
-            .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter),
+            .gridFit(.init(x: 4, y: 2, width: 1, height: 2)): .system(.enter)
         ]
     )
 )

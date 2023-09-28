@@ -3,7 +3,7 @@ import XCTest
 
 final class DecodeCodableActionTest: XCTestCase {
     func testDecodeInput() {
-        do{
+        do {
             let target = """
             {
                 "type": "input",
@@ -13,7 +13,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .input("😆"))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "input",
@@ -26,7 +26,7 @@ final class DecodeCodableActionTest: XCTestCase {
     }
 
     func testDecodeReplaceLastCharacters() {
-        do{
+        do {
             let target = """
             {
                 "type": "replace_last_characters",
@@ -46,7 +46,7 @@ final class DecodeCodableActionTest: XCTestCase {
                 "嬉": "悲"
             ]))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "replace_last_characters",
@@ -59,7 +59,7 @@ final class DecodeCodableActionTest: XCTestCase {
     }
 
     func testDecodeDelete() {
-        do{
+        do {
             let target = """
             {
                 "type": "delete",
@@ -69,7 +69,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .delete(3))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "delete",
@@ -82,7 +82,7 @@ final class DecodeCodableActionTest: XCTestCase {
     }
 
     func testDecodeSmartDelete() {
-        do{
+        do {
             let target = """
             {
                 "type": "smart_delete",
@@ -93,7 +93,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartDelete(.init(targets: ["_"], direction: .backward)))
         }
-        do{
+        do {
             let target = """
             {
                 "direction": "forward",
@@ -107,7 +107,7 @@ final class DecodeCodableActionTest: XCTestCase {
     }
 
     func testDecodeMoveCursor() {
-        do{
+        do {
             let target = """
             {
                 "type": "move_cursor",
@@ -117,7 +117,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .moveCursor(3))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "move_cursor",
@@ -129,9 +129,8 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
-
     func testDecodeSmartMoveCursor() {
-        do{
+        do {
             let target = """
             {
                 "type": "smart_move_cursor",
@@ -142,7 +141,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartMoveCursor(.init(targets: ["…"], direction: .backward)))
         }
-        do{
+        do {
             let target = """
             {
                 "direction": "forward",
@@ -156,7 +155,7 @@ final class DecodeCodableActionTest: XCTestCase {
     }
 
     func testDecodeMoveTab() {
-        do{
+        do {
             let target = """
             {
                 "type": "move_tab",
@@ -167,7 +166,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .moveTab(.system(.last_tab)))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "move_tab",
@@ -181,7 +180,7 @@ final class DecodeCodableActionTest: XCTestCase {
     }
 
     func testDecodeSelectCandidate() throws {
-        do{
+        do {
             let target = """
             {
                 "type": "select_candidate",
@@ -191,7 +190,7 @@ final class DecodeCodableActionTest: XCTestCase {
             let decoded: CodableActionData = try CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .selectCandidate(.first))
         }
-        do{
+        do {
             let target = """
             {
                 "selection": { "type": "offset", "value": -1 },
@@ -203,58 +202,57 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
-
     func testDecodeNoArgumentActions() {
-        do{
+        do {
             let target = """
             {"type": "replace_default"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .replaceDefault)
         }
-        do{
+        do {
             let target = """
             {"type": "smart_delete_default"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .smartDeleteDefault)
         }
-        do{
+        do {
             let target = """
             {"type": "complete"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .complete)
         }
-        do{
+        do {
             let target = """
             {"type": "enable_resizing_mode"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .enableResizingMode)
         }
-        do{
+        do {
             let target = """
             {"type": "toggle_cursor_bar"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .toggleCursorBar)
         }
-        do{
+        do {
             let target = """
             {"type": "toggle_tab_bar"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .toggleTabBar)
         }
-        do{
+        do {
             let target = """
             {"type": "toggle_caps_lock_state"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
             XCTAssertEqual(decoded, .toggleCapsLockState)
         }
-        do{
+        do {
             let target = """
             {"type": "dismiss_keyboard"}
             """

@@ -36,11 +36,11 @@ let keys: [CustardKeyPositionSpecifier: CustardInterfaceKey] = [
             longpress_actions: .init(repeat: [.delete(1)]),
             variations: []
         )
-    ),
+    )
 ]
 
 var cuneiforms_keys = keys
-cuneiforms.indices.forEach{
+cuneiforms.indices.forEach {
     cuneiforms_keys[.gridScroll(GridScrollPositionSpecifier(cuneiforms_keys.count))] = .custom(
         .init(
             design: .init(label: .text(cuneiforms[$0]), color: .normal),

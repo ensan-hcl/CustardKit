@@ -3,7 +3,7 @@ import XCTest
 
 final class CustardInterfaceCustomKeyTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {
                 "design": {"label":{"text": "潔白"}, "color": "special"},
@@ -37,25 +37,25 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardInterfaceCustomKey.flickSpace()
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardInterfaceCustomKey.flickDelete()
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
     }
 
     func testStaticKeys() {
-        do{
+        do {
             let target = CustardInterfaceCustomKey.flickSpace()
             XCTAssertEqual(target.design, .init(label: .text("空白"), color: .special))
             XCTAssertEqual(target.press_actions, [.input(" ")])
             XCTAssertEqual(target.longpress_actions, .init(start: [.toggleCursorBar]))
             XCTAssertEqual(target.variations.count, 3)
         }
-        do{
+        do {
             let target = CustardInterfaceCustomKey.flickDelete()
             XCTAssertEqual(target.design, .init(label: .systemImage("delete.left"), color: .special))
             XCTAssertEqual(target.press_actions, [.delete(1)])
@@ -77,8 +77,8 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
     }
 
     func testFlickSimpleInputs() {
-        do{
-            let target = CustardInterfaceCustomKey.flickSimpleInputs(center: "💛", subs: ["💙","🖤","🧡"])
+        do {
+            let target = CustardInterfaceCustomKey.flickSimpleInputs(center: "💛", subs: ["💙", "🖤", "🧡"])
             XCTAssertEqual(target.design, .init(label: .text("💛"), color: .normal))
             XCTAssertEqual(target.press_actions, [.input("💛")])
             XCTAssertEqual(target.longpress_actions, .none)
@@ -99,12 +99,12 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
             XCTAssertEqual(target.variations[2].key.press_actions, [.input("🧡")])
             XCTAssertEqual(target.variations[2].key.longpress_actions, .none)
         }
-        do{
-            let target = CustardInterfaceCustomKey.flickSimpleInputs(center: "💛", subs: ["💙","🖤","🧡"], centerLabel: "ハート")
+        do {
+            let target = CustardInterfaceCustomKey.flickSimpleInputs(center: "💛", subs: ["💙", "🖤", "🧡"], centerLabel: "ハート")
             XCTAssertEqual(target.design, .init(label: .text("ハート"), color: .normal))
             XCTAssertEqual(target.press_actions, [.input("💛")])
         }
-        do{
+        do {
             let target = CustardInterfaceCustomKey.flickSimpleInputs(center: .init(label: "やゆよ", input: "や"), top: "ゆ", right: .init(label: "え", input: "𛀁"), bottom: "よ")
             XCTAssertEqual(target.design, .init(label: .text("やゆよ"), color: .normal))
             XCTAssertEqual(target.press_actions, [.input("や")])
@@ -133,6 +133,6 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
         ("testEncode", testEncode),
         ("testStaticKeys", testStaticKeys),
         ("testSimpleInputArgument", testSimpleInputArgument),
-        ("testFlickSimpleInputs", testFlickSimpleInputs),
+        ("testFlickSimpleInputs", testFlickSimpleInputs)
     ]
 }

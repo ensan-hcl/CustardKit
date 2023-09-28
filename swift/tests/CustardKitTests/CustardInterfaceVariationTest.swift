@@ -3,7 +3,7 @@ import XCTest
 
 final class CustardInterfaceVariationTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {
                 "type": "flick_variation",
@@ -20,7 +20,7 @@ final class CustardInterfaceVariationTest: XCTestCase {
             """
             XCTAssertEqual(CustardInterfaceVariation.quickDecode(target: target), .init(type: .flickVariation(.left), key: .init(design: .init(label: .systemImage("instagram")), press_actions: [], longpress_actions: .none)))
         }
-        do{
+        do {
             let target = """
             {
                 "type": "longpress_variation",
@@ -39,11 +39,11 @@ final class CustardInterfaceVariationTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardInterfaceVariation.init(type: .flickVariation(.bottom), key: .init(design: .init(label: .text("facebook")), press_actions: [], longpress_actions: .none))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardInterfaceVariation.init(type: .longpressVariation, key: .init(design: .init(label: .systemImage("twitter")), press_actions: [], longpress_actions: .none))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }

@@ -81,7 +81,7 @@ let interesting_layout = Custard(
                     longpress_actions: .none,
                     variations: []
                 )
-            ),
+            )
         ]
     )
 )

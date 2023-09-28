@@ -3,13 +3,13 @@ import XCTest
 
 final class CustardVariationKeyDesignTest: XCTestCase {
     func testDecode() {
-        do{
+        do {
             let target = """
             {"label":{"text": "七月十九日は永遠に"}}
             """
             XCTAssertEqual(CustardVariationKeyDesign.quickDecode(target: target), .init(label: .text("七月十九日は永遠に")))
         }
-        do{
+        do {
             let target = """
             {"label":{"system_image": "piko_taro"}}
             """
@@ -18,11 +18,11 @@ final class CustardVariationKeyDesignTest: XCTestCase {
     }
 
     func testEncode() {
-        do{
+        do {
             let target = CustardVariationKeyDesign.init(label: .systemImage("hichhich"))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
-        do{
+        do {
             let target = CustardVariationKeyDesign.init(label: .text("椎乃味醂"))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
